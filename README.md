@@ -3,11 +3,12 @@
 ## Running the Project
 1. Clone the repository and navigate to it 
 2. Set up a virtual environment  
-    a. For **Windows**: In powershell, run  ```python -m venv env``` and ```venv\Scripts\Activate.ps1```   
+    a. For **Windows**: In terminal, run  ```python -m venv env``` and ```.\env\Scripts\Activate```   
     b. For **macOS/Linux**: In terminal, run  ```python3 -m venv env``` and ```source venv/bin/activate```
 3. Install required packages using ```pip install -r requirements.txt```
-4. Start the application using ```python manage.py runserver```  
-5. View the project at  http://127.0.0.1:8000/
+4. Change directory to "Earls_Discount_System"
+5. Start the application using ```python manage.py runserver```  
+6. View the project at  http://127.0.0.1:8000/
 
 
 ## For Developers
