@@ -21,4 +21,4 @@ EXPOSE 8080
 ENV DJANGO_SETTINGS_MODULE=Earls_Discount_System.settings
 
 # Run the Django development server
-CMD ["sh", "-c", "cd Earls_Discount_System && python manage.py migrate && gunicorn --bind 0.0.0.0:8080 Earls_Discount_System.wsgi:application"]
+CMD ["sh", "-c", "cd Earls_Discount_System && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8080 Earls_Discount_System.wsgi:application"]
