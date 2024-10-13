@@ -2,7 +2,7 @@
 FROM python:3.10
 
 # Set the working directory
-WORKDIR /Earls_Discount_System
+WORKDIR /app/Earls_Discount_System/Earls_Discount_System
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y build-essential
@@ -17,5 +17,8 @@ COPY . .
 # Expose port 8080 for the application to run on
 EXPOSE 8080
 
+# Set the environment variable for Django settings
+ENV DJANGO_SETTINGS_MODULE=Earls_Discount_System.settings
+
 # Run the Django development server
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "Earls_Discount_System.Earls_Discount_System.wsgi:application"]
+CMD ["sh", "-c", "cd Earls_Discount_System && python manage.py migrate && gunicorn --bind 0.0.0.0:8080 Earls_Discount_System.wsgi:application"]
