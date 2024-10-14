@@ -10,7 +10,11 @@
 5. Start the application using ```python manage.py runserver```  
 6. View the project at  http://127.0.0.1:8000/
 
-
 ## For Developers
 1. Ensure you have a dedicated folder for the project, and change directory into said folder
 2. In terminal, run the command ```git clone https://github.com/RyanDanielLee/Earls-Discount-System.git```
+
+## Connecting to Database
+1. Whitelist IP on CloudSQL under the **card-issuer** interface in the **card-issue** database
+2. Change directory to "Earls_Discount_System\Earls_Discount_System\
+3. Start the database connection using ```python manage.py migrate```
