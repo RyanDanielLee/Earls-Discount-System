@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 # Home route for admin
 def admin_home(request):
-    return HttpResponse("Admin Home Page")
+    return render(request, 'admin/home.html')
 
 # Cardholders
 def view_all_users(request):
