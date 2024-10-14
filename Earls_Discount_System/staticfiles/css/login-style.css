@@ -1,3 +1,7 @@
+.login-body {
+  background-color: var(--bg-variant);
+}
+
 .card .login-headline {
   font-size: 5rem;
   font-family: 'Abhaya Libre', serif;
@@ -5,18 +9,18 @@
 }
 
 .login-container {
-  color: #083044;
+  color: var(--font-color);
   width: 100%;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: var(--bg-color);
   border-radius: 2px;
   padding: 2rem;
   padding-right: 6rem;
-  border: 1px solid #6eb9b2;
+  border: 1px solid var(--primary-color);
   justify-content: center;
   align-items: flex-start;
   width: 100%;
@@ -24,12 +28,12 @@
 }
 .card h1 {
   font-size: 3rem;
-  color: #083044;
+  color: var(--font-color);
 }
 
 .card h2 {
   font-size: 2rem;
-  color: #6bb6a5;
+  color: var(--primary-color);
   margin: 1rem 0;
 }
 .google-login {
@@ -77,13 +81,13 @@ footer .earls_logo {
 }
 
 .social-icons a {
-  color: #083044;
+  color: var(--font-color);
   font-size: 1rem;
   text-decoration: none;
 }
 
 .social-icons .twitter-logo {
-  color: #083044;
+  color: var(--font-color);
   text-decoration: none;
   margin-top: 0.3rem;
   width: 1rem;

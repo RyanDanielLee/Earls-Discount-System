@@ -3,6 +3,15 @@
 
 /* default styles */
 
+:root {
+  --font-color: #083044;
+  --primary-color: #6eb9b2;
+  --bg-color: #ffffff;
+  --bg-variant: #f7fafa;
+  --light-color: #e3e3e3;
+  --accent-color: #82714c;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,11 +19,64 @@
 }
 
 body {
-  background: #f7fafa;
+  background: var(--bg-color);
   font-family: 'Poppins', sans-serif;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 1rem;
+}
+
+.container {
+  width: 70%;
+  height: 100vh;
+  padding-top: 0.5rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* navigation */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  padding-top: 0;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--font-color);
+  border-bottom: solid 1px var(--light-color);
+}
+
+.navbar a {
+  color: var(--font-color);
+}
+
+.navbar a:hover {
+  color: var(--accent-color);
+}
+
+.navbar .nav-earls-logo {
+  width: 100px;
+}
+
+.navbar .nav-items {
+  display: flex;
+  gap: 2rem;
+}
+
+/* responsive design */
+
+@media (max-width: 900px) and (min-width: 600px) {
+  .container {
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

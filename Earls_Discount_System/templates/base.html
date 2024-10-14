@@ -16,10 +16,31 @@
 </head>
 
 <body>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+    <div class="container">
+        <nav class="navbar">
+            <div>
+                <img src="{% static 'images/earls-logo-headonly.png' %}" alt="Earls Logo" class="nav-earls-logo">
+            </div>
+            <div class="nav-items">
+                <a href="#">
+                    <p>Cardholders</p>
+                </a>
+                <a href="#">
+                    <p>EC Card</p>
+                </a>
+                <a href="#">
+                    <p>Reports</p>
+                </a>
+                <a href="#">
+                    <p>Logout</p>
+                </a>
+            </div>
+        </nav>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
 </body>
 
 </html>
