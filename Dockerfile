@@ -1,18 +1,21 @@
 # Use the official Python image
-FROM python:3.10
+FROM python:3.10-slim
 
 # Set the working directory
 WORKDIR /app/Earls_Discount_System/Earls_Discount_System
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y build-essential
+RUN apt-get update && apt-get install -y build-essential  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements.txt and install dependencies
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
 COPY . .
+
+# Collect static files during build (instead of at runtime)
+RUN cd Earls_Discount_System && python manage.py collectstatic --noinput
 
 # Expose port 8080 for the application to run on
 EXPOSE 8080
