@@ -21,20 +21,36 @@
             <div>
                 <img src="{% static 'images/earls-logo-headonly.png' %}" alt="Earls Logo" class="nav-earls-logo">
             </div>
-            <div class="nav-items">
-                <a href="#">
-                    <p>Cardholders</p>
-                </a>
-                <a href="#">
-                    <p>EC Card</p>
-                </a>
-                <a href="#">
-                    <p>Reports</p>
-                </a>
-                <a href="#">
-                    <p>Logout</p>
-                </a>
-            </div>
+
+            <ul class="nav-items">
+                <li><a href="#">
+                        <p>Cardholders</p>
+                    </a></li>
+                <li class="dropdown"><a href="#" class="dropbtn">
+                        <p>EC Card</p>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#">Issue Card</a>
+                        <a href="#">Upload Faceplate</a>
+
+                    </div>
+                </li>
+                <li class="dropdown"><a href="#" class="dropbtn">
+                        <p>Reports</p>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#">Dashboard</a>
+                        <a href="#">Discount per Store</a>
+                        <a href="#">Discount per Employee</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">
+                        <p>Logout</p>
+                    </a>
+                </li>
+            </ul>
+
         </nav>
         <main>
             {% block content %}
