@@ -12,6 +12,9 @@ def view_all_users(request):
 def manage_user_details(request):
     return HttpResponse("Manage User Details Page")
 
+def manage_card_holders(request):
+    return render(request, 'cardholder/cardholder.html')
+
 # EC Card
 def issue_card(request):
     return HttpResponse("Issue Card Page")
