@@ -121,6 +121,13 @@ SOCIALACCOUNT_PROVIDERS = {
             'client_id': '',
             'secret': '',
             'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
         }
     }
 }
