@@ -93,6 +93,18 @@ footer .earls_logo {
   width: 1rem;
 }
 
+/* responsive design */
+
+@media only screen and (max-width: 768px) {
+  .login-container {
+    width: 96%;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: auto;
+  }
+}
+
 /* https://developers.google.com/identity/branding-guidelines */
 /* google sign in guidelines */
 .gsi-material-button {

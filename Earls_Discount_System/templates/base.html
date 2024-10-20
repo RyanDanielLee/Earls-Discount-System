@@ -22,31 +22,35 @@
 
         <main>
             <nav class="navbar">
-                <div>
-                    <img src="{% static 'images/earls-logo-headonly.png' %}" alt="Earls Logo" class="nav-earls-logo">
+                <div class="logo">
+                    <a href="{% url 'admin_home' %}"><img src="{% static 'images/earls-logo-headonly.png' %}"
+                            alt="Earls Logo" class="nav-earls-logo"></a>
                 </div>
 
-                <ul class="nav-items">
+                <ul class="nav-items" id="nav-items">
                     <li><a href="{% url 'manage_card_holders' %}">
                             <p>Cardholders</p>
                         </a></li>
-                    <li class="dropdown"><a href="#" class="dropbtn">
+                    <li class="dropdown">
+                        <a href="#">
                             <p>EC Card</p>
                         </a>
-                        <div class="dropdown-content">
-                            <a href="#">Issue Card</a>
-                            <a href="#">Upload Faceplate</a>
+                        <ul class="dropdown-content" id="dropdown-content1">
+                            <li><a href="#">Issue Card</a></li>
+                            <li><a href="#">Upload Faceplate</a></li>
 
-                        </div>
+                        </ul>
                     </li>
-                    <li class="dropdown"><a href="#" class="dropbtn">
+                    <li class="dropdown">
+                        <a href="#">
                             <p>Reports</p>
                         </a>
-                        <div class="dropdown-content">
-                            <a href="#">Dashboard</a>
-                            <a href="#">Discount per Store</a>
-                            <a href="#">Discount per Employee</a>
-                        </div>
+                        <ul class="dropdown-content" id="dropdown-content2">
+                            <!-- <ul class="dropdown-content" id="dropdown-reports"> -->
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Discount per Store</a></li>
+                            <li><a href="#">Discount per Employee</a></li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#">
@@ -54,7 +58,11 @@
                         </a>
                     </li>
                 </ul>
-
+                <div class="hamburger" id="hamburger" onclick="myMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </nav>
             {% block content %}
             {% endblock %}

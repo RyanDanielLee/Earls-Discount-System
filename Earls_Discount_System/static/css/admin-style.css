@@ -42,8 +42,8 @@
   top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--primary-color);
-  color: var(--bg-color);
+  background-color: var(--bg-variant);
+  color: var(--primary-color);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -146,6 +146,8 @@
 }
 
 .table-total-cardholders tbody tr {
+  display: flex;
+  align-items: center;
   border: 1px solid var(--bg-variant);
   padding: 0.6rem 1rem;
   transition: all 0.3s ease-out;
@@ -211,4 +213,71 @@
 
 .view-all-icon:hover {
   background-color: var(--bg-color);
+}
+
+/* responsive design */
+@media only screen and (max-width: 768px) {
+  .admin-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container-info {
+    flex-direction: column;
+    margin-bottom: 2.4rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 100%;
+  }
+
+  /* inspiration */
+  /* https://medium.com/appnroll-publication/5-practical-solutions-to-make-responsive-data-tables-ff031c48b122 */
+  #no-more-tables table,
+  #no-more-tables thead,
+  #no-more-tables tbody,
+  #no-more-tables th,
+  #no-more-tables td,
+  #no-more-tables tr {
+    display: block;
+  }
+
+  /* Hide table headers */
+  #no-more-tables thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  #no-more-tables tbody tr {
+    padding: 1rem;
+  }
+
+  #no-more-tables td {
+    /* Behave  like a "row" */
+    border: none;
+    position: relative;
+    padding-left: 40%;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.8rem;
+  }
+
+  #no-more-tables td:before {
+    /* Now like a table header */
+    position: absolute;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 300;
+    color: var(--primary-color);
+  }
+
+  #no-more-tables td:before {
+    content: attr(data-title);
+  }
 }
