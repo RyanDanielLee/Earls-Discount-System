@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{% static 'css/login-style.css' %}?v={{ timestamp }}">
     <link rel="stylesheet" href="{% static 'css/admin-style.css' %}?v={{ timestamp }}">
     <link rel="stylesheet" href="{% static 'css/cardholder-style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/eccard-style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/reports-style.css' %}?v={{ timestamp }}">
     <!-- font-awesome icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- JS -->
@@ -36,8 +38,8 @@
                             <p>EC Card</p>
                         </a>
                         <ul class="dropdown-content" id="dropdown-content1">
-                            <li><a href="#">Issue Card</a></li>
-                            <li><a href="#">Upload Faceplate</a></li>
+                            <li><a href="{% url 'issue_card' %}">Issue Card</a></li>
+                            <li><a href="{% url 'upload_card_faceplates' %}">Upload Faceplate</a></li>
 
                         </ul>
                     </li>
@@ -46,10 +48,9 @@
                             <p>Reports</p>
                         </a>
                         <ul class="dropdown-content" id="dropdown-content2">
-                            <!-- <ul class="dropdown-content" id="dropdown-reports"> -->
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Discount per Store</a></li>
-                            <li><a href="#">Discount per Employee</a></li>
+                            <li><a href="{% url 'reports_dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'total_discounts_per_store' %}">Discount per Store</a></li>
+                            <li><a href="{% url 'total_discounts_per_employee' %}">Discount per Employee</a></li>
                         </ul>
                     </li>
                     <li>
