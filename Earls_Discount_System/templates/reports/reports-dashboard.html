@@ -1,5 +1,147 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h1>Reports Dashboard</h1>
+<div class="admin-container">
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Reports</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">Reports Management</h1>
+        <ul>
+            <li><a href="{% url 'total_discounts_per_store' %}">Discounts per Store</a></li>
+            <li><a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a></li>
+        </ul>
+    </div>
+    <div class="reports-summary">
+        <div class="box total-amount">
+            <p>- $7,138.25</p>
+            <span>Total Amount This Month</span>
+        </div>
+        <div class="summary-double">
+            <div class="box last-month">
+                <p>- $5,622.13</p>
+                <span>Last Month</span>
+            </div>
+            <div class="box this-year">
+                <p>- $35,622.13</p>
+                <span>This Year</span>
+            </div>
+        </div>
+        <div class="box sum-cardholders">
+            <p>137</p>
+            <span>Cardholders</span>
+        </div>
+        <div class="box issued-ec-card">
+            <div class="issued-card-list">
+                <div class="card-item">
+                    <span>EC 10</span>
+                    <span>30</span>
+                </div>
+                <div class="card-item">
+                    <span>EC 50</span>
+                    <span>75</span>
+                </div>
+                <div class="card-item">
+                    <span>EC 100</span>
+                    <span>22</span>
+                </div>
+            </div>
+            <span>Issued EC Card</span>
+        </div>
+    </div>
+    <section class="reports-dashbd-tb">
+        <div class="section-title-cardholders">
+            <div class="title-total-cardholders"><i class="fa-solid fa-shop font-awesome-icons"></i>
+                <p>Total Discounts by Store</p><small>Period 9 as of Oct 27</small>
+            </div>
+            <a href="{% url 'total_discounts_per_store' %}">
+                <div class="view-all-icon-text"><span class="view-all-text">View All</span><i
+                        class="fa-solid fa-angle-right"></i>
+                </div>
+            </a>
+        </div>
+        <div class="new-cardholders">
+            <table class="table-total-cardholders" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Store</th>
+                        <th>by Known Cardholder</th>
+                        <th>by UnKnown Cardholder</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-title="Store">King West</td>
+                        <td data-title="by Known Cardholder">-$1133.25</td>
+                        <td data-title="by UnKnown Cardholder">-$34.98</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Port Coquitlam</td>
+                        <td data-title="by Known Cardholder">-$633.25</td>
+                        <td data-title="by UnKnown Cardholder">-$434.98</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Robson</td>
+                        <td data-title="by Known Cardholder">-$733.25</td>
+                        <td data-title="by UnKnown Cardholder">-$64.98</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="reports-dashbd-tb">
+        <div class="section-title-cardholders">
+            <div class="title-total-cardholders"><i class="fa-solid fa-id-card-clip font-awesome-icons"></i>
+                <p>Total Discounts by Employee</p><small>Period 9 as of Oct 27</small>
+            </div>
+            <a href="{% url 'total_discounts_per_employee' %}">
+                <div class="view-all-icon-text"><span class="view-all-text">View All</span><i
+                        class="fa-solid fa-angle-right"></i>
+                </div>
+            </a>
+        </div>
+        <div class="new-cardholders">
+            <table class="table-total-cardholders" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Name</th>
+                        <th>Total Discount</th>
+                        <th>Number of Visits</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-title="Name">Michelle Choi</td>
+                        <td data-title="Total Discount">-$934.25</td>
+                        <td data-title="Number of Visits">13</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Name">Rhombus Nell</td>
+                        <td data-title="Total Discount">-$633.25</td>
+                        <td data-title="Number of Visits">9</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Name">John Doe</td>
+                        <td data-title="Total Discount">-$733.25</td>
+                        <td data-title="Number of Visits">5</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
 {% endblock %}

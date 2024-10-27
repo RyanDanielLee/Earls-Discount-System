@@ -147,10 +147,12 @@
 
 .table-total-cardholders tbody tr {
   display: flex;
-  align-items: center;
+  /* justify-content: space-between;
+  gap: 5rem; */
   border: 1px solid var(--bg-variant);
   padding: 0.6rem 1rem;
   transition: all 0.3s ease-out;
+  position: relative;
 }
 
 .table-total-cardholders tbody tr:nth-child(odd) {
@@ -259,7 +261,7 @@
     /* Behave  like a "row" */
     border: none;
     position: relative;
-    padding-left: 40%;
+    padding-left: 50%;
     white-space: normal;
     text-align: left;
     line-height: 1.8rem;
