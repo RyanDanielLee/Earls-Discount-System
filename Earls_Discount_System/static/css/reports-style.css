@@ -157,6 +157,13 @@
   margin-bottom: 2rem;
 }
 
+.table-total-cardholders .thead {
+  border-bottom: solid 1px var(--font-color);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 0.7rem;
+}
+
 .table-total-cardholders tbody tr td[data-title='by UnKnown Cardholder'] {
   position: absolute;
   right: 11.5rem;

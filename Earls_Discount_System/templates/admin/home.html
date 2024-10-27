@@ -87,7 +87,7 @@
     <div class="new-cardholders">
         <table class="table-total-cardholders" id="no-more-tables">
             <thead>
-                <tr class="thead">
+                <tr class="admin-cardholder-td-thead">
                     <th>Card No.</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -104,7 +104,7 @@
                     <td data-title="Email">{{ cardholder.email }}</td>
                     <td data-title="Status">{{ cardholder.status }}</td>
                     <td data-title="CardType">{{ cardholder.card_type }}</td>
-                    <td data-title="Issue Date">N/A</td>  <!-- Ignore this for now -->
+                    <td data-title="Issue Date">N/A</td> <!-- Ignore this for now -->
                 </tr>
                 {% endfor %}
             </tbody>
