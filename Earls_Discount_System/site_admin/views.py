@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import CardsEmployee
 
 # Home route for admin
 def admin_home(request):
-    return render(request, 'admin/home.html')
+    new_cardholders = CardsEmployee.objects.all()
+    return render(request, 'admin/home.html', {'new_cardholders': new_cardholders})
 
 # Cardholders
 def view_all_users(request):
@@ -13,7 +15,8 @@ def manage_user_details(request):
     return HttpResponse("Manage User Details Page")
 
 def manage_card_holders(request):
-    return render(request, 'cardholder/cardholder.html')
+    cardholders = CardsEmployee.objects.all()
+    return render(request, 'cardholder/cardholder.html', {'cardholders': cardholders})
 
 # EC Card
 def issue_card(request):

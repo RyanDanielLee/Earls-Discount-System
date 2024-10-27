@@ -21,49 +21,15 @@
         <button type="button" onclick="alert('Hello World!')" class="form-button">Search</button>
     </form>
     <table class="cardholder-table">
+        {% for cardholder in cardholders %}
         <tr>
-            <th>Card No</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Card Type</th>
-            <th>Options</th>
-        </tr>
-        <tr>
-            <td>0401</td>
-            <td>Richard Park</td>
-            <td>richard.park@earls.ca</td>
-            <td>EC50</td>
+            <td>{{ cardholder.card_no }}</td>
+            <td>{{ cardholder.name }}</td>
+            <td>{{ cardholder.email }}</td>
+            <td>{{ cardholder.card_type }}</td>
             <td><button class="view-button">View</button></td>
         </tr>
-        <tr>
-            <td>0401</td>
-            <td>Richard Park</td>
-            <td>richard.park@earls.ca</td>
-            <td>EC50</td>
-            <td><button class="view-button">View</button></td>
-        </tr>
-        <tr>
-            <td>0401</td>
-            <td>Richard Park</td>
-            <td>richard.park@earls.ca</td>
-            <td>EC50</td>
-            <td><button class="view-button">View</button></td>
-        </tr>
-        <tr>
-            <td>0401</td>
-            <td>Richard Park</td>
-            <td>richard.park@earls.ca</td>
-            <td>EC50</td>
-            <td><button class="view-button">View</button></td>
-        </tr>
-        <tr>
-            <td>0401</td>
-            <td>Richard Park</td>
-            <td>richard.park@earls.ca</td>
-            <td>EC50</td>
-            <td><button class="view-button">View</button></td>
-        </tr>
-        <!-- Add more rows as needed -->
+        {% endfor %}
     </table>
     <div class="pagination">
         <i class="fa-solid fa-chevron-left"></i>

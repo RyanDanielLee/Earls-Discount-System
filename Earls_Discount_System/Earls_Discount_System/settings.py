@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'Earls_Discount_System.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'card_issue',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '104.196.251.149',
+        'PORT': '3306',  
     }
 }
 

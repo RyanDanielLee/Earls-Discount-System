@@ -97,46 +97,16 @@
                 </tr>
             </thead>
             <tbody>
+                {% for cardholder in new_cardholders %}
                 <tr>
-                    <td data-title="Card No">0401</td>
-                    <td data-title="Name">Richard Park</td>
-                    <td data-title="Email">richard.park@earls.ca</td>
-                    <td data-title="Status">Activated</td>
-                    <td data-title="CardType">EC50</td>
-                    <td data-title="Issue Date">2024-09-15</td>
+                    <td data-title="Card No">{{ cardholder.id }}</td>
+                    <td data-title="Name">{{ cardholder.name }}</td>
+                    <td data-title="Email">{{ cardholder.email }}</td>
+                    <td data-title="Status">{{ cardholder.status }}</td>
+                    <td data-title="CardType">{{ cardholder.card_type }}</td>
+                    <td data-title="Issue Date">N/A</td>  <!-- Ignore this for now -->
                 </tr>
-                <tr>
-                    <td data-title="Card No">0401</td>
-                    <td data-title="Name">Richard Park</td>
-                    <td data-title="Email">richard.park@earls.ca</td>
-                    <td data-title="Status">Activated</td>
-                    <td data-title="CardType">EC50</td>
-                    <td data-title="Issue Date">2024-09-15</td>
-                </tr>
-                <tr>
-                    <td data-title="Card No">0401</td>
-                    <td data-title="Name">Richard Park</td>
-                    <td data-title="Email">richard.park@earls.ca</td>
-                    <td data-title="Status">Activated</td>
-                    <td data-title="CardType">EC50</td>
-                    <td data-title="Issue Date">2024-09-15</td>
-                </tr>
-                <tr>
-                    <td data-title="Card No">0401</td>
-                    <td data-title="Name">Richard Park</td>
-                    <td data-title="Email">richard.park@earls.ca</td>
-                    <td data-title="Status">Activated</td>
-                    <td data-title="CardType">EC50</td>
-                    <td data-title="Issue Date">2024-09-15</td>
-                </tr>
-                <tr>
-                    <td data-title="Card No">0401</td>
-                    <td data-title="Name">Richard Park</td>
-                    <td data-title="Email">richard.park@earls.ca</td>
-                    <td data-title="Status">Activated</td>
-                    <td data-title="CardType">EC50</td>
-                    <td data-title="Issue Date">2024-09-15</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

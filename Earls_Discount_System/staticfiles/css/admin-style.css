@@ -1,214 +1,283 @@
 .admin-container {
-  width: 100%;
-  color: var(--font-color);
-  padding: 10px 5px;
+    width: 100%;
+    color: var(--font-color);
+    padding: 10px 5px;
 }
 
 .container-info {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-  margin-bottom: 1.3rem;
-  align-items: center;
-  padding-left: 0.1rem;
-  padding-right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    margin-bottom: 1.3rem;
+    align-items: center;
+    padding-left: 0.1rem;
+    padding-right: 1rem;
 }
 
 .font-awesome-icons {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
-.admin-container .container-info .title > h1 {
-  color: var(--primary-color);
-  font-size: 3.2rem;
-  font-family: 'Abhaya Libre', serif;
+.admin-container .container-info .title>h1 {
+    color: var(--primary-color);
+    font-size: 3.2rem;
+    font-family: 'Abhaya Libre', serif;
 }
 
 .support-email {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: relative;
-  z-index: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 0;
 }
 
 .email-text {
-  transition: all 0.3s ease-out;
-  cursor: pointer;
+    transition: all 0.3s ease-out;
+    cursor: pointer;
 }
 
 .email-tooltip-text {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--primary-color);
-  color: var(--bg-color);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: opacity 0.3s;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-variant);
+    color: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity 0.3s;
 }
 
 .support-email:hover .email-tooltip-text {
-  opacity: 1;
+    opacity: 1;
 }
 
 .title-total-discounts {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .title-total-cardholders {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 0.3rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.3rem;
 }
 
 .contents-total-discounts .table {
-  background-color: var(--bg-variant);
-  padding-top: 1.3rem;
-  padding-left: 1.6rem;
-  padding-right: 1.6rem;
-  padding-bottom: 0.7rem;
+    background-color: var(--bg-variant);
+    padding-top: 1.3rem;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    padding-bottom: 0.7rem;
 }
 
 .table-total-discounts table {
-  width: 100%;
+    width: 100%;
 }
 
 .table-total-discounts tr {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
-  transition: all 0.3s ease-out;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    transition: all 0.3s ease-out;
 }
 
 .table-total-discounts tr:hover {
-  background-color: var(--bg-color);
-  cursor: pointer;
+    background-color: var(--bg-color);
+    cursor: pointer;
 }
 
 .section-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 0.5rem;
-  border-bottom: solid 1px var(--font-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: solid 1px var(--font-color);
 }
 
 .section-title-cardholders {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
 }
 
 .grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 49% 49.5%;
-  margin-bottom: 2rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 49% 49.5%;
+    margin-bottom: 2rem;
 }
 
 .table-total-cardholders {
-  width: 100%;
-  padding-top: 0.4rem;
-  border-collapse: collapse;
+    width: 100%;
+    padding-top: 0.4rem;
+    border-collapse: collapse;
 }
 
 .table-total-cardholders .thead {
-  border-bottom: solid 1px var(--font-color);
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-bottom: 0.7rem;
+    border-bottom: solid 1px var(--font-color);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 0.7rem;
 }
 
 .table-total-cardholders th {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 .table-total-cardholders tr {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .table-total-cardholders tbody {
-  padding: 0;
+    padding: 0;
 }
 
 .table-total-cardholders tbody tr {
-  border: 1px solid var(--bg-variant);
-  padding: 0.6rem 1rem;
-  transition: all 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--bg-variant);
+    padding: 0.6rem 1rem;
+    transition: all 0.3s ease-out;
 }
 
 .table-total-cardholders tbody tr:nth-child(odd) {
-  background-color: var(--bg-variant);
+    background-color: var(--bg-variant);
 }
 
 .table-total-cardholders tbody tr:hover {
-  border: 1px solid var(--primary-color);
-  cursor: pointer;
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
 }
 
 .view-all-icon-text {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--bg-color);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 0;
-  position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0;
+    position: relative;
 }
 
 .view-all-text {
-  opacity: 0;
-  margin-left: 15px;
-  font-size: 1rem;
-  color: var(--font-color);
-  transition: opacity 0.4s ease-out;
-  position: absolute;
+    opacity: 0;
+    margin-left: 15px;
+    font-size: 1rem;
+    color: var(--font-color);
+    transition: opacity 0.4s ease-out;
+    position: absolute;
 }
 
 .view-all-icon-text:hover {
-  background-color: var(--bg-variant);
-  padding-left: 23px;
-  width: 120px;
-  border-radius: 20px;
-  justify-content: flex-start;
+    background-color: var(--bg-variant);
+    padding-left: 23px;
+    width: 120px;
+    border-radius: 20px;
+    justify-content: flex-start;
 }
 
 .view-all-icon-text:hover .view-all-text {
-  opacity: 1;
+    opacity: 1;
 }
 
 .view-all-icon {
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .view-all-icon:hover {
-  background-color: var(--bg-color);
+    background-color: var(--bg-color);
+}
+
+/* responsive design */
+@media only screen and (max-width: 768px) {
+    .admin-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container-info {
+        flex-direction: column;
+        margin-bottom: 2.4rem;
+    }
+
+    .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 100%;
+    }
+
+    /* inspiration */
+    /* https://medium.com/appnroll-publication/5-practical-solutions-to-make-responsive-data-tables-ff031c48b122 */
+    #no-more-tables table,
+    #no-more-tables thead,
+    #no-more-tables tbody,
+    #no-more-tables th,
+    #no-more-tables td,
+    #no-more-tables tr {
+        display: block;
+    }
+
+    /* Hide table headers */
+    #no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    #no-more-tables tbody tr {
+        padding: 1rem;
+    }
+
+    #no-more-tables td {
+        /* Behave  like a "row" */
+        border: none;
+        position: relative;
+        padding-left: 40%;
+        white-space: normal;
+        text-align: left;
+        line-height: 1.8rem;
+    }
+
+    #no-more-tables td:before {
+        /* Now like a table header */
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 300;
+        color: var(--primary-color);
+    }
+
+    #no-more-tables td:before {
+        content: attr(data-title);
+    }
 }
