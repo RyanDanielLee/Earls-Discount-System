@@ -18,6 +18,10 @@
   color: var(--primary-color);
 }
 
+.icon-link {
+  color: var(--font-color);
+}
+
 .admin-container .container-info .title > h1 {
   color: var(--primary-color);
   font-size: 3.2rem;
@@ -129,7 +133,7 @@
   border-bottom: solid 1px var(--font-color);
   text-align: left;
   padding-left: 1rem;
-  padding-right: 1rem;
+  padding-right: 0.5rem;
   padding-bottom: 0.7rem;
 }
 
@@ -148,8 +152,6 @@
 
 .table-total-cardholders tbody tr {
   display: flex;
-  justify-content: space-between;
-  gap: 5rem;
   border: 1px solid var(--bg-variant);
   padding: 0.6rem 1rem;
   transition: all 0.3s ease-out;
