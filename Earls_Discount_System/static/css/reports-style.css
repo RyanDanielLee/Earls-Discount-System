@@ -164,7 +164,7 @@
   padding-bottom: 0.7rem;
 }
 
-.table-total-cardholders tbody tr td[data-title='by UnKnown Cardholder'] {
+.table-total-cardholders tbody tr td[data-title='by Unknown Cardholder'] {
   position: absolute;
   right: 11.5rem;
 }
@@ -192,6 +192,48 @@
   right: 14rem;
 }
 
+/* date selection */
+.add-date-option {
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.add-date-option .date-form {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.date-form-item {
+  text-align: left;
+}
+
+.date-form label {
+  display: block;
+  color: var(--primary-color);
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin-bottom: 5px;
+}
+
+.date-form-dropdown {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  background-color: #f5fafa;
+  font-size: 1rem;
+  color: var(--font-color);
+  cursor: pointer;
+  position: relative;
+}
+
+.date-form-dropdown .arrow {
+  margin-left: 0.9rem;
+  font-size: 12px;
+  color: var(--font-color);
+}
+
 /* responsive design */
 @media only screen and (max-width: 768px) {
   .admin-container {
@@ -214,7 +256,7 @@
     font-size: 0.9rem;
   }
 
-  .table-total-cardholders tbody tr td[data-title='by UnKnown Cardholder'],
+  .table-total-cardholders tbody tr td[data-title='by Unknown Cardholder'],
   .table-total-cardholders tbody tr td[data-title='by Known Cardholder'] {
     right: 0;
   }
@@ -222,5 +264,9 @@
   .table-total-cardholders tbody tr td[data-title='Total Discount'],
   .table-total-cardholders tbody tr td[data-title='Number of Visits'] {
     right: 0;
+  }
+
+  .date-form {
+    margin-top: 1rem;
   }
 }
