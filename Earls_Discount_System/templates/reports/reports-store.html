@@ -1,5 +1,136 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h1>Total Discounts per Store</h1>
+<div class="admin-container">
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Reports</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Discounts per Store</a>
+        </div>
+    </div>
+    <div class="section-info add-date-option">
+        <div>
+            <h1 class="headline">Discounts per Store</h1>
+            <ul>
+                <li><a href="{% url 'total_discounts_per_store' %}">Discounts per Store</a></li>
+                <li><a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a></li>
+            </ul>
+        </div>
+        <form class="date-form">
+            <div class="date-form-item">
+                <label for="year">Year</label>
+                <div class="date-form-dropdown">
+                    <span id="year-selected">2024</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="year" name="year" style="display: none;">
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="period">Period</label>
+                <div class="date-form-dropdown">
+                    <span id="period-selected">9</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="period" name="period" style="display: none;">
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="week">Week</label>
+                <div class="date-form-dropdown">
+                    <span id="week-selected">3</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="week" name="week" style="display: none;">
+                        <option value="all">All</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <section class="reports-dashbd-tb">
+        <div class="new-cardholders">
+            <table class="table-total-cardholders" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Store</th>
+                        <th>by Known Cardholder</th>
+                        <th>by Unknown Cardholder</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-title="Store">Edmonton Tin Palace</td>
+                        <td data-title="by Known Cardholder">-$131.00</td>
+                        <td data-title="by Unknown Cardholder">-$131.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Port Coquitlam</td>
+                        <td data-title="by Known Cardholder">-$75.00</td>
+                        <td data-title="by Unknown Cardholder">-$75.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Test Kitchen</td>
+                        <td data-title="by Known Cardholder">-$49.00</td>
+                        <td data-title="by Unknown Cardholder">-$49.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Birdies</td>
+                        <td data-title="by Known Cardholder">-$163.00</td>
+                        <td data-title="by Unknown Cardholder">-$163.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">King Street</td>
+                        <td data-title="by Known Cardholder">-$89.00</td>
+                        <td data-title="by Unknown Cardholder">-$89.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">King West</td>
+                        <td data-title="by Known Cardholder">-$75.00</td>
+                        <td data-title="by Unknown Cardholder">-$75.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Beach House</td>
+                        <td data-title="by Known Cardholder">-$131.00</td>
+                        <td data-title="by Unknown Cardholder">-$131.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Polo Park</td>
+                        <td data-title="by Known Cardholder">-$75.00</td>
+                        <td data-title="by Unknown Cardholder">-$75.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Store">Langley</td>
+                        <td data-title="by Known Cardholder">-$49.00</td>
+                        <td data-title="by Unknown Cardholder">-$49.00</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
 {% endblock %}

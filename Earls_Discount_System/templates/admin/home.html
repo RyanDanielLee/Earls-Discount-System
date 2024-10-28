@@ -23,7 +23,9 @@
                 <div class="total-discounts-store">
                     <p>Total Discounts by Store</p>
                 </div>
-                <div class="view-all-icon"><i class="fa-solid fa-angle-right"></i></div>
+                <a href="{% url 'total_discounts_per_store' %}" class="icon-link">
+                    <div class="view-all-icon"><i class="fa-solid fa-angle-right"></i></div>
+                </a>
             </div>
             <div class="table-total-discounts">
                 <div>
@@ -51,7 +53,9 @@
                 <div class="total-discounts-employee">
                     <p>Total Discounts by Employee</p>
                 </div>
-                <div class="view-all-icon"><i class="fa-solid fa-angle-right"></i></div>
+                <a href="{% url 'total_discounts_per_employee' %}" class="icon-link">
+                    <div class="view-all-icon"><i class="fa-solid fa-angle-right"></i></div>
+                </a>
             </div>
             <div class="table-total-discounts">
                 <div>
@@ -80,14 +84,16 @@
         <div class="title-total-cardholders"><i class="fa-regular fa-credit-card font-awesome-icons"></i>
             <p>New Cardholders</p><small>Activated in Last Month</small>
         </div>
-        <div class="view-all-icon-text"><span class="view-all-text">View All</span><i
-                class="fa-solid fa-angle-right"></i>
-        </div>
+        <a href="{% url 'manage_card_holders' %}" class="icon-link">
+            <div class="view-all-icon-text"><span class="view-all-text">View All</span><i
+                    class="fa-solid fa-angle-right"></i>
+            </div>
+        </a>
     </div>
     <div class="new-cardholders">
         <table class="table-total-cardholders" id="no-more-tables">
             <thead>
-                <tr class="thead">
+                <tr class="admin-cardholder-td-thead">
                     <th>Card No.</th>
                     <th>Name</th>
                     <th>Email</th>

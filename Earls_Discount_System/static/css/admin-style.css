@@ -2,6 +2,7 @@
   width: 100%;
   color: var(--font-color);
   padding: 10px 5px;
+  padding-bottom: 4rem;
 }
 
 .container-info {
@@ -16,6 +17,10 @@
 
 .font-awesome-icons {
   color: var(--primary-color);
+}
+
+.icon-link {
+  color: var(--font-color);
 }
 
 .admin-container .container-info .title > h1 {
@@ -125,10 +130,11 @@
   border-collapse: collapse;
 }
 
-.table-total-cardholders .thead {
+.table-total-cardholders .admin-cardholder-td-thead {
   border-bottom: solid 1px var(--font-color);
+  text-align: left;
   padding-left: 1rem;
-  padding-right: 1rem;
+  padding-right: 0.5rem;
   padding-bottom: 0.7rem;
 }
 
@@ -147,8 +153,6 @@
 
 .table-total-cardholders tbody tr {
   display: flex;
-  /* justify-content: space-between;
-  gap: 5rem; */
   border: 1px solid var(--bg-variant);
   padding: 0.6rem 1rem;
   transition: all 0.3s ease-out;
@@ -217,6 +221,50 @@
   background-color: var(--bg-color);
 }
 
+.admin-cardholder-td-thead th:nth-child(1) {
+  width: 10%; /* Card No. */
+}
+
+.admin-cardholder-td-thead th:nth-child(2) {
+  width: 20%; /* Name */
+}
+
+.admin-cardholder-td-thead th:nth-child(3) {
+  width: 35%; /* Email */
+}
+
+.admin-cardholder-td-thead th:nth-child(4) {
+  width: 13%; /* Status */
+}
+
+.admin-cardholder-td-thead th:nth-child(5) {
+  width: 12%; /* CardType */
+}
+
+.admin-cardholder-td-thead th:nth-child(6) {
+  width: 10%; /* Issue Date */
+}
+
+.table-total-cardholders tbody tr td[data-title='Name'] {
+  position: absolute;
+  left: 6.7rem;
+}
+
+.table-total-cardholders tbody tr td[data-title='Email'] {
+  position: absolute;
+  left: 18rem;
+}
+
+.table-total-cardholders tbody tr td[data-title='Status'] {
+  position: absolute;
+  left: 38.4rem;
+}
+
+.table-total-cardholders tbody tr td[data-title='CardType'] {
+  position: absolute;
+  left: 48rem;
+}
+
 /* responsive design */
 @media only screen and (max-width: 768px) {
   .admin-container {
@@ -281,5 +329,12 @@
 
   #no-more-tables td:before {
     content: attr(data-title);
+  }
+
+  .table-total-cardholders tbody tr td[data-title='Name'],
+  .table-total-cardholders tbody tr td[data-title='Email'],
+  .table-total-cardholders tbody tr td[data-title='Status'],
+  .table-total-cardholders tbody tr td[data-title='CardType'] {
+    left: 0;
   }
 }
