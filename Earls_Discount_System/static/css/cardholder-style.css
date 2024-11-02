@@ -60,6 +60,13 @@ input:focus {
     padding-bottom: 2rem;
 }
 
+.flex-row {
+    align-items: baseline;
+    display: flex;
+    flex-direction: row;
+    gap: 1.6rem;
+}
+
 /* search bar */
 
 .form {
@@ -93,6 +100,8 @@ input:focus {
     padding-right: 2rem;
 }
 
+/* cardholder */
+
 .cardholder-table {
     color: var(--font-color);
     width: 100%;
@@ -122,6 +131,61 @@ input:focus {
 .view-button {
     color: var(--primary-color);
     cursor: pointer;
+}
+
+.cardholder-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cardholder-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--bg-variant);
+    padding: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.Note {
+    border: 1px solid var(--primary-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.Note span {
+    margin-right: 0.5rem;
+    /* Space between "Note" and the text */
+}
+
+.cardholder-header-title {
+    font-weight: 400;
+}
+
+.cardholder-header-link {
+    color: var(--primary-color);
+}
+
+.cardholder-header-button {
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: var(--font-color);
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    padding-left: 0.75rem;
+    padding-right: 1.25rem;
+}
+
+.cardholder-header-icon {
+    color: var(--primary-color);
 }
 
 /* pagination */
