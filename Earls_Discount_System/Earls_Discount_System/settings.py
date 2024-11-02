@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jl3medy*j-w53$vewwp#%(exstbnl-iz7rre!7&rn%v$xj72cw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['earls-eccard-app-234204981539.us-east1.run.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,7 +83,8 @@ DATABASES = {
         'NAME': 'card_issue',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '104.196.251.149',
+        # 'HOST': '104.196.251.149',
+        'HOST': '127.0.0.1',
         'PORT': '3306',  
     }
 }
