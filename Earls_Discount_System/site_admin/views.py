@@ -14,7 +14,7 @@ def view_all_users(request):
     return HttpResponse("View All Users Page")
 
 def manage_user_details(request):
-    return HttpResponse("Manage User Details Page")
+    return render(request, 'cardholder/cardholder-details.html')
 
 def manage_card_holders(request):
     cardholders = CardsEmployee.objects.all()
