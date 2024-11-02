@@ -90,6 +90,7 @@ class CardsEmployee(models.Model):
     status = models.CharField(max_length=10)
     card_type = models.CharField(max_length=10)
     concept = models.CharField(max_length=50)
+    issue_date = models.DateField(blank=True, null=True)
 
     class Meta:
         managed = True

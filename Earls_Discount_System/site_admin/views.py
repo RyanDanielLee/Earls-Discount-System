@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import CardsEmployee
+from django.utils import timezone
+from datetime import timedelta
 
-# Home route for admin
 def admin_home(request):
-    new_cardholders = CardsEmployee.objects.all()
+    one_month_ago = timezone.now() - timedelta(days=30)
+    new_cardholders = CardsEmployee.objects.filter(issue_date__gte=one_month_ago)
     return render(request, 'admin/home.html', {'new_cardholders': new_cardholders})
 
 # Cardholders
