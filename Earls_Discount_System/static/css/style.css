@@ -6,8 +6,10 @@
 :root {
   --font-color: #083044;
   --primary-color: #6eb9b2;
+  --primary-light: #9ad5cf;
   --bg-color: #ffffff;
   --bg-variant: #f7fafa;
+  --grey-color: #e5e5e5;
   --light-color: #b3b3b3;
   --accent-color: #82714c;
 }

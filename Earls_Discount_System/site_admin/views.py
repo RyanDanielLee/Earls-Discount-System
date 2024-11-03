@@ -38,7 +38,7 @@ def total_discounts_per_store(request):
     return render(request, 'reports/reports-store.html')
 
 def drilldown_store(request):
-    return render(request, 'reports/drildown-store.html')
+    return render(request, 'reports/drilldown-store.html')
 
 def total_discounts_per_employee(request):
     return render(request, 'reports/reports-employee.html')
