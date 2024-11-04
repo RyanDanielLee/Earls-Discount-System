@@ -17,17 +17,26 @@
             <option value="email">email</option>
             <option value="ID">ID</option>
         </select>
-        <input id="cardholders" name="cardholders" placeholder="Search cardholder"  class="form-text">
+        <input id="cardholders" name="cardholders" placeholder="Search cardholder" class="form-text">
         <button type="button" onclick="alert('Hello World!')" class="form-button">Search</button>
     </form>
     <table class="cardholder-table">
+        <thead>
+            <tr>
+                <th>Card No</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Card Type</th>
+                <th></th>
+            </tr>
+        </thead>
         {% for cardholder in cardholders %}
         <tr>
-            <td>{{ cardholder.card_no }}</td>
+            <td>{{ cardholder.id }}</td>
             <td>{{ cardholder.name }}</td>
             <td>{{ cardholder.email }}</td>
             <td>{{ cardholder.card_type }}</td>
-            <td><button class="view-button">View</button></td>
+            <td><a href="{% url 'manage_user_details' %}"><button class="view-button">View</button></a></td>
         </tr>
         {% endfor %}
     </table>
