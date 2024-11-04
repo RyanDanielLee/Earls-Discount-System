@@ -20,5 +20,5 @@
 
 1. Log in to Google Cloud `gcloud auth application-default login`
 2. If you have MySQL installed locally, stop the MySQL service to avoid conflicts
-3. Run Cloud SQL Proxy where `cloud_sql_proxy.exe` is located before running the application `./cloud-sql-proxy bcit-ec:us-west1:card-issuer`
+3. Run Cloud SQL Proxy where `cloud-sql-proxy.exe` is located before running the application `./cloud-sql-proxy bcit-ec:us-west1:card-issuer`
 4. Keep the terminal open while the Cloud SQL Proxy is running
