@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Upload Faceplate</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">Upload Faceplate</h1>
+        <ul>
+            <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
+            <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
+            <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
+        </ul>
+    </div>
+    <div class="upload-faceplate-container">
+        <!-- Tabs -->
+        <div class="tab-container">
+            <div class="tab active" data-tab="appleWallet" onclick="openTab('appleWallet')">Apple Wallet</div>
+            <div class="tab" data-tab="googleWallet" onclick="openTab('googleWallet')">Google Wallet</div>
+        </div>
+
+        <!-- Apple Wallet -->
+        <div class="upload-contents">
+            <div class="upload-options"></div>
+            <div class="upload-preview"></div>
+        </div>
+        <div id="appleWallet" class="form-section active">
+            <label>Faceplate Type</label>
+            <select>
+                <option>EC10</option>
+                <option>EC50</option>
+                <option>EC100</option>
+            </select>
+
+            <label>Image Type</label>
+            <select>
+                <option>Logo</option>
+                <option>Icon</option>
+                <option>Strip</option>
+            </select>
+
+            <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
+            <input type="file">
+            <div class="preview-box">Preview</div>
+
+            <button type="submit" class="form-button">Upload Image</button>
+        </div>
+
+        <!-- Google Wallet -->
+        <div id="googleWallet" class="form-section">
+            <label>Faceplate Type</label>
+            <select>
+                <option>EC10</option>
+                <option>EC50</option>
+                <option>EC100</option>
+            </select>
+
+            <label>Image Type</label>
+            <select>
+                <option>Logo</option>
+                <option>Hero</option>
+            </select>
+
+            <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
+            <input type="file">
+            <div class="preview-box">Preview</div>
+
+            <button type="submit" class="form-button">Upload Image</button>
+        </div>
+        <!-- Layout Section -->
+        <div class="layout-section">
+            <h2>Layout of Cards</h2>
+            <div class="card-container">
+                <!-- Apple Wallet Card -->
+                <div class="card">
+                    <div class="card-title">Earls EC Card</div>
+                    <div class="card-content">Stripe Image</div>
+                    <div class="card-content"><strong>Card Type</strong> EC50</div>
+                    <div class="card-content"><strong>Card No</strong> 1105</div>
+                    <div class="card-content"><strong>Issue Date</strong> 10/08/2024</div>
+                    <div class="card-content">Apple Wallet</div>
+                </div>
+
+                <!-- Google Wallet Card -->
+                <div class="card">
+                    <div class="card-title">Earls EC Card</div>
+                    <div class="card-content"><strong>Name</strong> David Khan</div>
+                    <div class="card-content"><strong>Card No</strong> 1105</div>
+                    <div class="card-content"><strong>Card Type</strong> EC50</div>
+                    <div class="card-content"><strong>Issue Date</strong> 10/08/2024</div>
+                    <div class="card-content">Google Wallet</div>
+                    <div class="card-content">Hero Image</div>
+                </div>
+            </div>
+        </div>
+        <!-- Documentation Links -->
+        <div class="documentation">
+            <p>Documentation</p>
+            <div class="link-items">
+                <a href="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/PassKit_PG/Creating.html"
+                    target="_blank">Apple
+                    Wallet Guide</a>
+                <a href="https://developers.google.com/wallet/generic/resources/brand-guidelines" target="_blank">Google
+                    Wallet
+                    Guide</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

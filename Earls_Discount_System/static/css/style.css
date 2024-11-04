@@ -133,6 +133,20 @@ a {
   transition: 0.3s;
 }
 
+.form-button {
+  color: var(--bg-color);
+  background-color: var(--font-color);
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 2px;
+}
+
+.form-button:hover {
+  cursor: pointer;
+  background-color: var(--accent-color);
+  transition: all 0.1s ease-out;
+}
+
 /* force y-axis scrollbar */
 html {
   overflow-y: scroll;

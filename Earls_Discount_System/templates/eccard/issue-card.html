@@ -1,28 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="flex-container">
-    <div class="breadcrumb-bar">
-        <a href="#" class="back-button"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
-        <div class="breadcrumb-links">
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
             <a href="#">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Issue Card</a>
+            <a href="#">Create Cardholder</a>
         </div>
     </div>
-    <h1 class="headline">Cardholder Detail</h1>
-    <div class="cardholder-header">
-        <div class="flex-row">
-            <span class="cardholder-header-title">Create Cardholder</span>
-            <span><a class="cardholder-header-link" href="#">Upload Faceplate</a></span>
-        </div>
+    <div class="section-info">
+        <h1 class="headline">Create Cardholder</h1>
+        <ul>
+            <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
+            <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
+            <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
+        </ul>
     </div>
     <form class="eccard-form flex-column">
         <div class="flex-column input-group">
             <div class="flex-row">
                 <div class="form-group">
                     <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" name="first-name" placeholder="First Name" class="eccard-form-text">
+                    <input type="text" id="first-name" name="first-name" placeholder="First Name"
+                        class="eccard-form-text">
                 </div>
                 <div class="form-group">
                     <label for="last-name">Last Name</label>
@@ -32,7 +35,8 @@
             <div class="flex-row">
                 <div class="form-group">
                     <label for="email-address">Email Address</label>
-                    <input type="email" id="email-address" name="email-address" placeholder="Email Address" class="eccard-form-text">
+                    <input type="email" id="email-address" name="email-address" placeholder="Email Address"
+                        class="eccard-form-text">
                 </div>
                 <div class="form-group">
                     <label for="company">Company</label>
@@ -52,11 +56,12 @@
             <div class="flex-row">
                 <div class="form-group full-width">
                     <label for="note">Note</label>
-                    <textarea id="note" name="note" placeholder="Cardholder Information" class="eccard-form-text full-width"></textarea>
+                    <textarea id="note" name="note" placeholder="Cardholder Information"
+                        class="eccard-form-text full-width"></textarea>
                 </div>
             </div>
             <div class="flex-row justify-end">
-                <button type="submit" class="eccard-form-button">Create</button>
+                <button type="submit" class="form-button">Create</button>
             </div>
         </div>
     </form>

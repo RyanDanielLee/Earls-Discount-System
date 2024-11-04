@@ -27,8 +27,11 @@ def issue_card(request):
 def revoke_card(request):
     return HttpResponse("Revoke Card Page")
 
-def upload_card_faceplates(request):
-    return render(request, 'eccard/upload-faceplates.html')
+def upload_card_faceplate(request):
+    return render(request, 'eccard/upload-faceplate.html')
+
+def view_card_faceplate(request):
+    return render(request, 'eccard/view-faceplate.html')
 
 # Reports
 def reports_dashboard(request):

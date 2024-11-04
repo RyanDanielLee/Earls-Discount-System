@@ -10,7 +10,8 @@ urlpatterns = [
     
     path('ec_card/issue_card/', views.issue_card, name='issue_card'),
     path('ec_card/revoke_card/', views.revoke_card, name='revoke_card'),
-    path('ec_card/upload_card_faceplates/', views.upload_card_faceplates, name='upload_card_faceplates'),
+    path('ec_card/upload_card_faceplate/', views.upload_card_faceplate, name='upload_card_faceplate'),
+    path('ec_card/view_card_faceplate/', views.view_card_faceplate, name='view_card_faceplate'),
     
     path('reports/all_pos_transactions/', views.reports_dashboard, name='reports_dashboard'),
     path('reports/total_discounts_per_store/', views.total_discounts_per_store, name='total_discounts_per_store'),

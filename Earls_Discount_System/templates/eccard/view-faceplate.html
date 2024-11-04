@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">View Faceplate</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">View Faceplate</h1>
+        <ul>
+            <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
+            <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
+            <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
+        </ul>
+    </div>
+    <div class="view-faceplate-container">
+        <h1>View faceplate</h1>
+    </div>
+</div>
+{% endblock %}
