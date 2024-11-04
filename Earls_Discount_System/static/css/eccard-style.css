@@ -248,6 +248,25 @@ textarea.eccard-form-text {
 /* end of upload faceplate */
 
 /* start of view faceplate */
+
+.view-faceplate-container .notice {
+  border: 1px solid var(--primary-color);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.view-faceplate-container .notice i {
+  color: var(--primary-color);
+}
+
+.view-faceplate-container .notice p {
+  color: var(--font-color);
+}
+
 .view-faceplate-container .apple-logo-image {
   background-color: var(--grey-color);
   width: 480px;

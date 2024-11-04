@@ -351,14 +351,19 @@
   color: var(--font-color);
 }
 
+.table-total-cardholders tbody tr td[data-title='Card Type'] {
+  position: absolute;
+  right: 9.3rem;
+}
+
 .table-total-cardholders tbody tr td[data-title='Total Discount'] {
   position: absolute;
-  right: 35rem;
+  right: 23rem;
 }
 
 .table-total-cardholders tbody tr td[data-title='Number of Visits'] {
   position: absolute;
-  right: 14rem;
+  right: 39rem;
 }
 
 /* checkbox */
@@ -509,6 +514,7 @@
     right: 0;
   }
 
+  .table-total-cardholders tbody tr td[data-title='Card Type'],
   .table-total-cardholders tbody tr td[data-title='Total Discount'],
   .table-total-cardholders tbody tr td[data-title='Number of Visits'] {
     right: 0;
