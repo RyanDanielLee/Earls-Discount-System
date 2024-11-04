@@ -66,8 +66,37 @@ textarea.eccard-form-text {
 }
 
 /* start of upload faceplate */
+
+.upload-contents {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.upload-options {
+  display: flex;
+  gap: 1.4rem;
+  flex-direction: column;
+}
+
+.upload-options .option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-options .option.file {
+  display: flex;
+  flex-direction: column;
+}
+
 .tab-container {
   display: flex;
+}
+
+.btn-container {
+  justify-items: end;
 }
 
 .tab {
@@ -84,7 +113,7 @@ textarea.eccard-form-text {
 }
 .form-section {
   background-color: var(--bg-variant);
-  padding: 20px;
+  padding: 3rem;
   display: none;
 }
 .form-section.active {
@@ -93,30 +122,44 @@ textarea.eccard-form-text {
 
 .form-section label {
   display: block;
-  margin: 10px 0 5px;
+  white-space: nowrap;
+  padding-right: 1rem;
 }
 
 .form-section label i {
   color: var(--primary-color);
 }
 
-.form-section select,
-.form-section input[type='file'] {
-  width: 100%;
+.form-section select {
+  margin-right: 1rem;
+}
+
+.form-section select {
+  width: 270px;
   padding: 10px;
-  margin: 5px 0 15px;
-  border-radius: 5px;
+  border-radius: 3px;
+  font-size: 16px;
+  background-color: var(--bg-color);
+}
+
+.form-section input[type='file'] {
+  width: 410px;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 3px;
   font-size: 16px;
   background-color: var(--bg-color);
 }
 .preview-box {
+  width: 100%;
   background-color: var(--bg-color);
   padding: 50px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--primary-color);
   font-size: 1rem;
   font-weight: 300;
-  margin: 10px 0 20px;
 }
 
 .layout-section {
@@ -129,30 +172,55 @@ textarea.eccard-form-text {
   font-family: 'Abhaya Libre', serif;
 }
 
-.card-container {
+.layout-container {
+  margin: 1rem 0;
   display: flex;
-  gap: 20px;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2rem;
 }
-.card {
-  width: 200px;
-  padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
 
-  text-align: center;
+.layout-contents {
+  display: flex;
+  gap: 5rem;
 }
-.card-title {
-  font-weight: bold;
-  margin-bottom: 15px;
+
+.layout-info {
+  width: 100%;
 }
-.card-content {
-  font-size: 14px;
-  color: #3a5a67;
-  margin-bottom: 10px;
+
+.layout-info h1 {
+  font-size: 1.7em;
+  font-weight: 300;
+  color: var(--primary-color);
+  padding: 0.4rem 0;
 }
+
+.layout-info hr {
+  border-top: 1px solid var(--grey-color);
+}
+
+.layout-info .item {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 0.4rem;
+}
+
+.layout-contents img {
+  width: 220px;
+}
+
+.layout-info .title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+
+.layout-info .item p > span {
+  padding-right: 1rem;
+  font-weight: 500;
+}
+
 .documentation {
   border-top: 1px solid var(--grey-color);
   margin-top: 2rem;
@@ -178,3 +246,22 @@ textarea.eccard-form-text {
   color: var(--font-color);
 }
 /* end of upload faceplate */
+
+/* start of view faceplate */
+.view-faceplate-container .apple-logo-image {
+  background-color: var(--grey-color);
+  width: 480px;
+  height: 150px;
+}
+
+.view-faceplate-container .apple-icon-image {
+  background-color: var(--grey-color);
+  width: 70px;
+  height: 70px;
+}
+
+.view-faceplate-container .google-logo-image {
+  background-color: var(--grey-color);
+  width: 170px;
+  height: 170px;
+}

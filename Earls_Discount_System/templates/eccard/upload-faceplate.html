@@ -27,91 +27,134 @@
         </div>
 
         <!-- Apple Wallet -->
-        <div class="upload-contents">
-            <div class="upload-options"></div>
-            <div class="upload-preview"></div>
-        </div>
         <div id="appleWallet" class="form-section active">
-            <label>Faceplate Type</label>
-            <select>
-                <option>EC10</option>
-                <option>EC50</option>
-                <option>EC100</option>
-            </select>
-
-            <label>Image Type</label>
-            <select>
-                <option>Logo</option>
-                <option>Icon</option>
-                <option>Strip</option>
-            </select>
-
-            <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
-            <input type="file">
-            <div class="preview-box">Preview</div>
-
-            <button type="submit" class="form-button">Upload Image</button>
-        </div>
-
-        <!-- Google Wallet -->
-        <div id="googleWallet" class="form-section">
-            <label>Faceplate Type</label>
-            <select>
-                <option>EC10</option>
-                <option>EC50</option>
-                <option>EC100</option>
-            </select>
-
-            <label>Image Type</label>
-            <select>
-                <option>Logo</option>
-                <option>Hero</option>
-            </select>
-
-            <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
-            <input type="file">
-            <div class="preview-box">Preview</div>
-
-            <button type="submit" class="form-button">Upload Image</button>
-        </div>
-        <!-- Layout Section -->
-        <div class="layout-section">
-            <h2>Layout of Cards</h2>
-            <div class="card-container">
-                <!-- Apple Wallet Card -->
-                <div class="card">
-                    <div class="card-title">Earls EC Card</div>
-                    <div class="card-content">Stripe Image</div>
-                    <div class="card-content"><strong>Card Type</strong> EC50</div>
-                    <div class="card-content"><strong>Card No</strong> 1105</div>
-                    <div class="card-content"><strong>Issue Date</strong> 10/08/2024</div>
-                    <div class="card-content">Apple Wallet</div>
+            <div class="upload-contents">
+                <div class="upload-options">
+                    <div class="option"><label>Faceplate Type</label>
+                        <select>
+                            <option>EC10</option>
+                            <option>EC50</option>
+                            <option>EC100</option>
+                        </select>
+                    </div>
+                    <div class="option"><label>Image Type</label>
+                        <select>
+                            <option>Logo</option>
+                            <option>Icon</option>
+                            <option>Strip</option>
+                        </select>
+                    </div>
+                    <div class="option-file">
+                        <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
+                        <input type="file">
+                    </div>
                 </div>
-
-                <!-- Google Wallet Card -->
-                <div class="card">
-                    <div class="card-title">Earls EC Card</div>
-                    <div class="card-content"><strong>Name</strong> David Khan</div>
-                    <div class="card-content"><strong>Card No</strong> 1105</div>
-                    <div class="card-content"><strong>Card Type</strong> EC50</div>
-                    <div class="card-content"><strong>Issue Date</strong> 10/08/2024</div>
-                    <div class="card-content">Google Wallet</div>
-                    <div class="card-content">Hero Image</div>
-                </div>
+                <div class="preview-box">Preview</div>
             </div>
-        </div>
-        <!-- Documentation Links -->
-        <div class="documentation">
-            <p>Documentation</p>
-            <div class="link-items">
-                <a href="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/PassKit_PG/Creating.html"
-                    target="_blank">Apple
-                    Wallet Guide</a>
-                <a href="https://developers.google.com/wallet/generic/resources/brand-guidelines" target="_blank">Google
-                    Wallet
-                    Guide</a>
+            <div class="btn-container">
+                <button type="submit" class="form-button">Upload Image</button>
             </div>
         </div>
     </div>
+
+    <!-- Google Wallet -->
+    <div id="googleWallet" class="form-section">
+        <div class="upload-contents">
+            <div class="upload-options">
+                <div class="option"><label>Faceplate Type</label>
+                    <select>
+                        <option>EC10</option>
+                        <option>EC50</option>
+                        <option>EC100</option>
+                    </select>
+                </div>
+                <div class="option"><label>Image Type</label>
+                    <select>
+                        <option>Logo</option>
+                        <option>Hero</option>
+                    </select>
+                </div>
+                <div class="option-file">
+                    <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
+                    <input type="file">
+                </div>
+            </div>
+            <div class="preview-box">Preview</div>
+        </div>
+        <div class="btn-container">
+            <button type="submit" class="form-button">Upload Image</button>
+        </div>
+    </div>
+
+    <!-- Layout Section -->
+    <div class="layout-section">
+        <h2>Layout of Cards</h2>
+        <div class="layout-container">
+            <!-- Apple Wallet Card -->
+            <div class="layout-contents">
+                <div class="layout-img"><img src="{% static 'images/apple-wallet.png' %}" alt="Apple Wallet Layout"></a>
+                </div>
+                <div class="layout-info">
+                    <h1>Apple Wallet</h1>
+                    <hr>
+
+                    <div class="item">
+                        <p class="title">Logo</p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;480 by 150 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+
+                    <div class="item">
+                        <p class="title">Icon</p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;87 by 87 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+
+                    <div class="item">
+                        <p class="title">Strip Image <span class="optional">(Optional)</span></p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1032 by 336 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Google Wallet Card -->
+            <div class="layout-contents">
+                <div class="layout-img"><img src="{% static 'images/google-wallet.png' %}"
+                        alt="Apple Wallet Layout"></a>
+                </div>
+                <div class="layout-info">
+                    <h1>Google Wallet</h1>
+                    <hr>
+
+                    <div class="item">
+                        <p class="title">Logo</p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;660 by 660 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+
+                    <div class="item">
+                        <p class="title">Hero Image <span class="optional">(Optional)</span></p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1860px wide, variable height</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Documentation Links -->
+    <div class="documentation">
+        <p>Documentation</p>
+        <div class="link-items">
+            <a href="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/PassKit_PG/Creating.html"
+                target="_blank">Apple
+                Wallet Guide</a>
+            <a href="https://developers.google.com/wallet/generic/resources/brand-guidelines" target="_blank">Google
+                Wallet
+                Guide</a>
+        </div>
+    </div>
+</div>
 </div>
 {% endblock %}

@@ -134,11 +134,14 @@ a {
 }
 
 .form-button {
+  display: flex;
+  justify-content: center;
   color: var(--bg-color);
   background-color: var(--font-color);
   font-size: 1rem;
-  padding: 1rem;
+  padding: 0.8rem 1rem;
   border-radius: 2px;
+  width: 190px;
 }
 
 .form-button:hover {
