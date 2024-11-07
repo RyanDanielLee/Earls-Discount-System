@@ -1,0 +1,536 @@
+/* start of section for page information */
+
+.nav-breadcrumbs {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  color: var(--font-color);
+  transition: all 0.1s ease-out;
+}
+
+.btn-back:hover {
+  color: var(--primary-color);
+}
+
+.breadcrumb,
+.breadcrumb a {
+  color: var(--light-color);
+}
+
+.breadcrumb i {
+  padding-left: 0.5rem;
+  font-size: 0.6rem;
+  padding-right: 0.5rem;
+}
+
+.breadcrumb a:hover {
+  color: var(--font-color);
+  transition: all 0.1s ease-out;
+}
+
+.section-info,
+.drilldown-section-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 1rem;
+  margin-bottom: 1.3rem;
+}
+
+.section-info ul {
+  font-weight: 300;
+  padding-top: 0.7rem;
+  display: flex;
+  list-style-type: none;
+  gap: 1.3rem;
+}
+
+.section-info ul a {
+  color: var(--primary-color);
+  transition: all 0.1s ease-out;
+}
+
+.section-info ul a:hover {
+  color: var(--font-color);
+}
+
+.drilldown-section-info .shop-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.drilldown-section-info .shop-title > i {
+  color: var(--primary-light);
+}
+
+.drilldown-section-info .shop-title > p {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.drilldown-section-info .category-select {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.drilldown-section-info .category-select .drilldown-period p {
+  color: var(--primary-color);
+}
+
+.drilldown-section-info .category-select .drilldown-period p > span {
+  color: var(--font-color);
+}
+
+.drilldown-section-info .category-select .drilldown-period p > i {
+  color: var(--primary-color);
+  padding-right: 0.2rem;
+}
+
+.reports-dashbd-tb .drilldown-period {
+  margin-bottom: 1rem;
+}
+.reports-dashbd-tb .drilldown-period p {
+  color: var(--primary-color);
+}
+
+.reports-dashbd-tb .drilldown-period p > span {
+  color: var(--font-color);
+}
+
+.reports-dashbd-tb .drilldown-period p > i {
+  color: var(--primary-color);
+  padding-right: 0.2rem;
+}
+
+/* end of section for page information */
+
+/* start of summary */
+.reports-summary {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 30% 20% 20% 25%;
+  grid-template-rows: 1fr;
+  gap: 10px;
+  max-width: 100%;
+  margin: auto;
+  margin-bottom: 2rem;
+}
+
+.box {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--bg-variant);
+}
+
+.summary-double {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.summary-double .box p {
+  font-weight: 300;
+  font-size: 1.3rem;
+}
+
+.total-amount {
+  justify-content: space-between;
+  padding-top: 3.5rem;
+  height: 100%;
+}
+
+.last-month,
+.this-year,
+.sum-cardholders {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.sum-cardholders {
+  padding-top: 3.5rem;
+}
+
+.issued-ec-card {
+  background-color: var(--bg-color);
+  border: 1px solid var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.issued-card-list {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-item {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  gap: 5rem;
+}
+
+.issued-card-list .card-item > span {
+  color: var(--font-color);
+}
+
+.box p {
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--font-color);
+}
+
+.box span {
+  font-size: 1rem;
+  color: var(--primary-color);
+}
+
+/* end of summary */
+
+/* start of drilldown-store table */
+.table-drilldown-store thead .thead {
+  border-bottom: solid 1px var(--font-color);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 0.7rem;
+}
+
+.table-drilldown-store {
+  width: 100%;
+  padding-top: 0.4rem;
+  border-collapse: collapse;
+}
+
+.table-drilldown-store th {
+  font-weight: 500;
+}
+
+.table-drilldown-store tr {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-drilldown-store tbody {
+  padding: 0;
+}
+
+.table-drilldown-store tbody tr {
+  display: flex;
+  border: 1px solid var(--bg-variant);
+  padding: 0.6rem 1rem;
+  transition: all 0.3s ease-out;
+  position: relative;
+}
+
+.table-drilldown-store tbody tr:nth-child(odd) {
+  background-color: var(--bg-variant);
+}
+
+.table-drilldown-store tbody tr:hover {
+  border: 1px solid var(--primary-color);
+  cursor: pointer;
+}
+
+.table-drilldown-store tbody tr td[data-title='Name'] {
+  position: absolute;
+  left: 10.7rem;
+}
+
+.table-drilldown-store tbody tr td[data-title='Card Type'] {
+  position: absolute;
+  right: 30.1rem;
+}
+
+.table-drilldown-store tbody tr td[data-title='Discount Amount'] {
+  position: absolute;
+  right: 14.2rem;
+}
+
+/* end of drilldown-store table */
+
+/* start of drilldown-employee table */
+.table-drilldown-employee .thead {
+  border-bottom: solid 1px var(--font-color);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 0.7rem;
+}
+
+.table-drilldown-employee {
+  width: 100%;
+  padding-top: 0.4rem;
+  border-collapse: collapse;
+}
+
+.table-drilldown-employee th {
+  font-weight: 500;
+}
+
+.table-drilldown-employee tr {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-drilldown-employee tbody {
+  padding: 0;
+}
+
+.table-drilldown-employee tbody tr {
+  display: flex;
+  border: 1px solid var(--bg-variant);
+  padding: 0.6rem 1rem;
+  transition: all 0.3s ease-out;
+  position: relative;
+}
+
+.table-drilldown-employee tbody tr:nth-child(odd) {
+  background-color: var(--bg-variant);
+}
+
+.table-drilldown-employee tbody tr:hover {
+  border: 1px solid var(--primary-color);
+  cursor: pointer;
+}
+
+.table-drilldown-employee tbody tr td[data-title='Store'] {
+  position: absolute;
+  left: 16.5rem;
+}
+
+.table-drilldown-employee tbody tr td[data-title='Check No'] {
+  position: absolute;
+  left: 32rem;
+}
+
+/* end of drilldown-employee table */
+
+.reports-dashbd-tb {
+  margin-bottom: 2rem;
+}
+
+.table-total-cardholders .thead {
+  border-bottom: solid 1px var(--font-color);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 0.7rem;
+}
+
+.table-total-cardholders tbody tr td[data-title='by Unknown Cardholder'] {
+  position: absolute;
+  right: 11.5rem;
+}
+
+.table-total-cardholders tbody tr td[data-title='by Known Cardholder'] {
+  position: absolute;
+  right: 34.5rem;
+}
+
+.view-button {
+  transition: all 0.1s ease-out;
+}
+
+.view-button:hover {
+  color: var(--font-color);
+}
+
+.table-total-cardholders tbody tr td[data-title='Card Type'] {
+  position: absolute;
+  right: 9.3rem;
+}
+
+.table-total-cardholders tbody tr td[data-title='Total Discount'] {
+  position: absolute;
+  right: 23rem;
+}
+
+.table-total-cardholders tbody tr td[data-title='Number of Visits'] {
+  position: absolute;
+  right: 39rem;
+}
+
+/* checkbox */
+.drilldown-check-box {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.drilldown-check-box input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  margin-top: 2px;
+  top: 0;
+  left: 0;
+  height: 21px;
+  width: 21px;
+  border-radius: 3px;
+  background-color: var(--grey-color);
+}
+
+.container input:checked ~ .checkmark {
+  background-color: var(--primary-color);
+}
+
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+.drilldown-check-box input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.drilldown-check-box .checkmark:after {
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--bg-color);
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* date selection */
+.add-date-option {
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.add-date-option .date-form {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.date-form-item {
+  text-align: left;
+}
+
+.date-form label {
+  display: block;
+  color: var(--primary-color);
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin-bottom: 5px;
+}
+
+.date-form-dropdown {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  background-color: #f5fafa;
+  font-size: 1rem;
+  color: var(--font-color);
+  cursor: pointer;
+  position: relative;
+}
+
+.date-form-dropdown .arrow {
+  margin-left: 0.9rem;
+  font-size: 12px;
+  color: var(--font-color);
+}
+
+/* drilldown-employee info */
+.drilldown-employee-info {
+  width: 100%;
+  margin: 1rem auto;
+  background-color: var(--bg-variant);
+  padding: 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 10% 1fr;
+  align-items: center;
+  color: var(--font-color);
+  font-size: 1rem;
+}
+.info-item {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+}
+.label {
+  font-size: 1rem;
+}
+
+/* responsive design */
+@media only screen and (max-width: 768px) {
+  .admin-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-info {
+    flex-direction: column;
+    margin-bottom: 2.4rem;
+  }
+
+  .reports-summary {
+    width: 100%;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .box span {
+    font-size: 0.9rem;
+  }
+
+  .table-total-cardholders tbody tr td[data-title='by Unknown Cardholder'],
+  .table-total-cardholders tbody tr td[data-title='by Known Cardholder'] {
+    right: 0;
+  }
+
+  .table-total-cardholders tbody tr td[data-title='Card Type'],
+  .table-total-cardholders tbody tr td[data-title='Total Discount'],
+  .table-total-cardholders tbody tr td[data-title='Number of Visits'] {
+    right: 0;
+  }
+
+  .date-form {
+    margin-top: 1rem;
+  }
+
+  .table-drilldown-store tbody tr td[data-title='Name'],
+  .table-drilldown-store tbody tr td[data-title='Card Type'],
+  .table-drilldown-store tbody tr td[data-title='Discount Amount'] {
+    left: 0;
+  }
+
+  .drilldown-section-info .category-select {
+    flex-direction: column;
+  }
+}

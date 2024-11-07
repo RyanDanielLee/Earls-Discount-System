@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Reports</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Discounts per Employee</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Drilldown Employee Discounts</a>
+        </div>
+    </div>
+    <div class="drilldown-section-info">
+        <div>
+            <h1 class="headline">Drilldown Employee Discounts</h1>
+        </div>
+        <div class="shop-title">
+            <i class="fa-solid fa-id-card-clip font-awesome-icons"></i>
+            <p>David Perell</p>
+        </div>
+        <div class="drilldown-employee-info">
+            <div class="info-item">
+                <div class="label">Card Type</div>
+                <div>EC 50</div>
+            </div>
+            <div></div>
+            <div class="info-item">
+                <div class="label">Issue Date</div>
+                <div>2021-03-26</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Card Number</div>
+                <div>0037</div>
+            </div>
+        </div>
+    </div>
+
+    <section class="reports-dashbd-tb">
+        <div class="drilldown-period">
+            <p><i class="fa-regular fa-calendar-check"></i> Period <span>3</span> Week <span>4</span> Year
+                <span>2024</span>
+            </p>
+        </div>
+        <div class="new-cardholders">
+            <table class="table-drilldown-employee" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Date</th>
+                        <th>Store</th>
+                        <th>Check No</th>
+                        <th>Discount Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-title="Date">2024-09-15</td>
+                        <td data-title="Store">Robson</td>
+                        <td data-title="Check No">10444</td>
+                        <td data-title="Discount Amount">- $131.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-09-07</td>
+                        <td data-title="Store">Birdies</td>
+                        <td data-title="Check No">30425</td>
+                        <td data-title="Discount Amount">- $75.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-08-21</td>
+                        <td data-title="Store">Birdies</td>
+                        <td data-title="Check No">31442</td>
+                        <td data-title="Discount Amount">- $49.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-07-19</td>
+                        <td data-title="Store">King West</td>
+                        <td data-title="Check No">10444</td>
+                        <td data-title="Discount Amount">- $163.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-07-03</td>
+                        <td data-title="Store">Fir Street</td>
+                        <td data-title="Check No">30425</td>
+                        <td data-title="Discount Amount">- $89.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-07-01</td>
+                        <td data-title="Store">Birdies</td>
+                        <td data-title="Check No">31442</td>
+                        <td data-title="Discount Amount">- $75.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-09-15</td>
+                        <td data-title="Store">Robson</td>
+                        <td data-title="Check No">10444</td>
+                        <td data-title="Discount Amount">- $131.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-09-07</td>
+                        <td data-title="Store">Birdies</td>
+                        <td data-title="Check No">30425</td>
+                        <td data-title="Discount Amount">- $75.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div class="pagination">
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href="#" class="active">01</a>
+        <a href="#">02</a>
+        <a href="#">03</a>
+        <i class="fa-solid fa-chevron-right"></i>
+    </div>
+</div>
+{% endblock %}

@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('login.urls')),  # For login routes
     path('employee/', include('employee.urls')),  # For employee-related routes
     path('admin_panel/', include('site_admin.urls')),  # For admin panel routes
+    path('site_admin/', include('site_admin.urls')), 
 ]

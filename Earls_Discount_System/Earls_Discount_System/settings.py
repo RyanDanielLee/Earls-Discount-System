@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jl3medy*j-w53$vewwp#%(exstbnl-iz7rre!7&rn%v$xj72cw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['earls-eccard-app-234204981539.us-east1.run.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Earls_Discount_System.urls'
@@ -80,11 +81,12 @@ WSGI_APPLICATION = 'Earls_Discount_System.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'card_issue',  
-        'USER': 'root',  
-        'PASSWORD': '',  
-        'HOST': '104.196.251.149',  
-        'PORT': '3306',
+        'NAME': 'card_issue',
+        'USER': 'root',
+        'PASSWORD': '',
+        # 'HOST': '104.196.251.149', # when working locally
+        'HOST': '127.0.0.1',
+        'PORT': '3306',  
     }
 }
 
@@ -124,12 +126,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

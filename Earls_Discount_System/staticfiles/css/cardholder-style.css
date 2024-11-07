@@ -1,0 +1,143 @@
+/* reset */
+
+form,
+input,
+label,
+select,
+button,
+textarea {
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    display: flex;
+    vertical-align: middle;
+    white-space: normal;
+    background: none;
+    line-height: 1;
+    font: inherit;
+}
+
+input:focus {
+    outline: 0;
+}
+
+/* end: reset */
+
+.breadcrumb-bar {
+    display: flex;
+    font-size: 0.875rem;
+    gap: 4rem;
+}
+
+.breadcrumb-links {
+    color: rgba(0, 0, 0, 0.38);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.breadcrumb-links a {
+    color: rgba(0, 0, 0, 0.38);
+}
+
+.back-button {
+    color: var(--font-color);
+}
+
+.headline {
+    color: var(--primary-color);
+    font-size: 3.6rem;
+    font-family: 'Abhaya Libre', serif;
+    line-height: 2.8rem;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* search bar */
+
+.form {
+    border: 1px solid var(--font-color);
+    height: 3rem;
+}
+
+.form-dropdown {
+    color: var(--font-color);
+    border-right: 1px solid var(--font-color);
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.form-text {
+    color: var(--font-color);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+}
+
+.form-text::placeholder {
+    color: rgba(0, 0, 0, 0.38);
+}
+
+.form-button {
+    align-items: center;
+    background: var(--font-color);
+    color: #fff;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.cardholder-table {
+    color: var(--font-color);
+    width: 100%;
+    border-collapse: collapse;
+    font: inherit;
+}
+
+.cardholder-table th,
+.cardholder-table td {
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.cardholder-table th {
+    border-bottom: 1px solid var(--font-color);
+    font-weight: 500;
+}
+
+.cardholder-table tr:nth-child(even) {
+    background-color: var(--bg-variant);
+}
+
+.cardholder-table tr:hover {
+    background-color: var(--light-color);
+}
+
+.view-button {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* pagination */
+
+.pagination {
+    color: var(--font-color);
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination a {
+    color: rgba(0, 0, 0, 0.38)
+}
+
+.pagination a.active {
+    color: var(--font-color);
+}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">View Faceplate</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">View Faceplate</h1>
+        <ul>
+            <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
+            <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
+            <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
+        </ul>
+    </div>
+    <div class="view-faceplate-container">
+        <div class="notice">
+            <i class="fa-solid fa-arrow-right"></i>
+            <p>The images displayed here are currently used for wallets.</p>
+        </div>
+        <div class="layout-info">
+            <h1>Apple Wallet</h1>
+
+            <div class="item">
+                <p class="title">Logo</p>
+                <div class="apple-logo-image"></div>
+            </div>
+
+            <div class="item">
+                <p class="title">Icon</p>
+                <div class="apple-icon-image"></div>
+            </div>
+
+            <div class="item">
+                <p class="title">Strip image</p>
+                <div class="strip-image">
+                    <p>N/A</p>
+                </div>
+            </div>
+            <br><br>
+            <h1>Google Wallet</h1>
+
+            <div class="item">
+                <p class="title">Logo</p>
+                <div class="google-logo-image"></div>
+            </div>
+
+            <div class="item">
+                <p class="title">Hero image</p>
+                <div class="hero-image">
+                    <p>N/A</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
