@@ -8,8 +8,14 @@
    b. For **macOS/Linux**: In terminal, run `python3 -m venv env` and `source venv/bin/activate`
 3. Install required packages using `pip install -r requirements.txt`
 4. Change directory to "Earls_Discount_System"
-5. Start the application using `python manage.py runserver`
-6. View the project at http://127.0.0.1:8000/
+5. Log in to Google Cloud `gcloud auth application-default login`
+   <br>(If you have MySQL installed locally, stop the MySQL service to avoid conflicts)
+6. Run Cloud SQL Proxy where `cloud-sql-proxy.exe` is located before running the application
+   <br>`./cloud-sql-proxy bcit-ec:us-west1:card-issuer`
+   <br>(Keep the terminal open while the Cloud SQL Proxy is running)
+7. Apply any migrations, `python manage.py migrate`
+8. Start the application using `python manage.py runserver`
+9. View the project at http://127.0.0.1:8000/
 
 ## For Developers
 

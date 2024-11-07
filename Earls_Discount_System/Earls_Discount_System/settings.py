@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'login',
     'employee',
     'site_admin',
-    'cards',
+    # 'cards',
 ]
 
 MIDDLEWARE = [
