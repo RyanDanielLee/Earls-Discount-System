@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Reports</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Discounts per Store</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Drilldown Store Discounts</a>
+        </div>
+    </div>
+    <div class="drilldown-section-info">
+        <div>
+            <h1 class="headline">Drilldown Store Discounts</h1>
+        </div>
+        <div class="shop-title">
+            <i class="fa-solid fa-shop font-awesome-icons"></i>
+            <p>Edmonton Tin Palace</p>
+        </div>
+        <div class="category-select">
+            <div class="drilldown-period">
+                <p><i class="fa-regular fa-calendar-check"></i> Period <span>3</span> Week <span>4</span> Year
+                    <span>2024</span>
+                </p>
+            </div>
+            <div>
+                <label class="drilldown-check-box">Known Cardholder
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div>
+                <label class="drilldown-check-box">Unknown Cardholder
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <section class="reports-dashbd-tb">
+        <div class="new-cardholders">
+            <table class="table-drilldown-store" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Date</th>
+                        <th>Cardholder</th>
+                        <th>Card Type</th>
+                        <th>Discount Amount</th>
+                        <th>Tip Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-title="Date">2024-09-15</td>
+                        <td data-title="Name">Ethan Williams</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td data-title="Discount Amount">- $131.00</td>
+                        <td data-title="Tip Amount">$31.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-09-07</td>
+                        <td data-title="Name">Sophia Clark</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td data-title="Discount Amount">- $75.00</td>
+                        <td data-title="Tip Amount">$75.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-08-21</td>
+                        <td data-title="Name">Benjamin Turner</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td data-title="Discount Amount">- $49.00</td>
+                        <td data-title="Tip Amount">$49.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-07-19</td>
+                        <td data-title="Name">Olivia Scott</td>
+                        <td data-title="Card Type">EC100</td>
+                        <td data-title="Discount Amount">- $163.00</td>
+                        <td data-title="Tip Amount">$63.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-09-15</td>
+                        <td data-title="Name">Charlotte Morgan</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td data-title="Discount Amount">- $131.00</td>
+                        <td data-title="Tip Amount">$31.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-09-07</td>
+                        <td data-title="Name">Alexander Brooks</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td data-title="Discount Amount">- $75.00</td>
+                        <td data-title="Tip Amount">$75.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-08-21</td>
+                        <td data-title="Name">Emily Foster</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td data-title="Discount Amount">- $49.00</td>
+                        <td data-title="Tip Amount">$49.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-07-19</td>
+                        <td data-title="Name">James Bennett</td>
+                        <td data-title="Card Type">EC100</td>
+                        <td data-title="Discount Amount">- $163.00</td>
+                        <td data-title="Tip Amount">$63.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-08-21</td>
+                        <td data-title="Name">Amelia Cooper</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td data-title="Discount Amount">- $49.00</td>
+                        <td data-title="Tip Amount">$49.00</td>
+                    </tr>
+                    <tr>
+                        <td data-title="Date">2024-07-19</td>
+                        <td data-title="Name">Steve Bannon</td>
+                        <td data-title="Card Type">EC100</td>
+                        <td data-title="Discount Amount">- $163.00</td>
+                        <td data-title="Tip Amount">$93.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div class="pagination">
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href="#" class="active">01</a>
+        <a href="#">02</a>
+        <a href="#">03</a>
+        <i class="fa-solid fa-chevron-right"></i>
+    </div>
+</div>
+{% endblock %}

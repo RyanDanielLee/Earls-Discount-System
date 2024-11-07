@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-container">
+    <div class="breadcrumb-bar">
+        <a href="#" class="back-button"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
+        <div class="breadcrumb-links">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Cardholders</a>
+        </div>
+    </div>
+    <h1 class="headline">Cardholders</h1>
+    <form class="form">
+        <select id="category" name="category" class="form-dropdown">
+            <option value="name">name</option>
+            <option value="email">email</option>
+            <option value="ID">ID</option>
+        </select>
+        <input id="cardholders" name="cardholders" placeholder="Search cardholder" class="form-text">
+        <button type="button" onclick="alert('Hello World!')" class="form-button">Search</button>
+    </form>
+    <table class="cardholder-table">
+        <thead>
+            <tr>
+                <th>Card No</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Card Type</th>
+                <th></th>
+            </tr>
+        </thead>
+        {% for cardholder in cardholders %}
+        <tr>
+            <td>{{ cardholder.id }}</td>
+            <td>{{ cardholder.name }}</td>
+            <td>{{ cardholder.email }}</td>
+            <td>{{ cardholder.card_type }}</td>
+            <td><a href="{% url 'manage_user_details' %}"><button class="view-button">View</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="pagination">
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href="#" class="active">01</a>
+        <a href="#">02</a>
+        <a href="#">03</a>
+        <i class="fa-solid fa-chevron-right"></i>
+    </div>
+</div>
+{% endblock %}

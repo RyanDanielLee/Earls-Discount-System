@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Upload Faceplate</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">Upload Faceplate</h1>
+        <ul>
+            <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
+            <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
+            <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
+        </ul>
+    </div>
+    <div class="upload-faceplate-container">
+        <!-- Tabs -->
+        <div class="tab-container">
+            <div class="tab active" data-tab="appleWallet" onclick="openTab('appleWallet')">Apple Wallet</div>
+            <div class="tab" data-tab="googleWallet" onclick="openTab('googleWallet')">Google Wallet</div>
+        </div>
+
+        <!-- Apple Wallet -->
+        <div id="appleWallet" class="form-section active">
+            <div class="upload-contents">
+                <div class="upload-options">
+                    <div class="option"><label>Faceplate Type</label>
+                        <select>
+                            <option>EC10</option>
+                            <option>EC50</option>
+                            <option>EC100</option>
+                        </select>
+                    </div>
+                    <div class="option"><label>Image Type</label>
+                        <select>
+                            <option>Logo</option>
+                            <option>Icon</option>
+                            <option>Strip</option>
+                        </select>
+                    </div>
+                    <div class="option-file">
+                        <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
+                        <input type="file">
+                    </div>
+                </div>
+                <div class="preview-box">Preview</div>
+            </div>
+            <div class="btn-container">
+                <button type="submit" class="form-button">Upload Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Wallet -->
+    <div id="googleWallet" class="form-section">
+        <div class="upload-contents">
+            <div class="upload-options">
+                <div class="option"><label>Faceplate Type</label>
+                    <select>
+                        <option>EC10</option>
+                        <option>EC50</option>
+                        <option>EC100</option>
+                    </select>
+                </div>
+                <div class="option"><label>Image Type</label>
+                    <select>
+                        <option>Logo</option>
+                        <option>Hero</option>
+                    </select>
+                </div>
+                <div class="option-file">
+                    <label><i class="fa-solid fa-paperclip"></i> Upload Image</label>
+                    <input type="file">
+                </div>
+            </div>
+            <div class="preview-box">Preview</div>
+        </div>
+        <div class="btn-container">
+            <button type="submit" class="form-button">Upload Image</button>
+        </div>
+    </div>
+
+    <!-- Layout Section -->
+    <div class="layout-section">
+        <h2>Layout of Cards</h2>
+        <div class="layout-container">
+            <!-- Apple Wallet Card -->
+            <div class="layout-contents">
+                <div class="layout-img"><img src="{% static 'images/apple-wallet.png' %}" alt="Apple Wallet Layout"></a>
+                </div>
+                <div class="layout-info">
+                    <h1>Apple Wallet</h1>
+                    <hr>
+
+                    <div class="item">
+                        <p class="title">Logo</p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;480 by 150 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+
+                    <div class="item">
+                        <p class="title">Icon</p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;87 by 87 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+
+                    <div class="item">
+                        <p class="title">Strip Image <span class="optional">(Optional)</span></p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1032 by 336 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Google Wallet Card -->
+            <div class="layout-contents">
+                <div class="layout-img"><img src="{% static 'images/google-wallet.png' %}"
+                        alt="Apple Wallet Layout"></a>
+                </div>
+                <div class="layout-info">
+                    <h1>Google Wallet</h1>
+                    <hr>
+
+                    <div class="item">
+                        <p class="title">Logo</p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;660 by 660 px</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+
+                    <div class="item">
+                        <p class="title">Hero Image <span class="optional">(Optional)</span></p>
+                        <p><span>Size</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1860px wide, variable height</p>
+                        <p><span>Format</span> PNG</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Documentation Links -->
+    <div class="documentation">
+        <p>Documentation</p>
+        <div class="link-items">
+            <a href="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/PassKit_PG/Creating.html"
+                target="_blank">Apple
+                Wallet Guide</a>
+            <a href="https://developers.google.com/wallet/generic/resources/brand-guidelines" target="_blank">Google
+                Wallet
+                Guide</a>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

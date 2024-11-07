@@ -1,1 +1,5 @@
 Django>=5.1
+mysqlclient==2.2.4
+gunicorn
+whitenoise
+pymysql

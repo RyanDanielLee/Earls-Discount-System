@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Reports</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Discounts per Employee</a>
+        </div>
+    </div>
+    <div class="section-info add-date-option">
+        <div>
+            <h1 class="headline">Discounts per Employee</h1>
+            <ul>
+                <li><a href="{% url 'total_discounts_per_store' %}">Discounts per Store</a></li>
+                <li><a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a></li>
+            </ul>
+        </div>
+        <form class="date-form">
+            <div class="date-form-item">
+                <label for="year">Year</label>
+                <div class="date-form-dropdown">
+                    <span id="year-selected">2024</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="year" name="year" style="display: none;">
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="period">Period</label>
+                <div class="date-form-dropdown">
+                    <span id="period-selected">9</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="period" name="period" style="display: none;">
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="week">Week</label>
+                <div class="date-form-dropdown">
+                    <span id="week-selected">3</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="week" name="week" style="display: none;">
+                        <option value="all">All</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <section class="reports-dashbd-tb">
+        <div class="new-cardholders">
+            <table class="table-total-cardholders" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Name</th>
+                        <th>Number of Visits</th>
+                        <th>Total Discount</th>
+                        <th>Card Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-title="Employee Name">Michelle Choi</td>
+                        <td data-title="Total Discount">-$934.25</td>
+                        <td data-title="Number of Visits">13</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><a href="{% url 'drilldown_employee' %}"><button class="view-button">View</button></a></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Rhombus Nell</td>
+                        <td data-title="Total Discount">-$633.25</td>
+                        <td data-title="Number of Visits">9</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><a href="{% url 'drilldown_employee' %}"><button class="view-button">View</button></a></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">John Doe</td>
+                        <td data-title="Total Discount">-$733.25</td>
+                        <td data-title="Number of Visits">5</td>
+                        <td data-title="Card Type">EC100</td>
+                        <td><a href="{% url 'drilldown_employee' %}"><button class="view-button">View</button></a></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Olivia Scott</td>
+                        <td data-title="Total Discount">-$163.00</td>
+                        <td data-title="Number of Visits">5</td>
+                        <td data-title="Card Type">EC100</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Charlotte Morgan</td>
+                        <td data-title="Total Discount">-$89.00</td>
+                        <td data-title="Number of Visits">6</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Alexander Brooks</td>
+                        <td data-title="Total Discount">-$75.00</td>
+                        <td data-title="Number of Visits">2</td>
+                        <td data-title="Card Type">EC10</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Emily Foster</td>
+                        <td data-title="Total Discount">-$131.00</td>
+                        <td data-title="Number of Visits">9</td>
+                        <td data-title="Card Type">EC100</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">James Bennett</td>
+                        <td data-title="Total Discount">-$75.00</td>
+                        <td data-title="Number of Visits">13</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Amelia Cooper</td>
+                        <td data-title="Total Discount">-$49.00</td>
+                        <td data-title="Number of Visits">12</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Steve Bannon</td>
+                        <td data-title="Total Discount">-$163.00</td>
+                        <td data-title="Number of Visits">2</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Amelia Cooper</td>
+                        <td data-title="Total Discount">-$49.00</td>
+                        <td data-title="Number of Visits">1</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                    <tr>
+                        <td data-title="Employee Name">Steve Bannon</td>
+                        <td data-title="Total Discount">-$163.00</td>
+                        <td data-title="Number of Visits">7</td>
+                        <td data-title="Card Type">EC50</td>
+                        <td><button class="view-button">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div class="pagination">
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href="#" class="active">01</a>
+        <a href="#">02</a>
+        <a href="#">03</a>
+        <i class="fa-solid fa-chevron-right"></i>
+    </div>
+</div>
+{% endblock %}
