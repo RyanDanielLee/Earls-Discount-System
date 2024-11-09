@@ -10,6 +10,7 @@ urlpatterns = [
     
     path('ec_card/issue_card/', views.issue_card, name='issue_card'),
     path('ec_card/revoke_card/', views.revoke_card, name='revoke_card'),
+    path('ec_card/edit_card/', views.edit_card, name='edit_card'),
     path('ec_card/upload_card_faceplate/', views.upload_card_faceplate, name='upload_card_faceplate'),
     path('ec_card/view_card_faceplate/', views.view_card_faceplate, name='view_card_faceplate'),
     

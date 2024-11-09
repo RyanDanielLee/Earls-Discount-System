@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="{% url 'site_admin' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'cardholders' %}">Cardholder</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'manage_card_holders' %}">Detail</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'edit_card' %}">Edit</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">Edit Cardholder</h1>
+    </div>
+    <form class="eccard-form flex-column">
+        <div class="flex-column input-group">
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" name="first-name" placeholder="First Name"
+                        class="eccard-form-text">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" placeholder="Last Name" class="eccard-form-text">
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="email-address">Email Address</label>
+                    <input type="email" id="email-address" name="email-address" placeholder="Email Address"
+                        class="eccard-form-text">
+                </div>
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <select id="company" name="company" class="eccard-dropdown">
+                        <option>Earls</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="card-type">Card Type</label>
+                    <select id="card-type" name="card-type" class="eccard-dropdown">
+                        <option>Card Type</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="form-group full-width">
+                    <label for="note">Note</label>
+                    <textarea id="note" name="note" placeholder="Cardholder Information"
+                        class="eccard-form-text full-width"></textarea>
+                </div>
+            </div>
+            <div class="flex-row justify-end">
+                <button type="submit" class="form-button">Save</button>
+                <button type="submit" class="form-button">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

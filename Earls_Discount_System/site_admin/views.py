@@ -25,7 +25,10 @@ def issue_card(request):
     return render(request, 'eccard/issue-card.html')
 
 def revoke_card(request):
-    return HttpResponse("Revoke Card Page")
+    return render(request, 'eccard/revoke-card.html')
+
+def edit_card(request):
+    return render(request, 'eccard/edit-card.html')
 
 def upload_card_faceplate(request):
     return render(request, 'eccard/upload-faceplate.html')
