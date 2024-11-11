@@ -1,23 +1,35 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import CardsEmployee
+from .models import Cardholder
 from django.utils import timezone
 from datetime import timedelta
 
 def admin_home(request):
     one_month_ago = timezone.now() - timedelta(days=30)
-    new_cardholders = CardsEmployee.objects.filter(issue_date__gte=one_month_ago)
+    new_cardholders = Cardholder.objects.filter(issued_date__gte=one_month_ago)
+    
+    for cardholder in new_cardholders:
+        cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
+        cardholder.status = "Active" if cardholder.is_active == -1 else "Inactive"
+
     return render(request, 'admin/home.html', {'new_cardholders': new_cardholders})
 
 # Cardholders
 def view_all_users(request):
     return HttpResponse("View All Users Page")
 
-def manage_user_details(request):
-    return render(request, 'cardholder/cardholder-details.html')
+def manage_user_details(request, cardholder_id):
+    cardholder = Cardholder.objects.get(id=cardholder_id)
+    cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
+    cardholder.status = "Active" if cardholder.is_active == -1 else "Inactive"
+    
+    return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder})
 
 def manage_card_holders(request):
-    cardholders = CardsEmployee.objects.all()
+    cardholders = Cardholder.objects.all()
+    for cardholder in cardholders:
+        cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
+
     return render(request, 'cardholder/cardholder.html', {'cardholders': cardholders})
 
 # EC Card

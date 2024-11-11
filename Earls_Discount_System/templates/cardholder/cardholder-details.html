@@ -29,9 +29,9 @@
             <span>Status</span>
         </div>
         <div class="detail-item">
-            <span>richard.park@earls.ca</span>
-            <span>Jonathan</span>
-            <span>Activated</span>
+            <span>{{ cardholder.email }}</span>
+            <span>{{ cardholder.company.name }}</span>
+            <span>{{ cardholder.status }}</span>
         </div>
         <div class="detail-item">
             <span>Card Type</span>
@@ -39,14 +39,14 @@
             <span>Issue Date</span>
         </div>
         <div class="detail-item">
-            <span>EC 100</span>
-            <span>0040</span>
-            <span>2024-03-26</span>
+            <span>{{ cardholder.card_type.name }}</span>
+            <span>{{ cardholder.id }}</span>
+            <span>{{ cardholder.issued_date }}</span>
         </div>
     </div>
     <div class="Note">
         <span>Note</span>
-        <span>HR Department Manager</span>
+        <span>{{ cardholder.note }}</span>
     </div>
     <div>
         <i class="fa fa-bars"></i>
