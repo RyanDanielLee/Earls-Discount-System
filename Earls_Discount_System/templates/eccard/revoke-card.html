@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="{% url 'site_admin' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'cardholders' %}">Cardholder</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'manage_card_holders' %}">Detail</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'revoke_card' %}">Revoke</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">Revoke Card</h1>
+    </div>
+    <form class="eccard-form flex-column">
+        <div class="flex-column input-group">
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <h3>David</h3>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <h3>Perell</h3>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="email-address">Email Address</label>
+                    <h3>david.pe@earls.ca</h3>
+                </div>
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <h3>Earls</h3>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="card-type">Card Type</label>
+                    <h3>EC 50</h3>
+                </div>
+                <div class="form-group">
+                    <label for="card-type">Card Type</label>
+                    <h3>0055</h3>
+                </div>
+            </div>
+            </div>
+            <div class="flex-row justify-end">
+                <label for="revoke-card"><i class="fa-solid fa-check"></i> Revoking a card will deactive the cardholder and remove the card from their wallet</label>
+                <button type="submit" class="form-button">Revoke Card</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -5,11 +5,12 @@ from . import views
 urlpatterns = [
     path('', views.admin_home, name='admin_home'),  # Home route for the admin panel
     path('cardholders/view_all_users/', views.view_all_users, name='view_all_users'),
-    path('cardholders/manage_user_details/', views.manage_user_details, name='manage_user_details'),
+    path('cardholders/<int:cardholder_id>/', views.manage_user_details, name='manage_user_details'),
     path('cardholders/', views.manage_card_holders, name="manage_card_holders"),
     
     path('ec_card/issue_card/', views.issue_card, name='issue_card'),
     path('ec_card/revoke_card/', views.revoke_card, name='revoke_card'),
+    path('ec_card/edit_card/', views.edit_card, name='edit_card'),
     path('ec_card/upload_card_faceplate/', views.upload_card_faceplate, name='upload_card_faceplate'),
     path('ec_card/view_card_faceplate/', views.view_card_faceplate, name='view_card_faceplate'),
     
