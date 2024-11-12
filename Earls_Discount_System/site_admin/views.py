@@ -77,11 +77,38 @@ def issue_card(request):
     
     return render(request, 'eccard/issue-card.html', {'companies': company, 'cardtypes': cardtype})
 
-def revoke_card(request):
+def revoke_card(request, cardholder_id):
     return render(request, 'eccard/revoke-card.html')
 
-def edit_card(request):
-    return render(request, 'eccard/edit-card.html')
+def edit_card(request, cardholder_id):
+    cardholder = Cardholder.objects.get(id=cardholder_id)
+
+    if request.method == 'POST':
+        cardholder.first_name = request.POST.get('first_name')
+        cardholder.last_name = request.POST.get('last_name')
+        cardholder.email = request.POST.get('email')
+        cardholder.note = request.POST.get('note')
+        company_id = request.POST.get('company')
+        card_type_id = request.POST.get('card_type')
+
+
+        if company_id:
+            cardholder.company = Company.objects.get(id=company_id)
+
+        if card_type_id:
+            cardholder.card_type = CardType.objects.get(id=card_type_id)
+
+        cardholder.save()
+        return redirect('manage_user_details', cardholder_id=cardholder.id) 
+    
+    company = Company.objects.all()
+    cardtype = CardType.objects.all()
+
+    return render(request, 'eccard/edit-card.html', {
+        'cardholder': cardholder,
+        'companies': company,
+        'card_types': cardtype
+    })
 
 def upload_card_faceplate(request):
     return render(request, 'eccard/upload-faceplate.html')

@@ -6,49 +6,59 @@
     <div class="nav-breadcrumbs">
         <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
         <div class="breadcrumb">
-            <a href="{% url 'site_admin' %}">Home</a>
+            <a href="{% url 'admin_home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="{% url 'cardholders' %}">Cardholder</a>
+            <a href="{% url 'manage_card_holders' %}">Cardholder</a>
             <i class="fa-solid fa-chevron-right"></i>
             <a href="{% url 'manage_card_holders' %}">Detail</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="{% url 'edit_card' %}">Edit</a>
+            <a href="{% url 'edit_card' cardholder.id %}">Edit</a>
         </div>
     </div>
     <div class="section-info">
         <h1 class="headline">Edit Cardholder</h1>
     </div>
-    <form class="eccard-form flex-column">
+    <form class="eccard-form flex-column" method="POST" action="{% url 'edit_card' cardholder.id %}">
+        {% csrf_token %}
         <div class="flex-column input-group">
             <div class="flex-row">
                 <div class="form-group">
                     <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" name="first-name" placeholder="First Name"
-                        class="eccard-form-text">
+                    <input type="text" id="first-name" name="first_name" placeholder="First Name"
+                        class="eccard-form-text" value="{{ cardholder.first_name }}" required>
                 </div>
                 <div class="form-group">
                     <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" name="last-name" placeholder="Last Name" class="eccard-form-text">
+                    <input type="text" id="last-name" name="last_name" placeholder="Last Name" class="eccard-form-text"
+                        value="{{ cardholder.last_name }}" required>
                 </div>
             </div>
             <div class="flex-row">
                 <div class="form-group">
                     <label for="email-address">Email Address</label>
-                    <input type="email" id="email-address" name="email-address" placeholder="Email Address"
-                        class="eccard-form-text">
+                    <input type="email" id="email-address" name="email" placeholder="Email Address"
+                        class="eccard-form-text" value="{{ cardholder.email }}" required>
                 </div>
                 <div class="form-group">
                     <label for="company">Company</label>
                     <select id="company" name="company" class="eccard-dropdown">
-                        <option>Earls</option>
+                        {% for company in companies %}
+                        <option value="{{ company.id }}">
+                            {{ company.name }}
+                        </option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
             <div class="flex-row">
                 <div class="form-group">
                     <label for="card-type">Card Type</label>
-                    <select id="card-type" name="card-type" class="eccard-dropdown">
-                        <option>Card Type</option>
+                    <select id="card-type" name="card_type" class="eccard-dropdown">
+                        {% for card_type in card_types %}
+                        <option value="{{ card_type.id }}">
+                            {{ card_type.name }}
+                        </option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -56,12 +66,12 @@
                 <div class="form-group full-width">
                     <label for="note">Note</label>
                     <textarea id="note" name="note" placeholder="Cardholder Information"
-                        class="eccard-form-text full-width"></textarea>
+                        class="eccard-form-text full-width">{{ cardholder.note }}</textarea>
                 </div>
             </div>
             <div class="flex-row justify-end">
                 <button type="submit" class="form-button">Save</button>
-                <button type="submit" class="form-button">Cancel</button>
+                <a href="{% url 'manage_card_holders' %}" class="form-button">Cancel</a>
             </div>
         </div>
     </form>
