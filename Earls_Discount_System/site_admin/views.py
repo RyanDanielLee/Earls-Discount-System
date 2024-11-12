@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Cardholder
 from django.utils import timezone
 from datetime import timedelta
+from .models import Cardholder, CardType, Company, Card
+from .utils import send_wallet_selection_email, generate_card_number
 
 def admin_home(request):
     one_month_ago = timezone.now() - timedelta(days=30)
@@ -22,7 +23,7 @@ def manage_user_details(request, cardholder_id):
     cardholder = Cardholder.objects.get(id=cardholder_id)
     cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
     cardholder.status = "Active" if cardholder.is_active == -1 else "Inactive"
-    
+
     return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder})
 
 def manage_card_holders(request):
@@ -34,7 +35,47 @@ def manage_card_holders(request):
 
 # EC Card
 def issue_card(request):
-    return render(request, 'eccard/issue-card.html')
+
+    if request.method == 'POST':
+        # Capture the POST data
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        company_id = request.POST.get('company')
+        card_type_id = request.POST.get('card_type')
+        note = request.POST.get('note')
+
+        company = Company.objects.get(id=company_id)
+        cardtype = CardType.objects.get(id=card_type_id)
+        
+        cardholder = Cardholder.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                company=company,
+                card_type=cardtype,
+                note=note,
+                issued_date=timezone.now(),
+                is_active=True
+            )
+        
+        card_number = generate_card_number(company.name)
+        
+        card = Card.objects.create(
+            cardholder=cardholder,
+            card_number=card_number,
+            issued_date=timezone.now(),
+            card_type=cardtype
+        )
+
+        send_wallet_selection_email(cardholder)
+
+        return redirect('manage_card_holders') 
+
+    company = Company.objects.all()
+    cardtype = CardType.objects.all()
+    
+    return render(request, 'eccard/issue-card.html', {'companies': company, 'cardtypes': cardtype})
 
 def revoke_card(request):
     return render(request, 'eccard/revoke-card.html')

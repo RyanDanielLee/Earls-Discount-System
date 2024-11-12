@@ -3,3 +3,4 @@ mysqlclient==2.2.4
 gunicorn
 whitenoise
 pymysql
+python-dotenv

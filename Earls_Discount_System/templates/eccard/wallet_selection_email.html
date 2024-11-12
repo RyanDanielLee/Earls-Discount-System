@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+
+        .content-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Hello {{ first_name }},</h2>
+
+    <p>To select your digital wallet, please visit our wallet selection page and enter the following code:</p>
+
+    <div class="content-section">
+        <p><strong>Token:</strong> {{ token }}</p>
+        <p>This token is valid until {{ expiration|date:"F j, Y, g:i a" }}.</p>
+    </div>
+
+    <p>If you did not request this, please ignore this email.</p>
+
+    <p>Best regards,<br>Your App Team</p>
+
+</body>
+
+</html>

@@ -3,3 +3,4 @@ Earls_Discount_System/env/
 __pycache__/
 *.pyc
 *.pyo
+.env
