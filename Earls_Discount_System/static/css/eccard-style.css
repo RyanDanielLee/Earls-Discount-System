@@ -67,6 +67,11 @@
   flex: 1;
 }
 
+.form-group p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
 .justify-end {
   justify-content: flex-end;
 }
@@ -293,4 +298,21 @@ textarea.eccard-form-text {
   background-color: var(--grey-color);
   width: 170px;
   height: 170px;
+}
+
+.info-revoke {
+  display: flex;
+  padding: 1rem;
+  justify-content: left;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+}
+
+.info-revoke > p > span {
+  color: var(--primary-color);
+}
+
+.flex-row.justify-end.revoke {
+  margin-right: 1rem;
 }

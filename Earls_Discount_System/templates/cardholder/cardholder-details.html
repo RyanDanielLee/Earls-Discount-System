@@ -17,7 +17,7 @@
         <div class="flex-row">
             <h2 class="cardholder-header-title">{{ cardholder.name }}</h2>
             <a class="cardholder-header-link" href="{% url 'edit_card' cardholder.id %}">Edit</a>
-            <a class="cardholder-header-link">Revoke</a>
+            <a class="cardholder-header-link" href="{% url 'revoke_card' cardholder.id %}">Revoke</a>
         </div>
         <button class="cardholder-header-button"><i class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
             Card</button>

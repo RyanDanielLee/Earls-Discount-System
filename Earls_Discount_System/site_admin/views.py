@@ -78,7 +78,25 @@ def issue_card(request):
     return render(request, 'eccard/issue-card.html', {'companies': company, 'cardtypes': cardtype})
 
 def revoke_card(request, cardholder_id):
-    return render(request, 'eccard/revoke-card.html')
+    
+    cardholder = Cardholder.objects.get(id=cardholder_id)
+    card = Card.objects.filter(cardholder=cardholder).first()
+    
+    if request.method == 'POST':
+ 
+        if card:
+            card.revoked_date = timezone.now()
+            card.save()
+
+        cardholder.is_active = False
+        cardholder.save()
+
+        return redirect('manage_card_holders') 
+
+    return render(request, 'eccard/revoke-card.html', {
+        'cardholder': cardholder,
+        'card': card
+    })
 
 def edit_card(request, cardholder_id):
     cardholder = Cardholder.objects.get(id=cardholder_id)
