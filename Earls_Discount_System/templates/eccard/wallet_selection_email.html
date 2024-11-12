@@ -5,11 +5,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            color: #333;
+            color: #1d1d1d;
         }
 
         h2 {
-            color: #4CAF50;
+            color: #3c84ff;
         }
 
         .content-section {
@@ -27,16 +27,21 @@
 
     <h2>Hello {{ first_name }},</h2>
 
-    <p>To select your digital wallet, please visit our wallet selection page and enter the following code:</p>
+    <p>Your new EC Card is ready for digital use! You can choose to add it to either Google Wallet or Apple Wallet. Just
+        click one of the links below:</p>
 
-    <div class="content-section">
-        <p><strong>Token:</strong> {{ token }}</p>
-        <p>This token is valid until {{ expiration|date:"F j, Y, g:i a" }}.</p>
-    </div>
+    <p>
+        <a href="#">Add to Google Wallet</a>
+    </p>
+    <p>
+        <a href="#">Add to Apple Wallet</a>
+    </p>
 
-    <p>If you did not request this, please ignore this email.</p>
+    <p class="note">*Note: These links are valid for 1 hour. Once you select a wallet, the other option will expire.</p>
 
-    <p>Best regards,<br>Your App Team</p>
+    <p>If you have any questions or need help, feel free to reply to this email.</p>
+
+    <p>Best regards,<br>The Earls EC Card Team</p>
 
 </body>
 

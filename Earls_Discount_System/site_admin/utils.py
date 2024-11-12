@@ -26,7 +26,7 @@ def send_wallet_selection_email(cardholder):
 
     # Send the email
     send_mail(
-        subject='Digital ECcard is ready for you',
+        subject='Your Digital EC Card is Ready!',
         message=text_content,
         from_email='studwing@hotmail.com',
         recipient_list=[cardholder.email],
