@@ -5,6 +5,7 @@
     <div class="container-info">
         <div class="title">
             <h1>Admin Dashboard</h1>
+            <p>Hello, {{ user.username }}!</p>
         </div>
         <div class="support-email">
             <i class="fa-regular fa-envelope font-awesome-icons"></i>
@@ -109,8 +110,8 @@
                     <td data-title="Name">{{ cardholder.name }}</td>
                     <td data-title="Email">{{ cardholder.email }}</td>
                     <td data-title="Status">{{ cardholder.status }}</td>
-                    <td data-title="CardType">{{ cardholder.card_type }}</td>
-                    <td data-title="Issue Date">{{ cardholder.issue_date }}</td>
+                    <td data-title="CardType">{{ cardholder.card_type.name }}</td>
+                    <td data-title="Issue Date">{{ cardholder.issued_date }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

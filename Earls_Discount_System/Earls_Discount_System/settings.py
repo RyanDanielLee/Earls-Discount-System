@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     'login',
     'employee',
     'site_admin',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'django_extensions',
     # 'cards',
 ]
 
@@ -51,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -84,8 +90,8 @@ DATABASES = {
         'NAME': 'card_issue',
         'USER': 'root',
         'PASSWORD': '',
-        # 'HOST': '104.196.251.149', # when working locally
-        'HOST': '127.0.0.1',
+        'HOST': '104.196.251.149', # when working locally
+        # 'HOST': '127.0.0.1',
         'PORT': '3306',  
     }
 }
@@ -110,6 +116,32 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '',
+            'secret': '',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+LOGIN_REDIRECT_URL = '/site_admin/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
