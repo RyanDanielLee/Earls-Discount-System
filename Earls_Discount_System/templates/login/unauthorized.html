@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <div class="container-info">
+        <div class="title">
+            <h1>Access Denied</h1>
+            <p>Hello, {{ user.username }}!</p>
+        </div>
+        <div class="support-email">
+            <i class="fa-regular fa-envelope font-awesome-icons"></i>
+            <span class="email-text" id="email" onclick="copyEmail()">support@earls.ca</span>
+            <span class="email-tooltip-text">Copy to clipboard</span>
+        </div>
+    </div>
+
+    <div class="access-denied-message">
+        <i class="fa-solid fa-exclamation-triangle font-awesome-icons"></i>
+        <p class="strong">You do not have the necessary permissions to access this page.</p>
+        <small>If you believe this is an error, please contact support.</small>
+    </div>
+</div>
+{% endblock %}

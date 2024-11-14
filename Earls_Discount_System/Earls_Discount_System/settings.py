@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_extensions',
     # 'cards',
 ]
 
@@ -89,8 +90,8 @@ DATABASES = {
         'NAME': 'card_issue',
         'USER': 'root',
         'PASSWORD': '',
-        # 'HOST': '104.196.251.149', # when working locally
-        'HOST': '127.0.0.1',
+        'HOST': '104.196.251.149', # when working locally
+        # 'HOST': '127.0.0.1',
         'PORT': '3306',  
     }
 }
@@ -139,6 +140,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+LOGIN_REDIRECT_URL = '/site_admin/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

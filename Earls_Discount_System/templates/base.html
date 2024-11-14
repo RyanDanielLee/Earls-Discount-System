@@ -28,11 +28,12 @@
                     <a href="{% url 'admin_home' %}"><img src="{% static 'images/earls-logo-headonly.png' %}"
                             alt="Earls Logo" class="nav-earls-logo"></a>
                 </div>
-
                 <ul class="nav-items" id="nav-items">
                     <li><a href="{% url 'manage_card_holders' %}">
                             <p>Cardholders</p>
                         </a></li>
+
+                    {% if is_superadmin %}
                     <li class="dropdown">
                         <a href="#">
                             <p>EC Card</p>
@@ -41,9 +42,10 @@
                             <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
                             <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
                             <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
-
                         </ul>
                     </li>
+                    {% endif %}
+
                     <li class="dropdown">
                         <a href="#">
                             <p>Reports</p>
