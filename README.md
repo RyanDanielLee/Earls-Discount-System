@@ -13,6 +13,7 @@
 6. Run Cloud SQL Proxy where `cloud-sql-proxy.exe` is located before running the application
    <br>`./cloud-sql-proxy bcit-ec:us-west1:card-issuer`
    <br>(Keep the terminal open while the Cloud SQL Proxy is running)
+   <br>To download [cloud sql proxy](https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.14.0/cloud-sql-proxy.x64.exe) and Rename the file to cloud-sql-proxy.exe
 7. Change directory to Earls_Discount_System
 8. Apply any migrations, `python manage.py migrate`
 9. Start the application using `python manage.py runserver`
