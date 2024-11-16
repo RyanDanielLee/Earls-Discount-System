@@ -4,3 +4,6 @@ gunicorn
 whitenoise
 pymysql
 python-dotenv
+django-allauth
+django-extensions
+PyJWT

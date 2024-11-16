@@ -4,7 +4,7 @@
 
 1. Clone the repository and navigate to it
 2. Set up a virtual environment  
-   a. For **Windows**: In terminal, run `python -m venv env` and `.\env\Scripts\Activate`  
+   a. For **Windows**: In terminal, run `python -m venv env` and `.\env\Scripts\Activate`
    b. For **macOS/Linux**: In terminal, run `python3 -m venv env` and `source venv/bin/activate`
 3. Install required packages using `pip install -r requirements.txt`
 4. Change directory to "Earls_Discount_System"
@@ -13,9 +13,10 @@
 6. Run Cloud SQL Proxy where `cloud-sql-proxy.exe` is located before running the application
    <br>`./cloud-sql-proxy bcit-ec:us-west1:card-issuer`
    <br>(Keep the terminal open while the Cloud SQL Proxy is running)
-7. Apply any migrations, `python manage.py migrate`
-8. Start the application using `python manage.py runserver`
-9. View the project at http://127.0.0.1:8000/
+7. Change directory to Earls_Discount_System
+8. Apply any migrations, `python manage.py migrate`
+9. Start the application using `python manage.py runserver`
+10. View the project at http://127.0.0.1:8000/
 
 ## For Developers
 

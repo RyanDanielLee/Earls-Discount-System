@@ -91,8 +91,8 @@ DATABASES = {
         'NAME': 'card_issue',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '104.196.251.149', # when working locally
-        # 'HOST': '127.0.0.1',
+        # 'HOST': '104.196.251.149', # when working locally
+        'HOST': '127.0.0.1',
         'PORT': '3306',  
     }
 }
@@ -149,6 +149,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+print(os.getenv('CLIENT_ID'))
+print(os.getenv('CLIENT_SECRET'))
 
 LOGIN_REDIRECT_URL = '/site_admin/'
 
