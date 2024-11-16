@@ -33,3 +33,16 @@ function openTab(tabName) {
   document.getElementById(tabName).classList.add('active');
   document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
 }
+
+//Modal for confirmation pop-up
+function openConfirmationModal() {
+  document.getElementById('confirmation-modal').style.display = 'block';
+}
+
+function closeConfirmationModal() {
+  document.getElementById('confirmation-modal').style.display = 'none';
+}
+
+function submitRevokeForm() {
+  document.getElementById('revoke-form').submit();
+}

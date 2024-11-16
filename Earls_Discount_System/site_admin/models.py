@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+import uuid
 
 # class AuthUser(models.Model):
 #     password = models.CharField(max_length=128)
@@ -48,15 +50,15 @@ class FinancialCalendar(models.Model):
 
 class Store(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    short_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    short_name = models.CharField(max_length=20)
 
     class Meta:
         db_table = 'store'
 
 class CardType(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -64,7 +66,7 @@ class CardType(models.Model):
 
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=30)
     description = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -72,8 +74,8 @@ class Company(models.Model):
 
 class Cardholder(models.Model):
     id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
     company = models.ForeignKey('Company', on_delete=models.CASCADE)
     note = models.TextField(blank=True, null=True)
@@ -83,17 +85,37 @@ class Cardholder(models.Model):
 
     class Meta:
         db_table = 'cardholder'
-    
+
 class Card(models.Model):
     id = models.AutoField(primary_key=True)
-    card_number = models.CharField(max_length=20, unique=True)
+    card_number = models.IntegerField(unique=True)
     issued_date = models.DateField()
     revoked_date = models.DateField(null=True, blank=True)
     cardholder = models.ForeignKey('Cardholder', on_delete=models.CASCADE)
     card_type = models.ForeignKey('CardType', on_delete=models.CASCADE)
-
+    
     class Meta:
         db_table = 'card'
+ 
+class DigitalWallet(models.Model):
+    id = models.AutoField(primary_key=True)
+    card_number = models.OneToOneField('Card', on_delete=models.CASCADE, related_name='digital_wallets')
+    wallet_type = models.CharField(max_length=50)  # 'Apple Wallet' or 'Google Wallet'
+    issued_date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'digital_wallet'
+
+class WalletSelectionToken(models.Model):
+    cardholder = models.ForeignKey('Cardholder', on_delete=models.CASCADE)
+    token = models.UUIDField(default=uuid.uuid4, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_used = models.BooleanField(default=False)
+    expires_at = models.DateTimeField()
+
+    def is_valid(self):
+        return not self.is_used and timezone.now() < self.expires_at
+
 
 class FaceplateImage(models.Model):
     id = models.AutoField(primary_key=True)
@@ -109,7 +131,7 @@ class Transaction(models.Model):
     store = models.ForeignKey('Store', on_delete=models.CASCADE)
     business_date = models.DateField()
     check_number = models.CharField(max_length=20)
-    check_name = models.CharField(max_length=100)
+    check_name = models.CharField(max_length=50)
     cardholder = models.ForeignKey('Cardholder', on_delete=models.CASCADE)
     card_type = models.ForeignKey('CardType', on_delete=models.CASCADE)
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -135,7 +157,6 @@ class TotalDiscountEmployee(models.Model):
 
     class Meta:
         db_table = 'total_discount_employee'
-
 
 # class CardsCard(models.Model):
 #     id = models.BigAutoField(primary_key=True)
