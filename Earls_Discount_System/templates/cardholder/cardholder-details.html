@@ -21,7 +21,8 @@
             <a class="cardholder-header-link" href="{% url 'delete_cardholder' cardholder.id %}">Delete Cardholder</a>
         </div>
         <a class="cardholder-header-link" href="{% url 'reissue_card' cardholder.id %}"><button
-                class="cardholder-header-button"><i class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
+                class="cardholder-header-button btn-reissue"><i
+                    class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
                 Card</button></a>
     </div>
     <div class="cardholder-details">

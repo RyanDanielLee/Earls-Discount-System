@@ -120,11 +120,11 @@ input:focus {
   font-weight: 500;
 }
 
-.cardholder-table tr:nth-child(even) {
+.cardholder-table tbody tr:nth-child(even) {
   background-color: var(--bg-variant);
 }
 
-.cardholder-table tr:hover {
+.cardholder-table tbody tr:hover {
   background-color: var(--grey-color);
 }
 
@@ -228,6 +228,15 @@ input:focus {
 .cardholder-table a,
 .table-total-cardholders tbody a {
   color: var(--font-color);
+}
+
+.cardholder-header-button.btn-reissue {
+  cursor: pointer;
+  transition: all 0.1s ease-out;
+}
+
+.cardholder-header-button.btn-reissue:hover {
+  background-color: var(--bg-variant);
 }
 
 /* pagination */

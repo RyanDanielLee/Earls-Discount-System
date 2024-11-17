@@ -34,16 +34,19 @@
                 <th></th>
             </tr>
         </thead>
-        {% for cardholder in cardholders %}
-        <tr>
-            <td>{{ cardholder.id }}</td>
-            <td>{{ cardholder.name }}</td>
-            <td><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a></td>
-            <td>{{ cardholder.card_type.name }}</td>
-            <td><a href="{% url 'manage_user_details' cardholder.id %}"><button class="view-button">View</button></a>
-            </td>
-        </tr>
-        {% endfor %}
+        <tbody>
+            {% for cardholder in cardholders %}
+            <tr>
+                <td>{{ cardholder.id }}</td>
+                <td>{{ cardholder.name }}</td>
+                <td><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a></td>
+                <td>{{ cardholder.card_type.name }}</td>
+                <td><a href="{% url 'manage_user_details' cardholder.id %}"><button
+                            class="view-button">View</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <div class="pagination">
         <i class="fa-solid fa-chevron-left"></i>
