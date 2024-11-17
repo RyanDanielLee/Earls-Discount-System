@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import Cardholder, CardType, Company, Card, WalletSelectionToken
 from .utils import send_wallet_selection_email, generate_card_number
+from django.contrib.auth.decorators import user_passes_test
 # search
 from django.db.models import Q
 
