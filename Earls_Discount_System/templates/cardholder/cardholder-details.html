@@ -20,10 +20,10 @@
             <a class="cardholder-header-link" href="{% url 'revoke_card' cardholder.id %}">Revoke</a>
             <a class="cardholder-header-link" href="{% url 'delete_cardholder' cardholder.id %}">Delete Cardholder</a>
         </div>
-        <a class="cardholder-header-link" href="{% url 'reissue_card' cardholder.id %}"><button
-                class="cardholder-header-button btn-reissue"><i
-                    class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
-                Card</button></a>
+        <button class="cardholder-header-button btn-reissue" onclick="openReissueConfirmModal(event)"><i
+                class="fa-regular fa-envelope cardholder-header-icon"></i>
+            Re-Issue
+            Card</button>
     </div>
     <div class="cardholder-details">
         <div class="detail-item">
@@ -95,4 +95,23 @@
         <i class="fa-solid fa-chevron-right"></i>
     </div>
 </div>
+
+
+
+<!-- Confirmation Pop-Up -->
+<div id="reissue-confirmation-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-texts">
+            <small>Re-issue Card</small>
+            <p>Your card is succesfully re-issued.</p>
+        </div>
+
+        <div class="modal-buttons-container">
+            <a href="{% url 'reissue_card' cardholder.id %}"><button type="submit" onclick="closeReissueConfirmModal()"
+                    class="modal-form-button">Close</button>
+            </a>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

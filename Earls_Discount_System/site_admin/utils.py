@@ -7,11 +7,6 @@ from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 from django.conf import settings
 
 def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_token, expires_at):
-    # Generate a new token and expiration date
-    # token = WalletSelectionToken.objects.create(
-    #     cardholder=cardholder,
-    #     expires_at=timezone.now() + timedelta(hours=1)  # 1-hour expiration
-    # )
 
     # Prepare context for email template
     context = {

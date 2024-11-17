@@ -162,22 +162,18 @@ def delete_cardholder(request, cardholder_id):
     return redirect('manage_card_holders')
 
 def reissue_card(request, cardholder_id):
-    # Get the cardholder
     cardholder = Cardholder.objects.get(id=cardholder_id)
     card = Card.objects.filter(cardholder=cardholder).first()
 
     if cardholder.is_active:
-        # If already active, return an error message
         return render(request, 'error.html', {'message': 'Cardholder already has an active card.'})
 
     if card:
-        # Update the existing card
         card.card_number = generate_card_number(cardholder.company.name)
         card.issued_date = timezone.now()
         card.revoked_date = None  # Reset revoked date
         card.save()
 
-    # Update the cardholder's status
     cardholder.is_active = True
     cardholder.save()
 

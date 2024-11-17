@@ -34,7 +34,7 @@ function openTab(tabName) {
   document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
 }
 
-//Modal for confirmation pop-up
+//Modal for confirmation
 function openConfirmationModal() {
   document.getElementById('confirmation-modal').style.display = 'block';
 }
@@ -50,4 +50,14 @@ function submitRevokeForm() {
   } else {
     console.error('Revoke form not found');
   }
+}
+
+//Modal for reissue-confirmation
+function openReissueConfirmModal(event) {
+  event.preventDefault();
+  document.getElementById('reissue-confirmation-modal').style.display = 'block';
+}
+
+function closeReissueConfirmModal() {
+  document.getElementById('reissue-confirmation-modal').style.display = 'none';
 }
