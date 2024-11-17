@@ -7,11 +7,11 @@ from .utils import send_wallet_selection_email, generate_card_number
 
 def admin_home(request):
     one_month_ago = timezone.now() - timedelta(days=30)
-    new_cardholders = Cardholder.objects.filter(issued_date__gte=one_month_ago)
-    
+    new_cardholders = Cardholder.objects.filter(created_date__gte=one_month_ago)
+
     for cardholder in new_cardholders:
+        cardholder.card = Card.objects.filter(cardholder=cardholder).first()
         cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
-        cardholder.status = "Active" if cardholder.is_active == -1 else "Inactive"
 
     return render(request, 'admin/home.html', {'new_cardholders': new_cardholders})
 
@@ -22,9 +22,11 @@ def view_all_users(request):
 def manage_user_details(request, cardholder_id):
     cardholder = Cardholder.objects.get(id=cardholder_id)
     cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
-    cardholder.status = "Active" if cardholder.is_active == -1 else "Inactive"
+    cardholder.status = "Active" if cardholder.is_active == True else "Inactive"
 
-    return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder})
+    card = Card.objects.filter(cardholder=cardholder).first()
+
+    return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder, 'card': card})
 
 def manage_card_holders(request):
     cardholders = Cardholder.objects.all()
@@ -55,7 +57,7 @@ def issue_card(request):
                 company=company,
                 card_type=cardtype,
                 note=note,
-                issued_date=timezone.now(),
+                created_date=timezone.now(),
                 is_active=True
             )
         
@@ -65,7 +67,6 @@ def issue_card(request):
             cardholder=cardholder,
             card_number=card_number,
             issued_date=timezone.now(),
-            card_type=cardtype
         )
 
         # Generate wallet selection tokens
@@ -98,13 +99,15 @@ def revoke_card(request, cardholder_id):
     if request.method == 'POST':
  
         if card:
+            card.card_number = None
+            card.issued_date = None
             card.revoked_date = timezone.now()
             card.save()
 
         cardholder.is_active = False
         cardholder.save()
 
-        return redirect('manage_card_holders') 
+        return redirect('manage_user_details', cardholder_id=cardholder.id) 
 
     return render(request, 'eccard/revoke-card.html', {
         'cardholder': cardholder,
@@ -113,6 +116,7 @@ def revoke_card(request, cardholder_id):
 
 def edit_card(request, cardholder_id):
     cardholder = Cardholder.objects.get(id=cardholder_id)
+    card = Card.objects.filter(cardholder=cardholder).first()
 
     if request.method == 'POST':
         cardholder.first_name = request.POST.get('first_name')
@@ -126,6 +130,7 @@ def edit_card(request, cardholder_id):
         if company_id:
             cardholder.company = Company.objects.get(id=company_id)
 
+
         if card_type_id:
             cardholder.card_type = CardType.objects.get(id=card_type_id)
 
@@ -137,6 +142,7 @@ def edit_card(request, cardholder_id):
 
     return render(request, 'eccard/edit-card.html', {
         'cardholder': cardholder,
+        'card': card, 
         'companies': company,
         'card_types': cardtype
     })
@@ -145,7 +151,7 @@ def delete_cardholder(request, cardholder_id):
     cardholder = Cardholder.objects.get(id=cardholder_id)
     
     # Delete related cards
-    cardholder.card_set.all().delete()
+    cardholder.cards.all().delete()
     
     # Delete related wallet selection tokens
     WalletSelectionToken.objects.filter(cardholder=cardholder).delete()
@@ -154,6 +160,47 @@ def delete_cardholder(request, cardholder_id):
     cardholder.delete()
     
     return redirect('manage_card_holders')
+
+def reissue_card(request, cardholder_id):
+    # Get the cardholder
+    cardholder = Cardholder.objects.get(id=cardholder_id)
+    card = Card.objects.filter(cardholder=cardholder).first()
+
+    if cardholder.is_active:
+        # If already active, return an error message
+        return render(request, 'error.html', {'message': 'Cardholder already has an active card.'})
+
+    if card:
+        # Update the existing card
+        card.card_number = generate_card_number(cardholder.company.name)
+        card.issued_date = timezone.now()
+        card.revoked_date = None  # Reset revoked date
+        card.save()
+
+    # Update the cardholder's status
+    cardholder.is_active = True
+    cardholder.save()
+
+    # Generate new wallet selection tokens again
+    google_wallet_token = WalletSelectionToken.objects.create(
+        cardholder=cardholder,
+        expires_at=timezone.now() + timezone.timedelta(hours=1)
+    )
+    apple_wallet_token = WalletSelectionToken.objects.create(
+        cardholder=cardholder,
+        expires_at=timezone.now() + timezone.timedelta(hours=1)
+    )
+
+    # Send a new wallet selection email again
+    send_wallet_selection_email(
+        cardholder=cardholder,
+        google_wallet_token=google_wallet_token.token,
+        apple_wallet_token=apple_wallet_token.token,
+        expires_at=google_wallet_token.expires_at
+    )
+
+    # Redirect to the cardholder's detail page
+    return redirect('manage_user_details', cardholder_id=cardholder_id)
 
 def upload_card_faceplate(request):
     return render(request, 'eccard/upload-faceplate.html')

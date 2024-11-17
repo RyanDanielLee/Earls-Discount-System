@@ -38,7 +38,7 @@
         <tr>
             <td>{{ cardholder.id }}</td>
             <td>{{ cardholder.name }}</td>
-            <td>{{ cardholder.email }}</td>
+            <td><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a></td>
             <td>{{ cardholder.card_type.name }}</td>
             <td><a href="{% url 'manage_user_details' cardholder.id %}"><button class="view-button">View</button></a>
             </td>

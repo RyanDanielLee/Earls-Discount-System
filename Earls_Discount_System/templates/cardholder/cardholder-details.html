@@ -20,8 +20,9 @@
             <a class="cardholder-header-link" href="{% url 'revoke_card' cardholder.id %}">Revoke</a>
             <a class="cardholder-header-link" href="{% url 'delete_cardholder' cardholder.id %}">Delete Cardholder</a>
         </div>
-        <button class="cardholder-header-button"><i class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
-            Card</button>
+        <a class="cardholder-header-link" href="{% url 'reissue_card' cardholder.id %}"><button
+                class="cardholder-header-button"><i class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
+                Card</button></a>
     </div>
     <div class="cardholder-details">
         <div class="detail-item">
@@ -40,9 +41,9 @@
             <span>Issue Date</span>
         </div>
         <div class="detail-item">
-            <span>{{ cardholder.card_type.name }}</span>
-            <span>{{ cardholder.id }}</span>
-            <span>{{ cardholder.issued_date }}</span>
+            <span>{{ cardholder.card_type.name|default:"N/A" }}</span>
+            <span>{{ card.card_number|default:"N/A" }}</span>
+            <span>{{ card.issued_date|default:"N/A" }}</span>
         </div>
     </div>
     <div class="Note">

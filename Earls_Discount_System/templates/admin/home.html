@@ -107,10 +107,12 @@
                 <tr>
                     <td data-title="Card No">{{ cardholder.id }}</td>
                     <td data-title="Name">{{ cardholder.name }}</td>
-                    <td data-title="Email">{{ cardholder.email }}</td>
+                    <td data-title="Email">
+                        <a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a>
+                    </td>
                     <td data-title="Status">{% if cardholder.is_active == 1 %}Active{% else %}Inactive{% endif %}</td>
-                    <td data-title="CardType">{{ cardholder.card_type.name }}</td>
-                    <td data-title="Issue Date">{{ cardholder.issued_date }}</td>
+                    <td data-title="CardType">{{ cardholder.card_type.name|default:"N/A" }}</td>
+                    <td data-title="Issue Date">{{ cardholder.card.issued_date|default:"N/A" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -225,6 +225,11 @@ input:focus {
   width: 100%;
 }
 
+.cardholder-table a,
+.table-total-cardholders tbody a {
+  color: var(--font-color);
+}
+
 /* pagination */
 
 .pagination {
