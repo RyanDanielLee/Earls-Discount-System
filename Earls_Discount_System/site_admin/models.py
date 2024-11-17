@@ -82,7 +82,7 @@ class Cardholder(models.Model):
     is_active = models.BooleanField(default=True)
     card_type = models.ForeignKey('CardType', on_delete=models.CASCADE, null=True)
     card = models.ForeignKey('Card', on_delete=models.SET_NULL, related_name='assigned_cardholder', null=True)
-    created_date = models.DateField( null=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         db_table = 'cardholder'

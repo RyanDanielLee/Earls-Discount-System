@@ -9,7 +9,7 @@ from django.db.models import Q
 
 def admin_home(request):
     one_month_ago = timezone.now() - timedelta(days=30)
-    new_cardholders = Cardholder.objects.filter(created_date__gte=one_month_ago)
+    new_cardholders = Cardholder.objects.filter(created_date__gte=one_month_ago).order_by('-created_date')
 
     for cardholder in new_cardholders:
         cardholder.card = Card.objects.filter(cardholder=cardholder).first()
@@ -87,6 +87,9 @@ def issue_card(request):
             card_number=card_number,
             issued_date=timezone.now(),
         )
+
+        cardholder.card = card
+        cardholder.save()
 
         # Generate wallet selection tokens
         google_wallet_token = WalletSelectionToken.objects.create(
