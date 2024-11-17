@@ -15,14 +15,14 @@
                 new</button></a>
     </div>
 
-    <form class="form">
-        <select id="category" name="category" class="form-dropdown">
+    <form class="form" method="get" action="{% url 'search_cardholders' %}">
+        <select id="category" name="filter_by" class="search-filter form-dropdown">
             <option value="name">name</option>
             <option value="email">email</option>
-            <option value="ID">ID</option>
+            <option value="id">ID</option>
         </select>
-        <input id="cardholders" name="cardholders" placeholder="Search cardholder" class="form-text">
-        <button type="button" onclick="alert('Hello World!')" class="form-button">Search</button>
+        <input id="cardholders" type="text" name="q" placeholder="Search cardholder" class="form-text">
+        <button type="submit" class="form-button">Search</button>
     </form>
     <table class="cardholder-table">
         <thead>

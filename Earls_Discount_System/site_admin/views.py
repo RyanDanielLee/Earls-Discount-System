@@ -4,6 +4,8 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import Cardholder, CardType, Company, Card, WalletSelectionToken
 from .utils import send_wallet_selection_email, generate_card_number
+# search
+from django.db.models import Q
 
 def admin_home(request):
     one_month_ago = timezone.now() - timedelta(days=30)
@@ -34,6 +36,23 @@ def manage_card_holders(request):
         cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
 
     return render(request, 'cardholder/cardholder.html', {'cardholders': cardholders})
+
+def search_cardholders(request):
+    query = request.GET.get('q', '')
+    filter_by = request.GET.get('filter_by', 'name')  # Default to search by name
+
+    if filter_by == 'name':
+        cardholders = Cardholder.objects.filter(
+            Q(first_name__icontains=query) | Q(last_name__icontains=query)
+        )
+    elif filter_by == 'email':
+        cardholders = Cardholder.objects.filter(email__icontains=query)
+    elif filter_by == 'id':
+        cardholders = Cardholder.objects.filter(id=query)
+    else:
+        cardholders = Cardholder.objects.none()
+
+    return render(request, 'cardholder/search_results.html', {'cardholders': cardholders, 'query': query, 'filter_by': filter_by})
 
 # EC Card
 def issue_card(request):

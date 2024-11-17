@@ -239,6 +239,12 @@ input:focus {
   background-color: var(--bg-variant);
 }
 
+.headline-search {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--font-color);
+}
+
 /* pagination */
 
 .pagination {
