@@ -44,5 +44,10 @@ function closeConfirmationModal() {
 }
 
 function submitRevokeForm() {
-  document.getElementById('revoke-form').submit();
+  const form = document.getElementById('revoke-form');
+  if (form) {
+    form.submit();
+  } else {
+    console.error('Revoke form not found');
+  }
 }

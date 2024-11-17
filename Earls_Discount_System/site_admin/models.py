@@ -99,9 +99,11 @@ class Card(models.Model):
  
 class DigitalWallet(models.Model):
     id = models.AutoField(primary_key=True)
-    card_number = models.OneToOneField('Card', on_delete=models.CASCADE, related_name='digital_wallets')
-    wallet_type = models.CharField(max_length=50)  # 'Apple Wallet' or 'Google Wallet'
-    issued_date = models.DateField(auto_now_add=True)
+    card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='digital_wallets', null=True)
+    google_wallet_issued = models.BooleanField(default=False, null=True)
+    google_wallet_issued_date = models.DateField(null=True, blank=True) 
+    apple_wallet_issued = models.BooleanField(default=False, null=True)
+    apple_wallet_issued_date = models.DateField(null=True, blank=True) 
 
     class Meta:
         db_table = 'digital_wallet'

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import timedelta
-from .models import Cardholder, CardType, Company, Card
+from .models import Cardholder, CardType, Company, Card, WalletSelectionToken
 from .utils import send_wallet_selection_email, generate_card_number
 
 def admin_home(request):
@@ -68,7 +68,20 @@ def issue_card(request):
             card_type=cardtype
         )
 
-        send_wallet_selection_email(cardholder)
+        # Generate wallet selection tokens
+        google_wallet_token = WalletSelectionToken.objects.create(
+            cardholder=cardholder,
+            expires_at=timezone.now() + timezone.timedelta(hours=1)
+        )
+        apple_wallet_token = WalletSelectionToken.objects.create(
+            cardholder=cardholder,
+            expires_at=timezone.now() + timezone.timedelta(hours=1)
+        )
+        
+        # Send email with wallet selection links
+        send_wallet_selection_email(cardholder=cardholder,
+            google_wallet_token=google_wallet_token.token,
+            apple_wallet_token=apple_wallet_token.token, expires_at=google_wallet_token.expires_at)
 
         return redirect('manage_card_holders') 
 
@@ -127,6 +140,20 @@ def edit_card(request, cardholder_id):
         'companies': company,
         'card_types': cardtype
     })
+
+def delete_cardholder(request, cardholder_id):
+    cardholder = Cardholder.objects.get(id=cardholder_id)
+    
+    # Delete related cards
+    cardholder.card_set.all().delete()
+    
+    # Delete related wallet selection tokens
+    WalletSelectionToken.objects.filter(cardholder=cardholder).delete()
+    
+    # Delete the cardholder
+    cardholder.delete()
+    
+    return redirect('manage_card_holders')
 
 def upload_card_faceplate(request):
     return render(request, 'eccard/upload-faceplate.html')

@@ -7,6 +7,7 @@ urlpatterns = [
     path('cardholders/view_all_users/', views.view_all_users, name='view_all_users'),
     path('cardholders/<int:cardholder_id>/', views.manage_user_details, name='manage_user_details'),
     path('cardholders/', views.manage_card_holders, name="manage_card_holders"),
+    path('cardholders/delete/<int:cardholder_id>/', views.delete_cardholder, name="delete_cardholder"),
     
     path('ec_card/issue_card/', views.issue_card, name='issue_card'),
     path('ec_card/revoke_card/<int:cardholder_id>/', views.revoke_card, name='revoke_card'),

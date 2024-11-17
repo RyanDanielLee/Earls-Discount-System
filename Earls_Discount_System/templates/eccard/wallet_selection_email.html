@@ -27,22 +27,25 @@
 
     <h2>Hello {{ first_name }},</h2>
 
-    <p>Your new EC Card is ready for digital use! You can choose to add it to either Google Wallet or Apple Wallet. Just
-        click one of the links below:</p>
+    <p>Your new EC Card is ready for digital use! You can choose to add it to your
+        preferred digital wallet below:</p>
 
     <p>
-        <a href="#">Add to Google Wallet</a>
+        <a href="{{ google_wallet_link }}">Add to Google Wallet</a>
     </p>
     <p>
-        <a href="#">Add to Apple Wallet</a>
+        <a href="{{ apple_wallet_link }}">Add to Apple Wallet</a>
     </p>
 
-    <p class="note">*Note: These links are valid for 1 hour.</p>
+    <p class="note">*Note: These links are valid for 1 hour. After that, you will need to request new links.</p>
 
-    <p>Feel free to reach out to support@earls.ca</p>
-
+    <p>Feel free to reach out to <a href="mailto:support@earls.ca">support@earls.ca</a>.</p>
+    <br><br><br>
     <p>Best regards,<br>The Earls EC Card Team</p>
 
+    <div class="footer">
+        <p>&copy; 2024 Earls EC Card System. All rights reserved.</p>
+    </div>
 </body>
 
 </html>

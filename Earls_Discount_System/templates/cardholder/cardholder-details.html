@@ -18,6 +18,7 @@
             <h2 class="cardholder-header-title">{{ cardholder.name }}</h2>
             <a class="cardholder-header-link" href="{% url 'edit_card' cardholder.id %}">Edit</a>
             <a class="cardholder-header-link" href="{% url 'revoke_card' cardholder.id %}">Revoke</a>
+            <a class="cardholder-header-link" href="{% url 'delete_cardholder' cardholder.id %}">Delete Cardholder</a>
         </div>
         <button class="cardholder-header-button"><i class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
             Card</button>
