@@ -3,21 +3,17 @@ from django.utils import timezone
 from datetime import timedelta
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from .models import WalletSelectionToken, Card, DigitalWallet
+from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 from django.conf import settings
 
-def send_wallet_selection_email(cardholder):
-    # Generate a new token and expiration date
-    token = WalletSelectionToken.objects.create(
-        cardholder=cardholder,
-        expires_at=timezone.now() + timedelta(hours=1)  # 1-hour expiration
-    )
+def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_token, expires_at):
 
     # Prepare context for email template
     context = {
         'first_name': cardholder.first_name,
-        'token': token.token,
-        'expiration': token.expires_at,
+         'google_wallet_link': f"https://your-domain.com/wallet/google?token={google_wallet_token}",
+        'apple_wallet_link': f"https://your-domain.com/wallet/apple?token={apple_wallet_token}",
+        'expiration': expires_at, 
     }
 
     # Render the HTML template with context

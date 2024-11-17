@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-container">
+    <div class="breadcrumb-bar">
+        <a href="#" class="back-button"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
+        <div class="breadcrumb-links">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="#">Cardholders</a>
+        </div>
+    </div>
+    <div class="cardholder-title-container">
+        <h1 class="headline">Cardholders</h1><a href="{% url 'issue_card' %}"><button class="btn-add-new">Add
+                new</button></a>
+    </div>
+
+    <form class="form" method="get" action="{% url 'search_cardholders' %}">
+        <select id="category" name="filter_by" class="search-filter form-dropdown">
+            <option value="name">name</option>
+            <option value="email">email</option>
+            <option value="id">ID</option>
+        </select>
+        <input id="cardholders" type="text" name="q" placeholder="Search cardholder" class="form-text">
+        <button type="submit" class="form-button">Search</button>
+    </form>
+    <div class="search-container">
+        <h1 class="headline-search">Search Results</h1>
+        <table class="cardholder-table">
+            <thead>
+                <tr>
+                    <th>Card No</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Card Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cardholder in cardholders %}
+                <tr>
+                    <td>{{ cardholder.id }}</td>
+                    <td>{{ cardholder.first_name }} {{ cardholder.last_name }}</td>
+                    <td><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a></td>
+                    <td>{{ cardholder.card_type.name }}</td>
+                    <td><a href="{% url 'manage_user_details' cardholder.id %}"><button
+                                class="view-button">View</button></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No results found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -120,11 +120,11 @@ input:focus {
   font-weight: 500;
 }
 
-.cardholder-table tr:nth-child(even) {
+.cardholder-table tbody tr:nth-child(even) {
   background-color: var(--bg-variant);
 }
 
-.cardholder-table tr:hover {
+.cardholder-table tbody tr:hover {
   background-color: var(--grey-color);
 }
 
@@ -186,6 +186,63 @@ input:focus {
 
 .cardholder-header-icon {
   color: var(--primary-color);
+}
+
+.cardholder-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-add-new {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  justify-content: center;
+  color: var(--font-color);
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0.2rem 0.1rem;
+  transition: all 0.1s ease-out;
+  border: none;
+  outline: none;
+  margin-right: 1rem;
+}
+
+.btn-add-new::after {
+  /* Fixed class name here */
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px; /* Adjust line thickness */
+  background: var(--font-color); /* Adjust line color */
+  transition: width 0.3s ease; /* Adjust animation speed */
+}
+
+.btn-add-new:hover::after {
+  width: 100%;
+}
+
+.cardholder-table a,
+.table-total-cardholders tbody a {
+  color: var(--font-color);
+}
+
+.cardholder-header-button.btn-reissue {
+  cursor: pointer;
+  transition: all 0.1s ease-out;
+}
+
+.cardholder-header-button.btn-reissue:hover {
+  background-color: var(--bg-variant);
+}
+
+.headline-search {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--font-color);
 }
 
 /* pagination */

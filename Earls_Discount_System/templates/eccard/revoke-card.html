@@ -18,7 +18,7 @@
     <div class="section-info">
         <h1 class="headline">Revoke Card</h1>
     </div>
-    <form class="eccard-form flex-column" method="POST" action="{% url 'revoke_card' cardholder.id %}">
+    <form class="eccard-form flex-column" id="revoke-form" method="POST" action="{% url 'revoke_card' cardholder.id %}">
         {% csrf_token %}
         <div class="flex-column input-group">
             <div class="flex-row">
@@ -54,7 +54,7 @@
         </div>
         <div class="flex-row justify-end revoke">
             <div class="info-revoke"><i class="fa-solid fa-check"></i>
-                <p><span>Revoking a card will</span> deactive the cardholder <span>and</span><br>
+                <p><span>Revoking a card will</span> deactivate the cardholder <span>and</span><br>
                     remove the card <span>from their wallet</span></p>
             </div>
             <button type="button" onclick="openConfirmationModal()" class="form-button">Revoke Card</button>

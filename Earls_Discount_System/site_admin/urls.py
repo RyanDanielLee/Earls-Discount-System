@@ -7,10 +7,13 @@ urlpatterns = [
     path('cardholders/view_all_users/', views.view_all_users, name='view_all_users'),
     path('cardholders/<int:cardholder_id>/', views.manage_user_details, name='manage_user_details'),
     path('cardholders/', views.manage_card_holders, name="manage_card_holders"),
-    
+    path('cardholders/delete/<int:cardholder_id>/', views.delete_cardholder, name="delete_cardholder"),
+    path('cardholders/search/', views.search_cardholders, name='search_cardholders'), # Search
+
     path('ec_card/issue_card/', views.issue_card, name='issue_card'),
     path('ec_card/revoke_card/<int:cardholder_id>/', views.revoke_card, name='revoke_card'),
     path('ec_card/edit_card/<int:cardholder_id>/', views.edit_card, name='edit_card'),
+    path('ec_card/reissue_card/<int:cardholder_id>/', views.reissue_card, name='reissue_card'),
     path('ec_card/upload_card_faceplate/', views.upload_card_faceplate, name='upload_card_faceplate'),
     path('ec_card/view_card_faceplate/', views.view_card_faceplate, name='view_card_faceplate'),
     

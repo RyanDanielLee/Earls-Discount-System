@@ -77,31 +77,33 @@ class Cardholder(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    company = models.ForeignKey('Company', on_delete=models.CASCADE)
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     note = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    card_type = models.ForeignKey('CardType', on_delete=models.CASCADE)
-    issued_date = models.DateField()
+    card_type = models.ForeignKey('CardType', on_delete=models.CASCADE, null=True)
+    card = models.ForeignKey('Card', on_delete=models.SET_NULL, related_name='assigned_cardholder', null=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         db_table = 'cardholder'
 
 class Card(models.Model):
     id = models.AutoField(primary_key=True)
-    card_number = models.IntegerField(unique=True)
-    issued_date = models.DateField()
+    card_number = models.IntegerField(unique=True, null=True)
+    issued_date = models.DateField(null=True)
     revoked_date = models.DateField(null=True, blank=True)
-    cardholder = models.ForeignKey('Cardholder', on_delete=models.CASCADE)
-    card_type = models.ForeignKey('CardType', on_delete=models.CASCADE)
-    
+    cardholder = models.ForeignKey('Cardholder', on_delete=models.CASCADE, related_name='cards')
+
     class Meta:
         db_table = 'card'
  
 class DigitalWallet(models.Model):
     id = models.AutoField(primary_key=True)
-    card_number = models.OneToOneField('Card', on_delete=models.CASCADE, related_name='digital_wallets')
-    wallet_type = models.CharField(max_length=50)  # 'Apple Wallet' or 'Google Wallet'
-    issued_date = models.DateField(auto_now_add=True)
+    card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='digital_wallets', null=True)
+    google_wallet_issued = models.BooleanField(default=False, null=True)
+    google_wallet_issued_date = models.DateField(null=True, blank=True) 
+    apple_wallet_issued = models.BooleanField(default=False, null=True)
+    apple_wallet_issued_date = models.DateField(null=True, blank=True) 
 
     class Meta:
         db_table = 'digital_wallet'

@@ -10,15 +10,19 @@
             <a href="#">Cardholders</a>
         </div>
     </div>
-    <h1 class="headline">Cardholders</h1>
-    <form class="form">
-        <select id="category" name="category" class="form-dropdown">
+    <div class="cardholder-title-container">
+        <h1 class="headline">Cardholders</h1><a href="{% url 'issue_card' %}"><button class="btn-add-new">Add
+                new</button></a>
+    </div>
+
+    <form class="form" method="get" action="{% url 'search_cardholders' %}">
+        <select id="category" name="filter_by" class="search-filter form-dropdown">
             <option value="name">name</option>
             <option value="email">email</option>
-            <option value="ID">ID</option>
+            <option value="id">ID</option>
         </select>
-        <input id="cardholders" name="cardholders" placeholder="Search cardholder" class="form-text">
-        <button type="button" onclick="alert('Hello World!')" class="form-button">Search</button>
+        <input id="cardholders" type="text" name="q" placeholder="Search cardholder" class="form-text">
+        <button type="submit" class="form-button">Search</button>
     </form>
     <table class="cardholder-table">
         <thead>
@@ -30,16 +34,19 @@
                 <th></th>
             </tr>
         </thead>
-        {% for cardholder in cardholders %}
-        <tr>
-            <td>{{ cardholder.id }}</td>
-            <td>{{ cardholder.name }}</td>
-            <td>{{ cardholder.email }}</td>
-            <td>{{ cardholder.card_type.name }}</td>
-            <td><a href="{% url 'manage_user_details' cardholder.id %}"><button class="view-button">View</button></a>
-            </td>
-        </tr>
-        {% endfor %}
+        <tbody>
+            {% for cardholder in cardholders %}
+            <tr>
+                <td>{{ cardholder.id }}</td>
+                <td>{{ cardholder.name }}</td>
+                <td><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a></td>
+                <td>{{ cardholder.card_type.name }}</td>
+                <td><a href="{% url 'manage_user_details' cardholder.id %}"><button
+                            class="view-button">View</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <div class="pagination">
         <i class="fa-solid fa-chevron-left"></i>

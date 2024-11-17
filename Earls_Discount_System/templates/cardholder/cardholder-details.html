@@ -18,8 +18,11 @@
             <h2 class="cardholder-header-title">{{ cardholder.name }}</h2>
             <a class="cardholder-header-link" href="{% url 'edit_card' cardholder.id %}">Edit</a>
             <a class="cardholder-header-link" href="{% url 'revoke_card' cardholder.id %}">Revoke</a>
+            <a class="cardholder-header-link" href="{% url 'delete_cardholder' cardholder.id %}">Delete Cardholder</a>
         </div>
-        <button class="cardholder-header-button"><i class="fa-regular fa-envelope cardholder-header-icon"></i> Re-Issue
+        <button class="cardholder-header-button btn-reissue" onclick="openReissueConfirmModal(event)"><i
+                class="fa-regular fa-envelope cardholder-header-icon"></i>
+            Re-Issue
             Card</button>
     </div>
     <div class="cardholder-details">
@@ -31,7 +34,7 @@
         <div class="detail-item">
             <span>{{ cardholder.email }}</span>
             <span>{{ cardholder.company.name }}</span>
-            <span>{{ cardholder.status }}</span>
+            <span>{% if cardholder.is_active == 1 %}Active{% else %}Inactive{% endif %}</span>
         </div>
         <div class="detail-item">
             <span>Card Type</span>
@@ -39,9 +42,9 @@
             <span>Issue Date</span>
         </div>
         <div class="detail-item">
-            <span>{{ cardholder.card_type.name }}</span>
-            <span>{{ cardholder.id }}</span>
-            <span>{{ cardholder.issued_date }}</span>
+            <span>{{ cardholder.card_type.name|default:"N/A" }}</span>
+            <span>{{ card.card_number|default:"N/A" }}</span>
+            <span>{{ card.issued_date|default:"N/A" }}</span>
         </div>
     </div>
     <div class="Note">
@@ -92,4 +95,23 @@
         <i class="fa-solid fa-chevron-right"></i>
     </div>
 </div>
+
+
+
+<!-- Confirmation Pop-Up -->
+<div id="reissue-confirmation-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-texts">
+            <small>Re-issue Card</small>
+            <p>Your card is succesfully re-issued.</p>
+        </div>
+
+        <div class="modal-buttons-container">
+            <a href="{% url 'reissue_card' cardholder.id %}"><button type="submit" onclick="closeReissueConfirmModal()"
+                    class="modal-form-button">Close</button>
+            </a>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
