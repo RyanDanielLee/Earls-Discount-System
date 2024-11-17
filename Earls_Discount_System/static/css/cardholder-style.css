@@ -188,6 +188,43 @@ input:focus {
   color: var(--primary-color);
 }
 
+.cardholder-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-add-new {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  justify-content: center;
+  color: var(--font-color);
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0.2rem 0.1rem;
+  transition: all 0.1s ease-out;
+  border: none;
+  outline: none;
+  margin-right: 1rem;
+}
+
+.btn-add-new::after {
+  /* Fixed class name here */
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px; /* Adjust line thickness */
+  background: var(--font-color); /* Adjust line color */
+  transition: width 0.3s ease; /* Adjust animation speed */
+}
+
+.btn-add-new:hover::after {
+  width: 100%;
+}
+
 /* pagination */
 
 .pagination {

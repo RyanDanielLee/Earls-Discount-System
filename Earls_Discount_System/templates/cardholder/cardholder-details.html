@@ -31,7 +31,7 @@
         <div class="detail-item">
             <span>{{ cardholder.email }}</span>
             <span>{{ cardholder.company.name }}</span>
-            <span>{{ cardholder.status }}</span>
+            <span>{% if cardholder.is_active == 1 %}Active{% else %}Inactive{% endif %}</span>
         </div>
         <div class="detail-item">
             <span>Card Type</span>

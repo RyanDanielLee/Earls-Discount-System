@@ -10,7 +10,11 @@
             <a href="#">Cardholders</a>
         </div>
     </div>
-    <h1 class="headline">Cardholders</h1>
+    <div class="cardholder-title-container">
+        <h1 class="headline">Cardholders</h1><a href="{% url 'issue_card' %}"><button class="btn-add-new">Add
+                new</button></a>
+    </div>
+
     <form class="form">
         <select id="category" name="category" class="form-dropdown">
             <option value="name">name</option>
