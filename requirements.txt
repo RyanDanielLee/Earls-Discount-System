@@ -4,3 +4,4 @@ gunicorn
 whitenoise
 pymysql
 python-dotenv
+pytest-django
