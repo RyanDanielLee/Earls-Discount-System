@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import timedelta
-from .models import Cardholder, CardType, Company, Card, WalletSelectionToken
+from .models import Cardholder, CardType, Company, Card, WalletSelectionToken, Store
 from .utils import send_wallet_selection_email, generate_card_number
 # search
 from django.db.models import Q
@@ -231,7 +231,8 @@ def reports_dashboard(request):
     return render(request, 'reports/reports-dashboard.html')
 
 def total_discounts_per_store(request):
-    return render(request, 'reports/reports-store.html')
+    stores = Store.objects.all()
+    return render(request, 'reports/reports-store.html', {'stores': stores})
 
 def drilldown_store(request):
     return render(request, 'reports/drilldown-store.html')
