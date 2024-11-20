@@ -1,12 +1,24 @@
+from datetime import timedelta
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Cardholder, CardType, Company, Card
 from django.utils import timezone
-from datetime import timedelta
-from .models import Cardholder, CardType, Company, Card, WalletSelectionToken
-from .utils import send_wallet_selection_email, generate_card_number, issue_card_to_google_wallet
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
+from django.db.models import Q
+
+from .models import (
+    Cardholder,
+    CardType,
+    Company,
+    Card,
+    WalletSelectionToken
+)
+from .utils import (
+    generate_card_number,
+    issue_card_to_google_wallet,
+    send_wallet_selection_email
+)
+
 # search
 from django.db.models import Q
 
@@ -75,13 +87,6 @@ def search_cardholders(request):
         cardholders = Cardholder.objects.none()
 
     return render(request, 'cardholder/search_results.html', {'cardholders': cardholders, 'query': query, 'filter_by': filter_by})
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.utils import timezone
-from django.contrib.auth.decorators import user_passes_test
-from .models import Company, CardType, Cardholder, Card, WalletSelectionToken
-from .utils import generate_card_number, issue_card_to_google_wallet, send_wallet_selection_email
 
 
 @user_passes_test(is_superadmin, login_url='/unauthorized')

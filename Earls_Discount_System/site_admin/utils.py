@@ -113,16 +113,16 @@ def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audienc
         # Define the JWT payload
         now = datetime.datetime.utcnow()
         payload = {
-            "iss": issuer_id,  # Issuer ID
+            "iss": service_account_info["client_email"],  # Issuer ID
             "aud": audience,   # Audience (usually "google")
-            "iat": now,        # Issued at time
-            "exp": now + datetime.timedelta(hours=1),  # Expiration time (1 hour from now)
+            "iat": 1732143939, 
+            #"exp": int((now + datetime.timedelta(hours=1)).timestamp()),  
             "typ": "savetowallet",  # Type of JWT for Google Wallet
             "payload": {
                 "genericObjects": [card_data]  # Embed the card data in the payload
             }
         }
-
+        print(payload)
         # Sign the JWT with the private key
         signed_jwt = jwt.encode(payload, private_key, algorithm="RS256")
 
@@ -140,7 +140,7 @@ def issue_card_to_google_wallet(company_name, first_name, email, card_type_name,
 
         # Define the card details for the Generic Object
         card_data = {
-            "id": f"{issuer_id}.{first_name}.generic-card",  # Unique identifier for this card object
+            "id": f"{issuer_id}.{first_name}",  # Unique identifier for this card object
             "classId": f"{issuer_id}.EC_10",  # Match the working classId
             "state": "active",  # Use lowercase "active" as per your working example
             "accountId": email,
@@ -167,7 +167,25 @@ def issue_card_to_google_wallet(company_name, first_name, email, card_type_name,
                 "type": "QR_CODE",
                 "value": "1234567890",
                 "alternateText": "Scan for Discount"
-            }
+            },
+            "cardTitle": {
+                "defaultValue": {
+                    "language": "en-US",
+                    "value": "Discount Card"
+                }
+            },
+            "subheader": {
+                "defaultValue": {
+                    "language": "en-US",
+                    "value": "Employee"
+                }
+            },
+            "header": {
+                "defaultValue": {
+                    "language": "en-US",
+                    "value": first_name
+                }
+            },
         }
 
         # Generate a signed JWT containing the card details
