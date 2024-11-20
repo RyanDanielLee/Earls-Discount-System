@@ -2,7 +2,9 @@ import os
 import json
 import requests 
 import requests
+import datetime
 import json
+import jwt
 from django.core.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta
@@ -87,26 +89,62 @@ def get_google_wallet_token():
     
     return credentials.token  # Return only the access token
 
+def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audience="google"):
+    """
+    Generate a signed JWT containing card details for Google Wallet.
+
+    Args:
+        issuer_id (str): Your Google Wallet issuer ID.
+        service_account_file (str): Path to your service account JSON file.
+        card_data (dict): The card data to embed in the JWT.
+        audience (str): The audience for the JWT (default: "google").
+
+    Returns:
+        str: A signed JWT ready to be sent to Google Wallet.
+    """
+    try:
+        # Load the service account key JSON
+        with open(service_account_file, "r") as file:
+            service_account_info = json.load(file)
+        
+        # Extract the private key
+        private_key = service_account_info["private_key"]
+
+        # Define the JWT payload
+        now = datetime.datetime.utcnow()
+        payload = {
+            "iss": issuer_id,  # Issuer ID
+            "aud": audience,   # Audience (usually "google")
+            "iat": now,        # Issued at time
+            "exp": now + datetime.timedelta(hours=1),  # Expiration time (1 hour from now)
+            "typ": "savetowallet",  # Type of JWT for Google Wallet
+            "payload": {
+                "genericObjects": [card_data]  # Embed the card data in the payload
+            }
+        }
+
+        # Sign the JWT with the private key
+        signed_jwt = jwt.encode(payload, private_key, algorithm="RS256")
+
+        return signed_jwt
+    except Exception as e:
+        print(f"Error creating signed JWT: {str(e)}")
+        return None
+
+
 def issue_card_to_google_wallet(company_name, first_name, email, card_type_name, note):
     try:
-        # Authenticate and get access token for Google Wallet API
-        access_token = get_google_wallet_token()
-
-        # Define the API URL for issuing a generic object
-        url = "https://walletobjects.googleapis.com/walletobjects/v1/genericObject"
-
-        # Define the classId
+        # Define the private key file and issuer ID
+        SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"  # Your PEM key file
         issuer_id = "3388000000022791702"  # Your actual issuer ID
-        class_id = "EC_10"  # Match the working classId
-        formatted_class_id = f"{issuer_id}.{class_id}"
 
         # Define the card details for the Generic Object
         card_data = {
             "id": f"{issuer_id}.{first_name}.generic-card",  # Unique identifier for this card object
-            "classId": formatted_class_id,
+            "classId": f"{issuer_id}.EC_10",  # Match the working classId
             "state": "active",  # Use lowercase "active" as per your working example
             "accountId": email,
-            "accountName": "John Doe",
+            "accountName": first_name,
             "issuerName": company_name,
             "textModulesData": [
                 {"id": "employee_no", "header": "Employee No", "body": "1061"},
@@ -121,73 +159,31 @@ def issue_card_to_google_wallet(company_name, first_name, email, card_type_name,
                 "contentDescription": {
                     "defaultValue": {
                         "language": "en-US",
-                        "value": "Earls Corporate Logo"
+                        "value": "Company Logo"
                     }
-                }
-            },
-            "cardTitle": {
-                "defaultValue": {
-                    "language": "en-US",
-                    "value": card_type_name
-                }
-            },
-            "subheader": {
-                "defaultValue": {
-                    "language": "en-US",
-                    "value": "Employee"
-                }
-            },
-            "header": {
-                "defaultValue": {
-                    "language": "en-US",
-                    "value": email
                 }
             },
             "barcode": {
                 "type": "QR_CODE",
                 "value": "1234567890",
                 "alternateText": "Scan for Discount"
-            },
-            "heroImage": {
-                "sourceUri": {
-                    "uri": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLC_RMqXRRPwxO18b4Xhq2P4iaKAD9lObR5A&s"
-                },
-                "contentDescription": {
-                    "defaultValue": {
-                        "language": "en-US",
-                        "value": "Earls Hero Image"
-                    }
-                }
             }
         }
 
-        # Debug logs
-        print("Request Data:", json.dumps(card_data, indent=2))
+        # Generate a signed JWT containing the card details
+        signed_jwt = create_google_wallet_jwt(issuer_id, SERVICE_ACCOUNT_FILE, card_data)
 
-        # Set the headers for authorization
-        headers = {
-            "Authorization": f"Bearer {access_token}",
-            "Content-Type": "application/json"
-        }
+        if not signed_jwt:
+            print("Failed to generate signed JWT.")
+            return {'status': 'error', 'message': 'JWT creation failed.'}
 
-        # Make the POST request to issue the card
-        response = requests.post(url, headers=headers, json=card_data)
+        # Generate the Google Wallet Save link
+        google_wallet_link = f"https://pay.google.com/gp/v/save/{signed_jwt}"
 
-        # Check if the request was successful
-        if response.status_code == 200:
-            card_response = response.json()
-            wallet_id = card_response.get('id')
-            print(f"Card Issued with ID: {wallet_id}")
+        # Debug: Ensure the link is correct and testable
+        print(f"Google Wallet Link: {google_wallet_link}")
 
-            # Generate the Google Wallet link
-            google_wallet_link = f"https://pay.google.com/gp/v/save/{wallet_id}"
-            print(f"Google Wallet Link: {google_wallet_link}")
-
-            return {'status': 'success', 'wallet_id': wallet_id, 'google_wallet_link': google_wallet_link}
-        else:
-            print(f"Error response received: {response.status_code} - {response.text}")
-            return {'status': 'error', 'message': response.text}
-
+        return {'status': 'success', 'google_wallet_link': google_wallet_link, 'signed_jwt': signed_jwt}
     except Exception as e:
         print(f"Error issuing card: {str(e)}")
         return {'status': 'error', 'message': str(e)}

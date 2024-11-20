@@ -76,10 +76,16 @@ def search_cardholders(request):
 
     return render(request, 'cardholder/search_results.html', {'cardholders': cardholders, 'query': query, 'filter_by': filter_by})
 
-# EC Card
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils import timezone
+from django.contrib.auth.decorators import user_passes_test
+from .models import Company, CardType, Cardholder, Card, WalletSelectionToken
+from .utils import generate_card_number, issue_card_to_google_wallet, send_wallet_selection_email
+
+
 @user_passes_test(is_superadmin, login_url='/unauthorized')
 def issue_card(request):
-
     is_superadmin = request.user.groups.filter(name='superadmin').exists()
     
     if request.method == 'POST':
@@ -118,6 +124,7 @@ def issue_card(request):
 
             cardholder.card = card
             cardholder.save()
+
             # Call the separate function to issue the card to Google Wallet
             wallet_response = issue_card_to_google_wallet(
                 company_name=company.name,
@@ -127,10 +134,9 @@ def issue_card(request):
                 note=note
             )
 
-            # Check response and handle success or failure
             if wallet_response['status'] == 'success':
-                # Optionally store the wallet ID
-                card.wallet_id = wallet_response['wallet_id']
+                # Store the wallet ID in the card
+                card.wallet_id = wallet_response.get('google_wallet_id', None)  # Use 'google_wallet_id' from the response
                 card.save()
 
                 # Generate wallet selection tokens
@@ -179,6 +185,7 @@ def issue_card(request):
             'is_superadmin': is_superadmin
         }
     )
+
 
 @user_passes_test(is_superadmin, login_url='/unauthorized')
 def revoke_card(request, cardholder_id):
