@@ -171,6 +171,19 @@ a {
   transition: all 0.1s ease-out;
 }
 
+.text-link {
+  margin-left: 1rem;
+  padding: 0.2rem 0.1rem;
+  color: var(--primary-color);
+  text-decoration: none;
+
+  transition: all 0.1s ease-out;
+}
+
+.text-link:hover {
+  color: var(--font-color);
+}
+
 /* force y-axis scrollbar */
 html {
   overflow-y: scroll;
