@@ -153,6 +153,7 @@ print(os.getenv('CLIENT_ID'))
 print(os.getenv('CLIENT_SECRET'))
 
 LOGIN_REDIRECT_URL = '/site_admin/'
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
