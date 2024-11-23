@@ -21,11 +21,15 @@ RUN wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /cloud_sq
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+
 # Copy the rest of the application code
 COPY . .
 
 # Collect static files during build (instead of at runtime)
 RUN cd Earls_Discount_System && python manage.py collectstatic --noinput
+
+# Run pytest for testing
+RUN cd Earls_Discount_System && pytest --ds=Earls_Discount_System.settings --maxfail=5 --disable-warnings || true
 
 # Expose port 8080 for the application to run on
 EXPOSE 8080

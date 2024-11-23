@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Cardholder, CardType, Company, Card
 from django.utils import timezone
 from datetime import timedelta
-from .models import Cardholder, CardType, Company, Card, WalletSelectionToken
+from .models import Cardholder, CardType, Company, Card, WalletSelectionToken, Store
 from .utils import send_wallet_selection_email, generate_card_number
 from django.contrib.auth.decorators import user_passes_test
 # search
@@ -270,7 +270,9 @@ def reports_dashboard(request):
 @user_passes_test(is_admin, login_url='/unauthorized')
 def total_discounts_per_store(request):
     is_superadmin = request.user.groups.filter(name='superadmin').exists()
-    return render(request, 'reports/reports-store.html', {'is_superadmin': is_superadmin, 'is_admin': is_admin})
+    stores = Store.objects.all()
+    
+    return render(request, 'reports/reports-store.html', {'stores': stores, 'is_superadmin': is_superadmin, 'is_admin': is_admin})
 
 
 @user_passes_test(is_admin, login_url='/unauthorized')
