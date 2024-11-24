@@ -3,12 +3,14 @@ from django.http import HttpResponse
 from django.utils import timezone
 from datetime import timedelta
 from .models import Cardholder, CardType, Company, Card, WalletSelectionToken, Store
-from .utils import send_wallet_selection_email, generate_card_number
+from .utils import send_wallet_selection_email, generate_card_number, format_date
 from .bigquery_helper import fetch_bigquery_data
+from django.db import connection
 # search
 from django.db.models import Q
 # pagination
 from django.core.paginator import Paginator
+
 
 
 def admin_home(request):
@@ -244,14 +246,112 @@ def reports_dashboard(request):
 
 def total_discounts_per_store(request):
     query = """
-    SELECT store_name
-    FROM `bcit-ec.simphony_api_dataset.store_reference`
+    SELECT
+        sr.store_name,
+        SUM(CASE WHEN gc.chkName IS NOT NULL THEN gc.dscTtl ELSE 0 END) AS known_cardholder_discount,
+        SUM(CASE WHEN gc.chkName IS NULL THEN gc.dscTtl ELSE 0 END) AS unknown_cardholder_discount
+    FROM
+        `bcit-ec.simphony_api_dataset.store_reference` AS sr
+    JOIN
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    ON
+        sr.store_id = gc.locRef
+    GROUP BY sr.store_name
     """
-    stores = fetch_bigquery_data(query)
-    return render(request, 'reports/reports-store.html', {'stores': stores})
 
-def drilldown_store(request):
-    return render(request, 'reports/drilldown-store.html')
+    stores = fetch_bigquery_data(query)
+
+    paginator = Paginator(stores, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'reports/reports-store.html', {'page_obj': page_obj})
+
+def drilldown_store(request, store_name):
+
+    show_known = request.GET.get('show_known', None)
+    show_unknown = request.GET.get('show_unknown', None) 
+
+    if show_known is None and show_unknown is None:
+        show_known = True
+        show_unknown = False
+    else:
+        show_known = show_known == 'true'
+        show_unknown = show_unknown == 'true'
+
+    bigquery_query = f"""
+    SELECT
+        gc.clsdBusDt AS business_date,
+        gc.empNum AS cardholder_id,
+        gc.chkName AS check_name,
+        gc.dscTtl AS discount_amount,
+        gc.tipTotal AS tip_amount
+    FROM
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    JOIN
+        `bcit-ec.simphony_api_dataset.store_reference` AS sr
+    ON
+        sr.store_id = gc.locRef
+    WHERE
+        sr.store_name = "{store_name}"
+    ORDER BY business_date DESC
+    """
+    bigquery_results = fetch_bigquery_data(bigquery_query)
+
+    cardholder_ids = [row['cardholder_id'] for row in bigquery_results if row['cardholder_id']]
+
+    # Query CloudSQL for cardholder details and card types
+    placeholders = ",".join(["%s"] * len(cardholder_ids))
+    cloudsql_query = f"""
+    SELECT
+        ch.id AS cardholder_id,
+        CONCAT(ch.first_name, ' ', ch.last_name) AS cardholder_name,
+        ct.name AS card_type
+    FROM
+        cardholder AS ch
+    LEFT JOIN
+        card_type AS ct
+    ON
+        ch.card_type_id = ct.id
+    WHERE
+        ch.id IN ({placeholders})
+    """
+
+    with connection.cursor() as cursor:
+        cursor.execute(cloudsql_query, cardholder_ids)
+        cloudsql_results = cursor.fetchall()
+
+    # Convert CloudSQL results to a dictionary
+    cardholder_details = {
+        row[0]: {"cardholder_name": row[1], "card_type": row[2]} for row in cloudsql_results
+    }
+
+    # Combine BigQuery results with CloudSQL details
+    transactions = []
+    for row in bigquery_results:
+        cardholder_detail = cardholder_details.get(row['cardholder_id'], {})
+        known_cardholder = row['check_name'] is not None  # Determine if it's a known cardholder
+        if (known_cardholder and show_known) or (not known_cardholder and show_unknown):
+            transactions.append({
+                "business_date": row['business_date'] if isinstance(row['business_date'], str) else row['business_date'].strftime("%Y-%m-%d"),
+                "cardholder_name": cardholder_detail.get("cardholder_name", "Noname"),
+                "check_name": row['check_name'],
+                "card_type": cardholder_detail.get("card_type", "-"),
+                "discount_amount": row['discount_amount'],
+                "tip_amount": row['tip_amount'],
+            })
+
+
+    paginator = Paginator(transactions, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'reports/drilldown-store.html', {
+        'store_name': store_name,
+        'page_obj': page_obj,
+        'show_known': show_known,
+        'show_unknown': show_unknown,
+    })
 
 def total_discounts_per_employee(request):
     return render(request, 'reports/reports-employee.html')

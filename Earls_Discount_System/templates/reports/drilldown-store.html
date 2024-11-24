@@ -20,7 +20,7 @@
         </div>
         <div class="shop-title">
             <i class="fa-solid fa-shop font-awesome-icons"></i>
-            <p>Edmonton Tin Palace</p>
+            <p>{{ store_name }}</p>
         </div>
         <div class="category-select">
             <div class="drilldown-period">
@@ -28,18 +28,23 @@
                     <span>2024</span>
                 </p>
             </div>
-            <div>
-                <label class="drilldown-check-box">Known Cardholder
-                    <input type="checkbox" checked="checked">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-            <div>
-                <label class="drilldown-check-box">Unknown Cardholder
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
+            <form method="get" class="filter-form">
+                <div>
+                    <label class="drilldown-check-box">Known Cardholder&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="show_known" value="true" {% if show_known %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="drilldown-check-box">Unknown Cardholder
+                        <input type="checkbox" name="show_unknown" value="true" {% if show_unknown %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                    </label>
+
+                </div>
+                <button type="submit" class="btn-report-filter">Apply</button>
+            </form>
+
         </div>
     </div>
     <section class="reports-dashbd-tb">
@@ -49,92 +54,43 @@
                     <tr class="thead">
                         <th>Date</th>
                         <th>Cardholder</th>
+                        <th>Check Name</th>
                         <th>Card Type</th>
-                        <th>Discount Amount</th>
-                        <th>Tip Amount</th>
+                        <th>Discount($)</th>
+                        <th>Tip Amount($)</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for transaction in page_obj %}
                     <tr>
-                        <td data-title="Date">2024-09-15</td>
-                        <td data-title="Name">Ethan Williams</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td data-title="Discount Amount">- $131.00</td>
-                        <td data-title="Tip Amount">$31.00</td>
+                        <td data-title="Date">{{ transaction.business_date }}</td>
+                        <td data-title="Name">{{ transaction.cardholder_name|default:"Unknown" }}</td>
+                        <td data-title="Check Name">{{ transaction.check_name|default:"Unknown" }}</td>
+                        <td data-title="Card Type">{{ transaction.card_type|default:"-" }}</td>
+                        <td data-title="Discount Amount">{{ transaction.discount_amount|floatformat:2 }}</td>
+                        <td data-title="Tip Amount">{{ transaction.tip_amount|floatformat:2 }}</td>
                     </tr>
-                    <tr>
-                        <td data-title="Date">2024-09-07</td>
-                        <td data-title="Name">Sophia Clark</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td data-title="Discount Amount">- $75.00</td>
-                        <td data-title="Tip Amount">$75.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-08-21</td>
-                        <td data-title="Name">Benjamin Turner</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td data-title="Discount Amount">- $49.00</td>
-                        <td data-title="Tip Amount">$49.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-07-19</td>
-                        <td data-title="Name">Olivia Scott</td>
-                        <td data-title="Card Type">EC100</td>
-                        <td data-title="Discount Amount">- $163.00</td>
-                        <td data-title="Tip Amount">$63.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-09-15</td>
-                        <td data-title="Name">Charlotte Morgan</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td data-title="Discount Amount">- $131.00</td>
-                        <td data-title="Tip Amount">$31.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-09-07</td>
-                        <td data-title="Name">Alexander Brooks</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td data-title="Discount Amount">- $75.00</td>
-                        <td data-title="Tip Amount">$75.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-08-21</td>
-                        <td data-title="Name">Emily Foster</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td data-title="Discount Amount">- $49.00</td>
-                        <td data-title="Tip Amount">$49.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-07-19</td>
-                        <td data-title="Name">James Bennett</td>
-                        <td data-title="Card Type">EC100</td>
-                        <td data-title="Discount Amount">- $163.00</td>
-                        <td data-title="Tip Amount">$63.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-08-21</td>
-                        <td data-title="Name">Amelia Cooper</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td data-title="Discount Amount">- $49.00</td>
-                        <td data-title="Tip Amount">$49.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-07-19</td>
-                        <td data-title="Name">Steve Bannon</td>
-                        <td data-title="Card Type">EC100</td>
-                        <td data-title="Discount Amount">- $163.00</td>
-                        <td data-title="Tip Amount">$93.00</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </section>
     <div class="pagination">
-        <i class="fa-solid fa-chevron-left"></i>
-        <a href="#" class="active">01</a>
-        <a href="#">02</a>
-        <a href="#">03</a>
-        <i class="fa-solid fa-chevron-right"></i>
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a href="?page={{ num }}" class="active">{{ num|add:"0"|slice:"-2" }}</a>
+        {% else %}
+        <a href="?page={{ num }}">{{ num|add:"0"|slice:"-2" }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
