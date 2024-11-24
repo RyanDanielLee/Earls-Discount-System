@@ -4,3 +4,5 @@ __pycache__/
 *.pyo
 .env
 sendgrid.env
+.idea/
+Earls_Discount_System/cards/certificate.p12
