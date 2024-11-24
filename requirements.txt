@@ -6,3 +6,4 @@ pymysql
 python-dotenv
 pytest-django
 sendgrid
+google-cloud-bigquery

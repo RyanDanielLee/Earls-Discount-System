@@ -35,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for cardholder in cardholders %}
+            {% for cardholder in page_obj %}
             <tr>
                 <td>{{ cardholder.id }}</td>
                 <td>{{ cardholder.name }}</td>
@@ -48,12 +48,29 @@
             {% endfor %}
         </tbody>
     </table>
-    <div class="pagination">
+    <!-- <div class="pagination">
         <i class="fa-solid fa-chevron-left"></i>
         <a href="#" class="active">01</a>
         <a href="#">02</a>
         <a href="#">03</a>
         <i class="fa-solid fa-chevron-right"></i>
+    </div> -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a href="?page={{ num }}" class="active">{{ num|add:"0"|slice:"-2" }}</a>
+        {% else %}
+        <a href="?page={{ num }}">{{ num|add:"0"|slice:"-2" }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

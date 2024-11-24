@@ -75,7 +75,7 @@
                 <tbody>
                     {% for store in stores %}
                     <tr>
-                        <td data-title="Store">{{ store.name }}</td>
+                        <td data-title="Store">{{ store.store_name }}</td>
                         <td data-title="by Known Cardholder">-$131.00</td>
                         <td data-title="by Unknown Cardholder">-$131.00</td>
                         <td><a href="{% url 'drilldown_store' %}"><button class="view-button">View</button></a></td>

@@ -128,21 +128,20 @@ class FaceplateImage(models.Model):
     class Meta:
         db_table = 'faceplate_image'
 
-class Transaction(models.Model):
+class Transactions(models.Model):
     id = models.AutoField(primary_key=True)
-    store = models.ForeignKey('Store', on_delete=models.CASCADE)
-    business_date = models.DateField()
-    check_number = models.CharField(max_length=20)
-    check_name = models.CharField(max_length=50)
-    cardholder = models.ForeignKey('Cardholder', on_delete=models.CASCADE)
-    card_type = models.ForeignKey('CardType', on_delete=models.CASCADE)
+    store_id = models.CharField(max_length=10, null=True, blank=True)
+    business_date = models.DateField(null=True, blank=True)
+    check_number = models.CharField(max_length=10, null=True, blank=True)
+    cardholder_id = models.CharField(max_length=10, null=True, blank=True)
+    card_type_id = models.CharField(max_length=5, null=True, blank=True)
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    tip_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    tip_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     class Meta:
         db_table = 'transaction'
-        unique_together = (('store', 'business_date', 'check_number'),)
-
+        
 class TotalDiscountStore(models.Model):
     id = models.AutoField(primary_key=True)
     store = models.ForeignKey('Store', on_delete=models.CASCADE)

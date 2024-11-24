@@ -4,8 +4,12 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import Cardholder, CardType, Company, Card, WalletSelectionToken, Store
 from .utils import send_wallet_selection_email, generate_card_number
+from .bigquery_helper import fetch_bigquery_data
 # search
 from django.db.models import Q
+# pagination
+from django.core.paginator import Paginator
+
 
 def admin_home(request):
     one_month_ago = timezone.now() - timedelta(days=30)
@@ -15,7 +19,11 @@ def admin_home(request):
         cardholder.card = Card.objects.filter(cardholder=cardholder).first()
         cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
 
-    return render(request, 'admin/home.html', {'new_cardholders': new_cardholders})
+    paginator = Paginator(new_cardholders, 7)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'admin/home.html', {'page_obj': page_obj})
 
 # Cardholders
 def view_all_users(request):
@@ -31,11 +39,15 @@ def manage_user_details(request, cardholder_id):
     return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder, 'card': card})
 
 def manage_card_holders(request):
-    cardholders = Cardholder.objects.all()
+    cardholders = Cardholder.objects.all().order_by('-created_date')
     for cardholder in cardholders:
         cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
 
-    return render(request, 'cardholder/cardholder.html', {'cardholders': cardholders})
+    paginator = Paginator(cardholders, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'cardholder/cardholder.html', {'page_obj': page_obj})
 
 def search_cardholders(request):
     query = request.GET.get('q', '')
@@ -231,7 +243,11 @@ def reports_dashboard(request):
     return render(request, 'reports/reports-dashboard.html')
 
 def total_discounts_per_store(request):
-    stores = Store.objects.all()
+    query = """
+    SELECT store_name
+    FROM `bcit-ec.simphony_api_dataset.store_reference`
+    """
+    stores = fetch_bigquery_data(query)
     return render(request, 'reports/reports-store.html', {'stores': stores})
 
 def drilldown_store(request):
