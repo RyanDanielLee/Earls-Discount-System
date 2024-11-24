@@ -354,10 +354,140 @@ def drilldown_store(request, store_name):
     })
 
 def total_discounts_per_employee(request):
-    return render(request, 'reports/reports-employee.html')
+    cloudsql_query = """
+    SELECT
+        ch.id AS cardholder_id,
+        CONCAT(ch.first_name, ' ', ch.last_name) AS cardholder_name,
+        ct.name AS card_type
+    FROM
+        cardholder AS ch
+    LEFT JOIN
+        card_type AS ct
+    ON
+        ch.card_type_id = ct.id
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(cloudsql_query)
+        cardholder_data = cursor.fetchall()
 
-def drilldown_employee(request):
-    return render(request, 'reports/drilldown-employee.html')
+    # Convert CloudSQL results into a dictionary for easier merging
+    cardholders = {
+        row[0]: {"cardholder_name": row[1], "card_type": row[2], "total_discount": 0, "visit_count": 0}
+        for row in cardholder_data
+    }
+
+    # Query to fetch aggregated data from BigQuery
+    bigquery_query = """
+    SELECT
+        gc.empNum AS cardholder_id,
+        SUM(gc.dscTtl) AS total_discount,
+        COUNT(DISTINCT gc.locRef) AS visit_count
+    FROM
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    GROUP BY
+        gc.empNum
+    """
+    bigquery_results = fetch_bigquery_data(bigquery_query)
+
+    # Merge BigQuery data with CloudSQL data
+    for row in bigquery_results:
+        cardholder_id = row['cardholder_id']
+        if cardholder_id in cardholders:
+            cardholders[cardholder_id]['total_discount'] = row['total_discount']
+            cardholders[cardholder_id]['visit_count'] = row['visit_count']
+
+    # Prepare data for pagination
+    employee_list = sorted(
+        [
+            {
+                "cardholder_id": cardholder_id, 
+                "cardholder_name": cardholder["cardholder_name"],
+                "visit_count": cardholder["visit_count"],
+                "total_discount": cardholder["total_discount"],
+                "card_type": cardholder["card_type"],
+            }
+            for cardholder_id, cardholder in cardholders.items()
+        ],
+        key=lambda x: x["total_discount"],
+        reverse=False  # Sort by descending order
+    )
+
+    paginator = Paginator(employee_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'reports/reports-employee.html', {
+        'page_obj': page_obj,
+    })
+
+def drilldown_employee(request, cardholder_id):
+    cloudsql_query = """
+    SELECT
+        ch.first_name,
+        ch.last_name,
+        ct.name AS card_type,
+        c.card_number,
+        c.issued_date
+    FROM
+        cardholder AS ch
+    LEFT JOIN
+        card_type AS ct
+    ON
+        ch.card_type_id = ct.id
+    LEFT JOIN
+        card AS c
+    ON
+        ch.id = c.cardholder_id
+    WHERE
+        ch.id = %s
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(cloudsql_query, [cardholder_id])
+        cardholder_details = cursor.fetchone()
+
+    # Handle case where cardholder is not found
+    if not cardholder_details:
+        return render(request, 'error.html')
+
+    cardholder_name = f"{cardholder_details[0]} {cardholder_details[1]}"
+    card_type = cardholder_details[2] or "N/A"
+    card_number = cardholder_details[3] or "N/A"
+    issued_date = cardholder_details[4].strftime("%Y-%m-%d") if cardholder_details[4] else "N/A"
+
+    # Query BigQuery for transactions related to the cardholder
+    bigquery_query = f"""
+    SELECT
+        gc.clsdBusDt AS business_date,
+        sr.store_name AS store,
+        gc.chkNum AS check_number,
+        gc.dscTtl AS discount_amount
+    FROM
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    JOIN
+        `bcit-ec.simphony_api_dataset.store_reference` AS sr
+    ON
+        gc.locRef = sr.store_id
+    WHERE
+        gc.empNum = {cardholder_id}
+    ORDER BY
+        gc.clsdBusDt DESC
+    """
+    transactions = fetch_bigquery_data(bigquery_query)
+
+    # Paginate the transactions
+    paginator = Paginator(transactions, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Render the template
+    return render(request, 'reports/drilldown-employee.html', {
+        'cardholder_name': cardholder_name,
+        'card_type': card_type,
+        'card_number': card_number,
+        'issued_date': issued_date,
+        'page_obj': page_obj,
+    })
+
 
 def view_sent_email_reports(request):
     return HttpResponse("View Sent Email Reports Page")

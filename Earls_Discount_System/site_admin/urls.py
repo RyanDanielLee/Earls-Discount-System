@@ -21,7 +21,7 @@ urlpatterns = [
     path('reports/total_discounts_per_store/', views.total_discounts_per_store, name='total_discounts_per_store'),
     path('reports/total_discounts_per_employee/', views.total_discounts_per_employee, name='total_discounts_per_employee'),
     path('reports/drilldown_store/<str:store_name>/', views.drilldown_store, name='drilldown_store'),
-    path('reports/drilldown_employee/', views.drilldown_employee, name='drilldown_employee'),
+    path('reports/drilldown_employee/<int:cardholder_id>/', views.drilldown_employee, name='drilldown_employee'),
     
     path('reports/view_sent_email_reports/', views.view_sent_email_reports, name='view_sent_email_reports'),
     

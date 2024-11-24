@@ -20,21 +20,21 @@
         </div>
         <div class="shop-title">
             <i class="fa-solid fa-id-card-clip font-awesome-icons"></i>
-            <p>David Perell</p>
+            <p>{{ cardholder_name }}</p>
         </div>
         <div class="drilldown-employee-info">
             <div class="info-item">
                 <div class="label">Card Type</div>
-                <div>EC 50</div>
+                <div>{{ card_type }}</div>
             </div>
             <div></div>
             <div class="info-item">
                 <div class="label">Issue Date</div>
-                <div>2021-03-26</div>
+                <div>{{ issued_date }}</div>
             </div>
             <div class="info-item">
                 <div class="label">Card Number</div>
-                <div>0037</div>
+                <div>{{ card_number }}</div>
             </div>
         </div>
     </div>
@@ -56,64 +56,38 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for transaction in page_obj %}
                     <tr>
-                        <td data-title="Date">2024-09-15</td>
-                        <td data-title="Store">Robson</td>
-                        <td data-title="Check No">10444</td>
-                        <td data-title="Discount Amount">- $131.00</td>
+                        <td data-title="Date">{{ transaction.business_date }}</td>
+                        <td data-title="Store">{{ transaction.store }}</td>
+                        <td data-title="Check No">{{ transaction.check_number }}</td>
+                        <td data-title="Discount Amount">${{ transaction.discount_amount|floatformat:2 }}</td>
                     </tr>
+                    {% empty %}
                     <tr>
-                        <td data-title="Date">2024-09-07</td>
-                        <td data-title="Store">Birdies</td>
-                        <td data-title="Check No">30425</td>
-                        <td data-title="Discount Amount">- $75.00</td>
+                        <td colspan="4">No transactions available</td>
                     </tr>
-                    <tr>
-                        <td data-title="Date">2024-08-21</td>
-                        <td data-title="Store">Birdies</td>
-                        <td data-title="Check No">31442</td>
-                        <td data-title="Discount Amount">- $49.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-07-19</td>
-                        <td data-title="Store">King West</td>
-                        <td data-title="Check No">10444</td>
-                        <td data-title="Discount Amount">- $163.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-07-03</td>
-                        <td data-title="Store">Fir Street</td>
-                        <td data-title="Check No">30425</td>
-                        <td data-title="Discount Amount">- $89.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-07-01</td>
-                        <td data-title="Store">Birdies</td>
-                        <td data-title="Check No">31442</td>
-                        <td data-title="Discount Amount">- $75.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-09-15</td>
-                        <td data-title="Store">Robson</td>
-                        <td data-title="Check No">10444</td>
-                        <td data-title="Discount Amount">- $131.00</td>
-                    </tr>
-                    <tr>
-                        <td data-title="Date">2024-09-07</td>
-                        <td data-title="Store">Birdies</td>
-                        <td data-title="Check No">30425</td>
-                        <td data-title="Discount Amount">- $75.00</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </section>
     <div class="pagination">
-        <i class="fa-solid fa-chevron-left"></i>
-        <a href="#" class="active">01</a>
-        <a href="#">02</a>
-        <a href="#">03</a>
-        <i class="fa-solid fa-chevron-right"></i>
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a href="?page={{ num }}" class="active">{{ num }}</a>
+        {% else %}
+        <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
