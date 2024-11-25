@@ -81,13 +81,3 @@ def generate_card_number(company_name):
 
 def create_digital_wallet(card, wallet_type):
     DigitalWallet.objects.create(card=card, wallet_type=wallet_type)
-
-
-def format_date(date_input):
-    if isinstance(date_input, datetime):
-        return date_input.strftime("%Y-%m-%d")
-    elif isinstance(date_input, str):
-        
-        date_object = datetime.strptime(date_input, "%Y-%m-%d") 
-        return date_object.strftime("%Y-%m-%d")
-    return date_input  

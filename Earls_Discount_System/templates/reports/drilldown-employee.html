@@ -1,93 +1,103 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <div class="admin-container">
-    <div class="nav-breadcrumbs">
-        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
-        <div class="breadcrumb">
-            <a href="#">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Reports</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Discounts per Employee</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Drilldown Employee Discounts</a>
-        </div>
+  <div class="nav-breadcrumbs">
+    <button onclick="history.back()" class="btn-back">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </button>
+    <div class="breadcrumb">
+      <a href="#">Home</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="#">Reports</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="#">Discounts per Employee</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="#">Drilldown Employee Discounts</a>
     </div>
-    <div class="drilldown-section-info">
-        <div>
-            <h1 class="headline">Drilldown Employee Discounts</h1>
-        </div>
-        <div class="shop-title">
-            <i class="fa-solid fa-id-card-clip font-awesome-icons"></i>
-            <p>{{ cardholder_name }}</p>
-        </div>
-        <div class="drilldown-employee-info">
-            <div class="info-item">
-                <div class="label">Card Type</div>
-                <div>{{ card_type }}</div>
-            </div>
-            <div></div>
-            <div class="info-item">
-                <div class="label">Issue Date</div>
-                <div>{{ issued_date }}</div>
-            </div>
-            <div class="info-item">
-                <div class="label">Card Number</div>
-                <div>{{ card_number }}</div>
-            </div>
-        </div>
+  </div>
+  <div class="drilldown-section-info">
+    <div>
+      <h1 class="headline">Drilldown Employee Discounts</h1>
     </div>
-
-    <section class="reports-dashbd-tb">
-        <div class="drilldown-period">
-            <p><i class="fa-regular fa-calendar-check"></i> Period <span>3</span> Week <span>4</span> Year
-                <span>2024</span>
-            </p>
-        </div>
-        <div class="new-cardholders">
-            <table class="table-drilldown-employee" id="no-more-tables">
-                <thead>
-                    <tr class="thead">
-                        <th>Date</th>
-                        <th>Store</th>
-                        <th>Check No</th>
-                        <th>Discount Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for transaction in page_obj %}
-                    <tr>
-                        <td data-title="Date">{{ transaction.business_date }}</td>
-                        <td data-title="Store">{{ transaction.store }}</td>
-                        <td data-title="Check No">{{ transaction.check_number }}</td>
-                        <td data-title="Discount Amount">${{ transaction.discount_amount|floatformat:2 }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4">No transactions available</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </section>
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-        <a href="?page={{ num }}" class="active">{{ num }}</a>
-        {% else %}
-        <a href="?page={{ num }}">{{ num }}</a>
-        {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
-        {% endif %}
+    <div class="shop-title">
+      <i class="fa-solid fa-id-card-clip font-awesome-icons"></i>
+      <p>{{ cardholder_name }}</p>
     </div>
+    <div class="drilldown-employee-info">
+      <div class="info-item">
+        <div class="label">Card Type</div>
+        <div>{{ card_type }}</div>
+      </div>
+      <div></div>
+      <div class="info-item">
+        <div class="label">Issue Date</div>
+        <div>{{ issued_date }}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Card Number</div>
+        <div>{{ card_number }}</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="reports-dashbd-tb">
+    <div class="drilldown-period">
+      <p>
+        <i class="fa-regular fa-calendar-check"></i> Period
+        <span>{{ selected_period|default:"All" }}</span> Week
+        <span>{{ selected_week|default:"All" }}</span> Year
+        <span>{{ selected_year }}</span>
+      </p>
+    </div>
+    <div class="new-cardholders">
+      <table class="table-drilldown-employee" id="no-more-tables">
+        <thead>
+          <tr class="thead">
+            <th>Date</th>
+            <th>Store</th>
+            <th>Check No</th>
+            <th>Discount Amount($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in page_obj %}
+          <tr>
+            <td data-title="Date">{{ transaction.business_date }}</td>
+            <td data-title="Store">{{ transaction.store }}</td>
+            <td data-title="Check No">{{ transaction.check_number }}</td>
+            <td data-title="Discount Amount">
+              {{ transaction.discount_amount|floatformat:2 }}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">No transactions available</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+    <a
+      href="?page={{ page_obj.previous_page_number }}&year={{ selected_year }}&period={{ selected_period }}&week={{ selected_week }}"
+    >
+      <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    {% endif %} {% for num in page_obj.paginator.page_range %}
+    <a
+      href="?page={{ num }}&year={{ selected_year }}&period={{ selected_period }}&week={{ selected_week }}"
+      class="{% if page_obj.number == num %}active{% endif %}"
+    >
+      {{ num }}
+    </a>
+    {% endfor %} {% if page_obj.has_next %}
+    <a
+      href="?page={{ page_obj.next_page_number }}&year={{ selected_year }}&period={{ selected_period }}&week={{ selected_week }}"
+    >
+      <i class="fa-solid fa-chevron-right"></i>
+    </a>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

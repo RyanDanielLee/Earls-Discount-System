@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 from .models import Cardholder, CardType, Company, Card, WalletSelectionToken, Store
-from .utils import send_wallet_selection_email, generate_card_number, format_date
+from .utils import send_wallet_selection_email, generate_card_number
 from .bigquery_helper import fetch_bigquery_data
 from django.db import connection
 # search
@@ -354,6 +354,51 @@ def drilldown_store(request, store_name):
     })
 
 def total_discounts_per_employee(request):
+    # to get period
+    current_date = datetime.now().strftime('%Y-%m-%d')
+
+    bigquery_query_years = """
+    SELECT DISTINCT year FROM `bcit-ec.simphony_api_dataset.financial_calendars`
+    ORDER BY year ASC
+    """
+    years = [row['year'] for row in fetch_bigquery_data(bigquery_query_years)]
+
+    default_year_query = f"""
+    SELECT year
+    FROM `bcit-ec.simphony_api_dataset.financial_calendars`
+    WHERE calendar_date = '{current_date}'
+    LIMIT 1
+    """
+    default_year_data = fetch_bigquery_data(default_year_query)
+    default_year = default_year_data[0]['year'] if default_year_data else years[-1]
+
+    # Retrieve user-selected values or default year
+    selected_year = request.GET.get('year', default_year)
+    selected_period = request.GET.get('period')
+    selected_week = request.GET.get('week')
+
+    # Query to fetch period and week options for the selected year
+    bigquery_query_periods = f"""
+    SELECT DISTINCT period FROM `bcit-ec.simphony_api_dataset.financial_calendars`
+    WHERE year = {selected_year}
+    ORDER BY period ASC
+    """
+    bigquery_query_weeks = f"""
+    SELECT DISTINCT week FROM `bcit-ec.simphony_api_dataset.financial_calendars`
+    WHERE year = {selected_year}
+    ORDER BY week ASC
+    """
+    periods = [row['period'] for row in fetch_bigquery_data(bigquery_query_periods)]
+    weeks = [row['week'] for row in fetch_bigquery_data(bigquery_query_weeks)]
+
+    # Build the filtering condition
+    filters = [f"fc.year = {selected_year}"]
+    if selected_period:
+        filters.append(f"fc.period = {selected_period}")
+    if selected_week:
+        filters.append(f"fc.week = {selected_week}")
+
+    # Read data
     cloudsql_query = """
     SELECT
         ch.id AS cardholder_id,
@@ -377,13 +422,19 @@ def total_discounts_per_employee(request):
     }
 
     # Query to fetch aggregated data from BigQuery
-    bigquery_query = """
+    bigquery_query = f"""
     SELECT
         gc.empNum AS cardholder_id,
         SUM(gc.dscTtl) AS total_discount,
         COUNT(DISTINCT gc.locRef) AS visit_count
     FROM
         `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    JOIN
+        `bcit-ec.simphony_api_dataset.financial_calendars` AS fc
+    ON
+        gc.clsdBusDt = fc.calendar_date
+    WHERE
+        {" AND ".join(filters)}
     GROUP BY
         gc.empNum
     """
@@ -409,7 +460,7 @@ def total_discounts_per_employee(request):
             for cardholder_id, cardholder in cardholders.items()
         ],
         key=lambda x: x["total_discount"],
-        reverse=False  # Sort by descending order
+        reverse=False  # Sort by ascending order
     )
 
     paginator = Paginator(employee_list, 10)
@@ -418,9 +469,20 @@ def total_discounts_per_employee(request):
 
     return render(request, 'reports/reports-employee.html', {
         'page_obj': page_obj,
+        'years': years,
+        'periods': periods,
+        'weeks': weeks,
+        'selected_year': int(selected_year),
+        'selected_period': int(selected_period) if selected_period else '',
+        'selected_week': int(selected_week) if selected_week else '',
     })
 
 def drilldown_employee(request, cardholder_id):
+
+    selected_year = request.GET.get('year')
+    selected_period = request.GET.get('period')
+    selected_week = request.GET.get('week')
+
     cloudsql_query = """
     SELECT
         ch.first_name,
@@ -455,6 +517,15 @@ def drilldown_employee(request, cardholder_id):
     issued_date = cardholder_details[4].strftime("%Y-%m-%d") if cardholder_details[4] else "N/A"
 
     # Query BigQuery for transactions related to the cardholder
+    filters = []
+    if selected_year:
+        filters.append(f"EXTRACT(YEAR FROM gc.clsdBusDt) = {selected_year}")
+    if selected_period:
+        filters.append(f"fc.period = {selected_period}")
+    if selected_week:
+        filters.append(f"fc.week = {selected_week}")
+
+    # Query BigQuery for transactions related to the cardholder
     bigquery_query = f"""
     SELECT
         gc.clsdBusDt AS business_date,
@@ -474,18 +545,28 @@ def drilldown_employee(request, cardholder_id):
     """
     transactions = fetch_bigquery_data(bigquery_query)
 
-    # Paginate the transactions
+    formatted_transactions = []
+    for transaction in transactions:
+        transaction["business_date"] = (
+            transaction["business_date"].strftime("%Y-%m-%d")
+            if not isinstance(transaction["business_date"], str)
+            else transaction["business_date"]
+        )
+        formatted_transactions.append(transaction)
+
     paginator = Paginator(transactions, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Render the template
     return render(request, 'reports/drilldown-employee.html', {
         'cardholder_name': cardholder_name,
         'card_type': card_type,
         'card_number': card_number,
         'issued_date': issued_date,
         'page_obj': page_obj,
+        'selected_year': selected_year,
+        'selected_period': selected_period,
+        'selected_week': selected_week,
     })
 
 
