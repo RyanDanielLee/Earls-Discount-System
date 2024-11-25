@@ -7,3 +7,5 @@ python-dotenv
 django-allauth
 django-extensions
 PyJWT
+pytest-django
+sendgrid

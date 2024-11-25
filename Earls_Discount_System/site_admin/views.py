@@ -2,6 +2,8 @@ from datetime import timedelta
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
+from .utils import send_wallet_selection_email, generate_card_number
+from .models import Cardholder, CardType, Company, Card, WalletSelectionToken, Store
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.db.models import Q
@@ -327,7 +329,9 @@ def reports_dashboard(request):
 @user_passes_test(is_admin, login_url='/unauthorized')
 def total_discounts_per_store(request):
     is_superadmin = request.user.groups.filter(name='superadmin').exists()
-    return render(request, 'reports/reports-store.html', {'is_superadmin': is_superadmin, 'is_admin': is_admin})
+    stores = Store.objects.all()
+    
+    return render(request, 'reports/reports-store.html', {'stores': stores, 'is_superadmin': is_superadmin, 'is_admin': is_admin})
 
 
 @user_passes_test(is_admin, login_url='/unauthorized')

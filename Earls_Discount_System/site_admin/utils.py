@@ -5,20 +5,21 @@ import requests
 import datetime
 import json
 import jwt
-from django.core.mail import send_mail
-from django.utils import timezone
 from datetime import timedelta
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 from django.conf import settings
+from django.utils import timezone
+from django.http import JsonResponse
 from django.core.mail import send_mail
-from django.conf import settings
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
 from google.oauth2 import service_account
 from google.auth.transport.requests import Request
-from django.http import JsonResponse
-
-
+# using SendGrid's Python Library
+# https://github.com/sendgrid/sendgrid-python
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from dotenv import load_dotenv
+from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 
 def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_token, expires_at):
 
@@ -32,18 +33,32 @@ def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_to
 
     # Render the HTML template with context
     html_content = render_to_string('eccard/wallet_selection_email.html', context)
-    text_content = strip_tags(html_content)
 
-    # Send the email
-    send_mail(
+    # # Send the email
+    # send_mail(
+    #     subject='Your Digital EC Card is Ready!',
+    #     message=text_content,
+    #     from_email='devteam@earls.ca',
+    #     recipient_list=[cardholder.email],
+    #     html_message=html_content,
+    # )
+
+    message = Mail(
+        from_email='devteam@earls.ca',
+        to_emails=cardholder.email,
         subject='Your Digital EC Card is Ready!',
-        message=text_content,
-        from_email='studwing@hotmail.com',
-        recipient_list=[cardholder.email],
-        html_message=html_content,
-    )
+        html_content=render_to_string('eccard/wallet_selection_email.html', context) )
+    
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
 
-   
+    except Exception as e:
+        print(str(e))
+
 def generate_card_number(company_name):
     # Define the card number ranges for each company
     company_ranges = {

@@ -16,6 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
+
+def google_login_redirect(request):
+    return redirect('/accounts/google/login/?process=login')
+
+# Logout View
+def logout_view(request):
+    logout(request)  # Clears session and logs out user
+    return HttpResponseRedirect('/')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +35,6 @@ urlpatterns = [
     path('admin_panel/', include('site_admin.urls')),  # For admin panel routes
     path('accounts/', include('allauth.urls')),  # Handles allauth including social accounts
     path('site_admin/', include('site_admin.urls')), 
+    path('google-login/', google_login_redirect, name='google-login'),
+    path('logout/', logout_view, name='logout'),
 ]
