@@ -380,12 +380,12 @@
 
 .table-total-cardholders tbody tr td[data-title='Total Discount'] {
   position: absolute;
-  right: 23rem;
+  right: 38rem;
 }
 
 .table-total-cardholders tbody tr td[data-title='Number of Visits'] {
   position: absolute;
-  right: 39rem;
+  right: 17rem;
 }
 
 /* checkbox */

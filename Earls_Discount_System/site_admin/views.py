@@ -358,7 +358,148 @@ def view_card_faceplate(request):
 
 # Reports
 def reports_dashboard(request):
-    return render(request, 'reports/reports-dashboard.html')
+    cardholder_query = """
+    SELECT COUNT(*) as total_cardholders 
+    FROM card_issue.cardholder
+    WHERE is_active = 1
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(cardholder_query)
+        total_cardholders = cursor.fetchone()[0]
+
+    # Fetch count for each card type
+    card_type_query = """
+    SELECT
+        ct.name AS card_type,
+        COUNT(c.id) AS card_count
+    FROM
+        card_issue.card_type AS ct
+    LEFT JOIN
+        card_issue.cardholder AS c
+    ON
+        ct.id = c.card_type_id AND c.is_active = 1
+    GROUP BY
+        ct.name
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(card_type_query)
+        card_type_data = cursor.fetchall()
+
+    card_type_counts = {
+        row[0]: row[1] for row in card_type_data
+    }
+
+    ec10_count = card_type_counts.get("EC10", 0)
+    ec50_count = card_type_counts.get("EC50", 0)
+    ec100_count = card_type_counts.get("EC100", 0)
+
+
+    # total discounts by store
+    store_query = """
+    SELECT
+        sr.store_name,
+        SUM(CASE WHEN gc.chkName IS NOT NULL THEN gc.dscTtl ELSE 0 END) AS known_cardholder_discount,
+        SUM(CASE WHEN gc.chkName IS NULL THEN gc.dscTtl ELSE 0 END) AS unknown_cardholder_discount
+    FROM
+        `bcit-ec.simphony_api_dataset.store_reference` AS sr
+    JOIN
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    ON
+        sr.store_id = gc.locRef
+    GROUP BY sr.store_name
+    ORDER BY known_cardholder_discount + unknown_cardholder_discount ASC
+    LIMIT 3
+    """
+    stores = fetch_bigquery_data(store_query)
+
+    store_discounts = [
+        {
+            "store_name": row["store_name"],
+            "known_cardholder_discount": row["known_cardholder_discount"],
+            "unknown_cardholder_discount" : row["unknown_cardholder_discount"],
+        }
+        for row in stores
+    ]
+
+    # total discounts by employee
+    cloudsql_query = """
+    SELECT
+        ch.id AS cardholder_id,
+        CONCAT(ch.first_name, ' ', ch.last_name) AS cardholder_name,
+        ct.name AS card_type
+    FROM
+        cardholder AS ch
+    LEFT JOIN
+        card_type AS ct
+    ON
+        ch.card_type_id = ct.id
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(cloudsql_query)
+        cardholder_data = cursor.fetchall()
+
+    cardholders = {
+        row[0]: {"cardholder_name": row[1], "card_type": row[2], "total_discount": 0, "visit_count": 0}
+        for row in cardholder_data
+    }
+
+    bigquery_query = """
+    SELECT
+        gc.empNum AS cardholder_id,
+        SUM(gc.dscTtl) AS total_discount,
+        COUNT(DISTINCT gc.locRef) AS visit_count
+    FROM
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    GROUP BY gc.empNum
+    """
+    bigquery_results = fetch_bigquery_data(bigquery_query)
+
+    for row in bigquery_results:
+        cardholder_id = row['cardholder_id']
+        if cardholder_id in cardholders:
+            cardholders[cardholder_id]['total_discount'] = row['total_discount']
+            cardholders[cardholder_id]['visit_count'] = row['visit_count']
+
+    employee_discounts = sorted(
+        [
+            {
+                "cardholder_id": cardholder_id, 
+                "cardholder_name": cardholder["cardholder_name"],
+                "visit_count": cardholder["visit_count"],
+                "total_discount": cardholder["total_discount"],
+            }
+            for cardholder_id, cardholder in cardholders.items()
+        ],
+        key=lambda x: x["total_discount"],
+        reverse=False  # Sort by ascending order
+    )[:3]
+
+    # Fetch total discounts for the current month, last month, and the current year
+    bigquery_totals_query = """
+    SELECT
+        SUM(CASE WHEN EXTRACT(MONTH FROM gc.clsdBusDt) = EXTRACT(MONTH FROM CURRENT_DATE()) THEN gc.dscTtl ELSE 0 END) AS this_month_total,
+        SUM(CASE WHEN EXTRACT(MONTH FROM gc.clsdBusDt) = EXTRACT(MONTH FROM CURRENT_DATE()) - 1 THEN gc.dscTtl ELSE 0 END) AS last_month_total,
+        SUM(CASE WHEN EXTRACT(YEAR FROM gc.clsdBusDt) = EXTRACT(YEAR FROM CURRENT_DATE()) THEN gc.dscTtl ELSE 0 END) AS this_year_total
+    FROM
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    """
+    bigquery_totals = fetch_bigquery_data(bigquery_totals_query)[0]
+
+    total_this_month = bigquery_totals["this_month_total"]
+    total_last_month = bigquery_totals["last_month_total"]
+    total_this_year = bigquery_totals["this_year_total"]
+
+    return render(request, 'reports/reports-dashboard.html', {
+        'total_cardholders': total_cardholders,
+        'ec10_count': ec10_count,
+        'ec50_count': ec50_count,
+        'ec100_count': ec100_count,
+        'store_discounts':store_discounts,
+        'employee_discounts': employee_discounts,
+        'total_this_month': total_this_month,
+        'total_last_month': total_last_month,
+        'total_this_year': total_this_year,
+    })
 
 def total_discounts_per_store(request):
     query = """
