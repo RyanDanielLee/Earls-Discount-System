@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 
 # Path to your service account key file
-SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"
+SERVICE_ACCOUNT_FILE = "../bcit-ec-f0c649ac214f.json"
 
 def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_token, expires_at):
 

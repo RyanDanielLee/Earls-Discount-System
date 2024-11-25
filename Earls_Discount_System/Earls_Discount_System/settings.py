@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://eccard-234204981539.us-west1.run.app']
+CSRF_TRUSTED_ORIGINS = ['https://eccard-234204981539.us-west1.run.app', 'https://earls-eccard-app-234204981539.us-west1.run.app']
 
 # Application definition
 
