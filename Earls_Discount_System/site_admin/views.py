@@ -2,8 +2,6 @@ from datetime import timedelta, datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
-from .utils import send_wallet_selection_email, generate_card_number
-from .models import Cardholder, CardType, Company, Card, WalletSelectionToken, Store
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
@@ -12,6 +10,7 @@ from .models import (
     CardType,
     Company,
     Card,
+    Store,
     WalletSelectionToken
 )
 from .utils import (
