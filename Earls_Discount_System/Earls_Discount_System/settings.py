@@ -136,8 +136,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '',
-            'secret': '',
+            'client_id': os.getenv('CLIENT_ID'),
+            'secret': os.getenv('CLIENT_SECRET'),
             'key': ''
         },
         'SCOPE': [
@@ -149,8 +149,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-print(os.getenv('CLIENT_ID'))
-print(os.getenv('CLIENT_SECRET'))
+# print(os.getenv('CLIENT_ID'))
+# print(os.getenv('CLIENT_SECRET'))
 
 LOGIN_REDIRECT_URL = '/site_admin/'
 SOCIALACCOUNT_LOGIN_ON_GET = True
