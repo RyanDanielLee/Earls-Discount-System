@@ -83,6 +83,23 @@
   gap: 1rem;
 }
 
+.drilldown-section-info .category-select.filter-form {
+  display: flex;
+  align-items: center;
+}
+
+.btn-report-filter {
+  margin-left: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--light-color);
+  transition: all 0.1s ease-out;
+}
+
+.btn-report-filter:hover {
+  color: var(--primary-color);
+}
+
 .drilldown-section-info .category-select .drilldown-period p {
   color: var(--primary-color);
 }
@@ -251,17 +268,22 @@
 
 .table-drilldown-store tbody tr td[data-title='Name'] {
   position: absolute;
-  left: 10.7rem;
+  left: 8.2rem;
+}
+
+.table-drilldown-store tbody tr td[data-title='Check Name'] {
+  position: absolute;
+  left: 18.8rem;
 }
 
 .table-drilldown-store tbody tr td[data-title='Card Type'] {
   position: absolute;
-  right: 30.1rem;
+  left: 32rem;
 }
 
 .table-drilldown-store tbody tr td[data-title='Discount Amount'] {
   position: absolute;
-  right: 14.2rem;
+  right: 13.2rem;
 }
 
 /* end of drilldown-store table */
@@ -358,12 +380,12 @@
 
 .table-total-cardholders tbody tr td[data-title='Total Discount'] {
   position: absolute;
-  right: 23rem;
+  right: 38rem;
 }
 
 .table-total-cardholders tbody tr td[data-title='Number of Visits'] {
   position: absolute;
-  right: 39rem;
+  right: 17rem;
 }
 
 /* checkbox */
@@ -434,6 +456,7 @@
 .add-date-option .date-form {
   display: flex;
   gap: 0.8rem;
+  align-items: flex-end;
 }
 
 .date-form-item {
@@ -460,10 +483,28 @@
   position: relative;
 }
 
+.date-form-dropdown select {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
 .date-form-dropdown .arrow {
   margin-left: 0.9rem;
   font-size: 12px;
   color: var(--font-color);
+}
+
+.btn-date-filter {
+  padding-bottom: 0.7rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--light-color);
+  transition: all 0.1s ease-out;
+}
+
+.btn-date-filter:hover {
+  color: var(--primary-color);
 }
 
 /* drilldown-employee info */

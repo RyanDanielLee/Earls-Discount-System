@@ -1,11 +1,8 @@
 import os
-import json
 import requests 
-import requests
-import datetime
 import json
 import jwt
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.conf import settings
 from django.utils import timezone
 from django.http import JsonResponse

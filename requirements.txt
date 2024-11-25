@@ -9,3 +9,4 @@ django-extensions
 PyJWT
 pytest-django
 sendgrid
+google-cloud-bigquery

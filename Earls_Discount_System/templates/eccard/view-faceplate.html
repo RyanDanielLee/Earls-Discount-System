@@ -6,9 +6,9 @@
     <div class="nav-breadcrumbs">
         <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
         <div class="breadcrumb">
-            <a href="#">Home</a>
+            <a href="{% url 'admin_home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">View Faceplate</a>
+            <a href="{% url 'view_card_faceplate' %}">View Faceplate</a>
         </div>
     </div>
     <div class="section-info">

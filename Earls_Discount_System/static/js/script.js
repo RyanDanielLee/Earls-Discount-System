@@ -61,3 +61,13 @@ function openReissueConfirmModal(event) {
 function closeReissueConfirmModal() {
   document.getElementById('reissue-confirmation-modal').style.display = 'none';
 }
+
+//dropdown for selecting period
+function toggleDropdown(id) {
+  const dropdown = document.getElementById(id);
+  if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+    dropdown.style.display = 'block';
+  } else {
+    dropdown.style.display = 'none';
+  }
+}

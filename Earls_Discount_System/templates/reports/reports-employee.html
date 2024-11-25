@@ -5,11 +5,11 @@
     <div class="nav-breadcrumbs">
         <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
         <div class="breadcrumb">
-            <a href="#">Home</a>
+            <a href="{% url 'admin_home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Reports</a>
+            <a href="{% url 'reports_dashboard' %}">Reports</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Discounts per Employee</a>
+            <a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a>
         </div>
     </div>
     <div class="section-info add-date-option">
@@ -20,45 +20,43 @@
                 <li><a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a></li>
             </ul>
         </div>
-        <form class="date-form">
+        <form class="date-form" method="get">
             <div class="date-form-item">
                 <label for="year">Year</label>
                 <div class="date-form-dropdown">
-                    <span id="year-selected">2024</span>
-                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
-                    <select id="year" name="year" style="display: none;">
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
+                    <select id="year" name="year">
+                        {% for year in years %}
+                        <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
             <div class="form-item">
                 <label for="period">Period</label>
                 <div class="date-form-dropdown">
-                    <span id="period-selected">9</span>
-                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
-                    <select id="period" name="period" style="display: none;">
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
+                     <select id="period" name="period">
+                        <option value="">All</option>
+                        {% for period in periods %}
+                        <option value="{{ period }}" {% if selected_period == period %}selected{% endif %}>{{ period }}
+                        </option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
             <div class="form-item">
                 <label for="week">Week</label>
                 <div class="date-form-dropdown">
-                    <span id="week-selected">3</span>
-                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
-                    <select id="week" name="week" style="display: none;">
-                        <option value="all">All</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
+                    <select id="week" name="week">
+                        <option value="">All</option>
+                        {% for week in weeks %}
+                        <option value="{{ week }}" {% if week == selected_week %}selected{% endif %}>
+                            {{ week }}
+                        </option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
+              <button type="submit" class="btn-date-filter">Apply</button>
         </form>
     </div>
     <section class="reports-dashbd-tb">
@@ -68,106 +66,42 @@
                     <tr class="thead">
                         <th>Name</th>
                         <th>Number of Visits</th>
-                        <th>Total Discount</th>
+                        <th>Total Discount($)</th>
                         <th>Card Type</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for employee in page_obj %}
                     <tr>
-                        <td data-title="Employee Name">Michelle Choi</td>
-                        <td data-title="Total Discount">-$934.25</td>
-                        <td data-title="Number of Visits">13</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><a href="{% url 'drilldown_employee' %}"><button class="view-button">View</button></a></td>
+                        <td data-title="Employee Name">{{ employee.cardholder_name }}</td>
+                        <td data-title="Total Discount">{{ employee.total_discount|floatformat:2 }}</td>
+                        <td data-title="Number of Visits">{{ employee.visit_count }}</td>
+                        <td data-title="Card Type">{{ employee.card_type }}</td>
+                        <td>  <a href="{% url 'drilldown_employee' employee.cardholder_id %}?year={{ selected_year }}&period={{ selected_period }}&week={{ selected_week }}"
+  ><button class="view-button">View</button></a></td>
                     </tr>
-                    <tr>
-                        <td data-title="Employee Name">Rhombus Nell</td>
-                        <td data-title="Total Discount">-$633.25</td>
-                        <td data-title="Number of Visits">9</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><a href="{% url 'drilldown_employee' %}"><button class="view-button">View</button></a></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">John Doe</td>
-                        <td data-title="Total Discount">-$733.25</td>
-                        <td data-title="Number of Visits">5</td>
-                        <td data-title="Card Type">EC100</td>
-                        <td><a href="{% url 'drilldown_employee' %}"><button class="view-button">View</button></a></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Olivia Scott</td>
-                        <td data-title="Total Discount">-$163.00</td>
-                        <td data-title="Number of Visits">5</td>
-                        <td data-title="Card Type">EC100</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Charlotte Morgan</td>
-                        <td data-title="Total Discount">-$89.00</td>
-                        <td data-title="Number of Visits">6</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Alexander Brooks</td>
-                        <td data-title="Total Discount">-$75.00</td>
-                        <td data-title="Number of Visits">2</td>
-                        <td data-title="Card Type">EC10</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Emily Foster</td>
-                        <td data-title="Total Discount">-$131.00</td>
-                        <td data-title="Number of Visits">9</td>
-                        <td data-title="Card Type">EC100</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">James Bennett</td>
-                        <td data-title="Total Discount">-$75.00</td>
-                        <td data-title="Number of Visits">13</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Amelia Cooper</td>
-                        <td data-title="Total Discount">-$49.00</td>
-                        <td data-title="Number of Visits">12</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Steve Bannon</td>
-                        <td data-title="Total Discount">-$163.00</td>
-                        <td data-title="Number of Visits">2</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Amelia Cooper</td>
-                        <td data-title="Total Discount">-$49.00</td>
-                        <td data-title="Number of Visits">1</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td data-title="Employee Name">Steve Bannon</td>
-                        <td data-title="Total Discount">-$163.00</td>
-                        <td data-title="Number of Visits">7</td>
-                        <td data-title="Card Type">EC50</td>
-                        <td><button class="view-button">View</button></td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </section>
     <div class="pagination">
-        <i class="fa-solid fa-chevron-left"></i>
-        <a href="#" class="active">01</a>
-        <a href="#">02</a>
-        <a href="#">03</a>
-        <i class="fa-solid fa-chevron-right"></i>
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a href="?page={{ num }}" class="active">{{ num }}</a>
+        {% else %}
+        <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
