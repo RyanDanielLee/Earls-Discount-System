@@ -21,6 +21,9 @@ from sendgrid.helpers.mail import Mail
 from dotenv import load_dotenv
 from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 
+# Path to your service account key file
+SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"
+
 def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_token, expires_at):
 
     # Prepare context for email template
@@ -89,9 +92,6 @@ def create_digital_wallet(card, wallet_type):
     DigitalWallet.objects.create(card=card, wallet_type=wallet_type)
 
 def get_google_wallet_token():
-    # Path to your service account key file
-    SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"
-    
     # Define the required scopes
     SCOPES = ['https://www.googleapis.com/auth/wallet_object.issuer']
     
@@ -149,8 +149,6 @@ def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audienc
 
 def issue_card_to_google_wallet(company_name, first_name, last_name, email, card_type_name, note):
     try:
-        # Define the private key file and issuer ID
-        SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"  # Your PEM key file
         issuer_id = "3388000000022791702"  # Your actual issuer ID
 
         # Define the card details for the Generic Object
@@ -228,14 +226,12 @@ def revoke_google_wallet_card(object_id):
     Revoke a Google Wallet card by setting its state to 'inactive'.
 
     Args:
-        service_account_file (str): Path to the service account JSON file.
         object_id (str): The unique ID of the card to revoke (e.g., "issuer_id.card_id").
 
     Returns:
         dict: The API response indicating success or failure.
     """
     try:
-        SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"
         # Authenticate using the service account file
         credentials = service_account.Credentials.from_service_account_file(
             SERVICE_ACCOUNT_FILE, scopes=["https://www.googleapis.com/auth/wallet_object.issuer"]
