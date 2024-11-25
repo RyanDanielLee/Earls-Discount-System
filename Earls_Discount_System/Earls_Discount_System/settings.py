@@ -136,8 +136,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': os.getenv('CLIENT_ID'),
-            'secret': os.getenv('CLIENT_SECRET'),
+            'client_id': '',
+            'secret': '',
             'key': ''
         },
         'SCOPE': [
