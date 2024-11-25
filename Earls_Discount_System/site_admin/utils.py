@@ -2,9 +2,8 @@ import os
 import requests 
 import json
 import jwt
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta, timezone
 from django.conf import settings
-from django.utils import timezone
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
@@ -26,7 +25,7 @@ def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_to
     # Prepare context for email template
     context = {
         'first_name': cardholder.first_name,
-         'google_wallet_link': f"https://your-domain.com/wallet/google?token={google_wallet_token}",
+         'google_wallet_link': google_wallet_token,
         'apple_wallet_link': f"https://your-domain.com/wallet/apple?token={apple_wallet_token}",
         'expiration': expires_at, 
     }
@@ -123,13 +122,12 @@ def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audienc
         private_key = service_account_info["private_key"]
 
         # Define the JWT payload
-        now = datetime.datetime.now(datetime.timezone.utc)
-        iat = int(now.timestamp()) 
+        now = datetime.now(timezone.utc)
         payload = {
             "iss": service_account_info["client_email"],  # Issuer ID
             "aud": audience,   # Audience (usually "google")
-            "iat": iat,
-            "exp": int((now + datetime.timedelta(weeks=1)).timestamp()), 
+            "iat": int(now.timestamp()),
+            "exp": int((now + timedelta(hours=1)).timestamp()),
             "typ": "savetowallet",  # Type of JWT for Google Wallet
             "payload": {
                 "genericObjects": [card_data]  # Embed the card data in the payload
@@ -211,6 +209,7 @@ def issue_card_to_google_wallet(company_name, first_name, last_name, email, card
         google_wallet_link = f"https://pay.google.com/gp/v/save/{signed_jwt}"
 
         # Debug: Ensure the link is correct and testable
+        print(card_data)
         print(f"Google Wallet Link: {google_wallet_link}")
 
         return {'status': 'success', 'google_wallet_link': google_wallet_link, 'signed_jwt': signed_jwt}

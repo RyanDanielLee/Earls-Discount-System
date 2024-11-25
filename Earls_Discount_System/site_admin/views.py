@@ -287,7 +287,7 @@ def issue_card(request):
                 # Send email with wallet selection links
                 send_wallet_selection_email(
                     cardholder=cardholder,
-                    google_wallet_token=google_wallet_token.token,
+                    google_wallet_token=wallet_response['google_wallet_link'],
                     apple_wallet_token=apple_wallet_token.token,
                     expires_at=google_wallet_token.expires_at
                 )
