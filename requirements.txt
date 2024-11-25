@@ -10,3 +10,4 @@ PyJWT
 pytest-django
 sendgrid
 google-cloud-bigquery
+cryptography
