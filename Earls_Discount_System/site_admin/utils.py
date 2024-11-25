@@ -111,18 +111,18 @@ def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audienc
         private_key = service_account_info["private_key"]
 
         # Define the JWT payload
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(datetime.timezone.utc)
+        iat = int(now.timestamp()) 
         payload = {
             "iss": service_account_info["client_email"],  # Issuer ID
             "aud": audience,   # Audience (usually "google")
-            "iat": 1732143939, 
-            #"exp": int((now + datetime.timedelta(hours=1)).timestamp()),  
+            "iat": iat,
+            "exp": int((now + datetime.timedelta(weeks=1)).timestamp()), 
             "typ": "savetowallet",  # Type of JWT for Google Wallet
             "payload": {
                 "genericObjects": [card_data]  # Embed the card data in the payload
             }
         }
-        print(payload)
         # Sign the JWT with the private key
         signed_jwt = jwt.encode(payload, private_key, algorithm="RS256")
 
@@ -132,7 +132,7 @@ def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audienc
         return None
 
 
-def issue_card_to_google_wallet(company_name, first_name, email, card_type_name, note):
+def issue_card_to_google_wallet(company_name, first_name, last_name, email, card_type_name, note):
     try:
         # Define the private key file and issuer ID
         SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"  # Your PEM key file
@@ -140,16 +140,18 @@ def issue_card_to_google_wallet(company_name, first_name, email, card_type_name,
 
         # Define the card details for the Generic Object
         card_data = {
-            "id": f"{issuer_id}.{first_name}",  # Unique identifier for this card object
-            "classId": f"{issuer_id}.EC_10",  # Match the working classId
+            "id": f"{issuer_id}.{first_name}.{last_name}",  # Unique identifier for this card object
+            "classId": f"{issuer_id}.{card_type_name}",  # Match the working classId
             "state": "active",  # Use lowercase "active" as per your working example
             "accountId": email,
             "accountName": first_name,
             "issuerName": company_name,
             "textModulesData": [
-                {"id": "employee_no", "header": "Employee No", "body": "1061"},
-                {"id": "discount%", "header": "Discount %", "body": "50"},
-                {"id": "partner_since", "header": "Partner Since", "body": "2019"}
+                #{"id": "employee_no", "header": "Employee No", "body": "1061"},
+                #{"id": "partner_since", "header": "Partner Since", "body": "2019"},
+                {"id": "company", "header": "Company", "body": company_name},
+                {"id": "note", "header": "Note", "body": note},
+                {"id": "survey_link", "header": "Survey", "body": "Please provide your feedback at: https://earls.ca/myexperience/"}
             ],
             "hexBackgroundColor": "#082f3e",
             "logo": {
@@ -165,7 +167,7 @@ def issue_card_to_google_wallet(company_name, first_name, email, card_type_name,
             },
             "barcode": {
                 "type": "QR_CODE",
-                "value": "1234567890",
+                "value": f'Discount: {card_type_name[2:]}%',
                 "alternateText": "Scan for Discount"
             },
             "cardTitle": {
@@ -183,7 +185,7 @@ def issue_card_to_google_wallet(company_name, first_name, email, card_type_name,
             "header": {
                 "defaultValue": {
                     "language": "en-US",
-                    "value": first_name
+                    "value": f'{first_name} {last_name}'
                 }
             },
         }
@@ -206,3 +208,45 @@ def issue_card_to_google_wallet(company_name, first_name, email, card_type_name,
         print(f"Error issuing card: {str(e)}")
         return {'status': 'error', 'message': str(e)}
 
+def revoke_google_wallet_card(object_id):
+    """
+    Revoke a Google Wallet card by setting its state to 'inactive'.
+
+    Args:
+        service_account_file (str): Path to the service account JSON file.
+        object_id (str): The unique ID of the card to revoke (e.g., "issuer_id.card_id").
+
+    Returns:
+        dict: The API response indicating success or failure.
+    """
+    try:
+        SERVICE_ACCOUNT_FILE = "C:\\Users\\josh_\\Desktop\\bcit-ec-9f137ee9c6ae.json"
+        # Authenticate using the service account file
+        credentials = service_account.Credentials.from_service_account_file(
+            SERVICE_ACCOUNT_FILE, scopes=["https://www.googleapis.com/auth/wallet_object.issuer"]
+        )
+        authed_session = Request()
+        credentials.refresh(authed_session)
+        access_token = credentials.token
+
+        # Define the PATCH endpoint and payload
+        url = f"https://walletobjects.googleapis.com/walletobjects/v1/genericObject/{object_id}"
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+        payload = {"state": "inactive"}
+
+        # Make the PATCH request
+        response = requests.patch(url, headers=headers, data=json.dumps(payload))
+
+        if response.status_code == 200:
+            print(f"Successfully revoked card: {object_id}")
+            return {"status": "success", "response": response.json()}
+        else:
+            print(f"Failed to revoke card: {response.status_code}, {response.text}")
+            return {"status": "error", "response": response.json()}
+
+    except Exception as e:
+        print(f"Error revoking card: {str(e)}")
+        return {"status": "error", "message": str(e)}

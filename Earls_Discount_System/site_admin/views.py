@@ -16,6 +16,7 @@ from .models import (
 from .utils import (
     generate_card_number,
     issue_card_to_google_wallet,
+    revoke_google_wallet_card,
     send_wallet_selection_email
 )
 
@@ -134,6 +135,7 @@ def issue_card(request):
             wallet_response = issue_card_to_google_wallet(
                 company_name=company.name,
                 first_name=first_name,
+                last_name=last_name,
                 email=email,
                 card_type_name=cardtype.name,
                 note=note
@@ -201,7 +203,6 @@ def revoke_card(request, cardholder_id):
     card = Card.objects.filter(cardholder=cardholder).first()
     
     if request.method == 'POST':
- 
         if card:
             card.card_number = None
             card.issued_date = None
@@ -211,6 +212,8 @@ def revoke_card(request, cardholder_id):
         cardholder.is_active = False
         cardholder.save()
 
+        
+        revoke_google_wallet_card(f"3388000000022791702.{cardholder.first_name}.{cardholder.last_name}")
         return redirect('manage_user_details', cardholder_id=cardholder.id) 
 
     return render(request, 'eccard/revoke-card.html', {
