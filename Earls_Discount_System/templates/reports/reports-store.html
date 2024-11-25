@@ -5,11 +5,11 @@
     <div class="nav-breadcrumbs">
         <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
         <div class="breadcrumb">
-            <a href="#">Home</a>
+            <a href="{% url 'admin_home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Reports</a>
+            <a href="{% url 'reports_dashboard' %}">Reports</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Discounts per Store</a>
+            <a href="{% url 'total_discounts_per_store' %}">Discounts per Store</a>
         </div>
     </div>
     <div class="section-info add-date-option">

@@ -5,11 +5,11 @@
       <i class="fa-solid fa-arrow-left"></i> Go Back
     </button>
     <div class="breadcrumb">
-      <a href="#">Home</a>
+      <a href="{% url 'admin_home' %}">Home</a>
       <i class="fa-solid fa-chevron-right"></i>
-      <a href="#">Reports</a>
+      <a href="{% url 'reports_dashboard' %}">Reports</a>
       <i class="fa-solid fa-chevron-right"></i>
-      <a href="#">Discounts per Employee</a>
+      <a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a>
       <i class="fa-solid fa-chevron-right"></i>
       <a href="#">Drilldown Employee Discounts</a>
     </div>
