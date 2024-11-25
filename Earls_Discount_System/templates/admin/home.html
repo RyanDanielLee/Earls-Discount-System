@@ -1,140 +1,144 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <div class="admin-container">
-    <div class="container-info">
-        <div class="title">
-            <h1>Admin Dashboard</h1>
-        </div>
-        <div class="support-email">
-            <i class="fa-regular fa-envelope font-awesome-icons"></i>
-            <span class="email-text" id="email" onclick="copyEmail()">support@earls.ca</span>
-            <span class="email-tooltip-text">Copy to clipboard</span>
-        </div>
+  <div class="container-info">
+    <div class="title">
+      <h1>Admin Dashboard</h1>
     </div>
+    <div class="support-email">
+      <i class="fa-regular fa-envelope font-awesome-icons"></i>
+      <span class="email-text" id="email" onclick="copyEmail()"
+        >support@earls.ca</span
+      >
+      <span class="email-tooltip-text">Copy to clipboard</span>
+    </div>
+  </div>
 
-    <div class="title-total-discounts">
-        <i class="fa-solid fa-coins font-awesome-icons"></i>
-        <p class="strong">Total Discounts</p><small>Period 9 as of Oct 14, 2024</small>
-    </div>
-    <div class="contents-total-discounts grid">
-        <div class="table">
-            <div class="section-title">
-                <div class="total-discounts-store">
-                    <p>Total Discounts by Store</p>
-                </div>
-                <a href="{% url 'total_discounts_per_store' %}" class="icon-link">
-                    <div class="view-all-icon"><i class="fa-solid fa-angle-right"></i></div>
-                </a>
-            </div>
-            <div class="table-total-discounts">
-                <div>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>King West</td>
-                                <td>- $1138.25</td>
-                            </tr>
-                            <tr>
-                                <td>Port Coquitlam</td>
-                                <td>- $622.13</td>
-                            </tr>
-                            <tr>
-                                <td>Robson</td>
-                                <td>- $465.14</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <div class="title-total-discounts">
+    <i class="fa-solid fa-coins font-awesome-icons"></i>
+    <p class="strong">Total Discounts</p>
+    <small>Period 9 as of Oct 14, 2024</small>
+  </div>
+  <div class="contents-total-discounts grid">
+    <div class="table">
+      <div class="section-title">
+        <div class="total-discounts-store">
+          <p>Total Discounts($) by Store</p>
         </div>
-        <div class="table">
-            <div class="section-title">
-                <div class="total-discounts-employee">
-                    <p>Total Discounts by Employee</p>
-                </div>
-                <a href="{% url 'total_discounts_per_employee' %}" class="icon-link">
-                    <div class="view-all-icon"><i class="fa-solid fa-angle-right"></i></div>
-                </a>
-            </div>
-            <div class="table-total-discounts">
-                <div>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Michelle Choi</td>
-                                <td>- $938.50</td>
-                            </tr>
-                            <tr>
-                                <td>Rhombus Nell</td>
-                                <td>- $722.13</td>
-                            </tr>
-                            <tr>
-                                <td>John Doe</td>
-                                <td>- $465.14</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="section-title-cardholders">
-        <div class="title-total-cardholders"><i class="fa-regular fa-credit-card font-awesome-icons"></i>
-            <p>New Cardholders</p><small>Activated in Last Month</small>
-        </div>
-        <a href="{% url 'manage_card_holders' %}" class="icon-link">
-            <p class="view-all-text">View All</p>
+        <a href="{% url 'total_discounts_per_store' %}" class="icon-link">
+          <div class="view-all-icon">
+            <i class="fa-solid fa-angle-right"></i>
+          </div>
         </a>
-
-
-    </div>
-    <div class="new-cardholders">
-        <table class="table-total-cardholders" id="no-more-tables">
-            <thead>
-                <tr class="admin-cardholder-td-thead">
-                    <th>Card No.</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Card Type</th>
-                    <th>Issue Date</th>
-                </tr>
-            </thead>
+      </div>
+      <div class="table-total-discounts">
+        <div>
+          <table>
             <tbody>
-                {% for cardholder in page_obj %}
-                <tr>
-                    <td data-title="Card No">{{ cardholder.id }}</td>
-                    <td data-title="Name">{{ cardholder.name }}</td>
-                    <td data-title="Email">
-                        <a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a>
-                    </td>
-                    <td data-title="Status">{% if cardholder.is_active == 1 %}Active{% else %}Inactive{% endif %}</td>
-                    <td data-title="CardType">{{ cardholder.card_type.name|default:"N/A" }}</td>
-                    <td data-title="Issue Date">{{ cardholder.card.issued_date|default:"N/A" }}</td>
-                </tr>
-                {% endfor %}
+              {% for store in store_discounts %}
+              <tr>
+                <td>{{ store.store_name }}</td>
+                <td>{{ store.total_discount|floatformat:2 }}</td>
+              </tr>
+              {% endfor %}
             </tbody>
-        </table>
-        <br>
-        <div class="pagination">
-            {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
-            {% endif %}
-
-            {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-            <a href="?page={{ num }}" class="active">{{ num|add:"0"|slice:"-2" }}</a>
-            {% else %}
-            <a href="?page={{ num }}">{{ num|add:"0"|slice:"-2" }}</a>
-            {% endif %}
-            {% endfor %}
-
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
-            {% endif %}
+          </table>
         </div>
+      </div>
     </div>
+    <div class="table">
+      <div class="section-title">
+        <div class="total-discounts-employee">
+          <p>Total Discounts($) by Employee</p>
+        </div>
+        <a href="{% url 'total_discounts_per_employee' %}" class="icon-link">
+          <div class="view-all-icon">
+            <i class="fa-solid fa-angle-right"></i>
+          </div>
+        </a>
+      </div>
+      <div class="table-total-discounts">
+        <div>
+          <table>
+            <tbody>
+              {% for employee in employee_discounts %}
+              <tr>
+                <td>{{ employee.cardholder_name }}</td>
+                <td>{{ employee.total_discount|floatformat:2 }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title-cardholders">
+    <div class="title-total-cardholders">
+      <i class="fa-regular fa-credit-card font-awesome-icons"></i>
+      <p>New Cardholders</p>
+      <small>Activated in Last Month</small>
+    </div>
+    <a href="{% url 'manage_card_holders' %}" class="icon-link">
+      <p class="view-all-text">View All</p>
+    </a>
+  </div>
+  <div class="new-cardholders">
+    <table class="table-total-cardholders" id="no-more-tables">
+      <thead>
+        <tr class="admin-cardholder-td-thead">
+          <th>Card No.</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Card Type</th>
+          <th>Issue Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cardholder in page_obj %}
+        <tr>
+          <td data-title="Card No">{{ cardholder.id }}</td>
+          <td data-title="Name">{{ cardholder.name }}</td>
+          <td data-title="Email">
+            <a href="{% url 'manage_user_details' cardholder.id %}"
+              >{{ cardholder.email }}</a
+            >
+          </td>
+          <td data-title="Status">
+            {% if cardholder.is_active == 1 %}
+                Active
+            {% else %}
+                Inactive
+            {% endif %}
+          </td>
+          <td data-title="CardType">
+            {{ cardholder.card_type.name|default:"N/A" }}
+          </td>
+          <td data-title="Issue Date">
+            {{ cardholder.card.issued_date|default:"N/A" }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}"
+        ><i class="fa-solid fa-chevron-left"></i
+      ></a>
+      {% endif %} 
+      {% for num in page_obj.paginator.page_range %} 
+      {% if page_obj.number == num %}
+      <a href="?page={{ num }}" class="active">{{ num|add:"0"|slice:"-2" }}</a>
+      {% else %}
+      <a href="?page={{ num }}">{{ num|add:"0"|slice:"-2" }}</a>
+      {% endif %} {% endfor %} {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}"
+        ><i class="fa-solid fa-chevron-right"></i
+      ></a>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}

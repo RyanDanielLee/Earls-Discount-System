@@ -21,11 +21,90 @@ def admin_home(request):
         cardholder.card = Card.objects.filter(cardholder=cardholder).first()
         cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
 
+        if cardholder.card and cardholder.card.issued_date:
+            cardholder.card.issued_date = cardholder.card.issued_date.strftime('%Y-%m-%d')
+
+    # Total Discounts by Store
+    store_query = """
+    SELECT
+        sr.store_name,
+        SUM(CASE WHEN gc.chkName IS NOT NULL THEN gc.dscTtl ELSE 0 END) AS known_cardholder_discount,
+        SUM(CASE WHEN gc.chkName IS NULL THEN gc.dscTtl ELSE 0 END) AS unknown_cardholder_discount
+    FROM
+        `bcit-ec.simphony_api_dataset.store_reference` AS sr
+    JOIN
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    ON
+        sr.store_id = gc.locRef
+    GROUP BY sr.store_name
+    ORDER BY known_cardholder_discount + unknown_cardholder_discount ASC
+    LIMIT 3
+    """
+    stores = fetch_bigquery_data(store_query)
+
+    store_discounts = [
+        {
+            "store_name": row["store_name"],
+            "total_discount": row["known_cardholder_discount"] + row["unknown_cardholder_discount"],
+        }
+        for row in stores
+    ]
+
+    # Total Discounts by Employee
+    cloudsql_query = """
+    SELECT
+        ch.id AS cardholder_id,
+        CONCAT(ch.first_name, ' ', ch.last_name) AS cardholder_name,
+        ct.name AS card_type
+    FROM
+        cardholder AS ch
+    LEFT JOIN
+        card_type AS ct
+    ON
+        ch.card_type_id = ct.id
+    """
+    with connection.cursor() as cursor:
+        cursor.execute(cloudsql_query)
+        cardholder_data = cursor.fetchall()
+
+    cardholders = {
+        row[0]: {"cardholder_name": row[1], "card_type": row[2], "total_discount": 0}
+        for row in cardholder_data
+    }
+
+    bigquery_query = """
+    SELECT
+        gc.empNum AS cardholder_id,
+        SUM(gc.dscTtl) AS total_discount
+    FROM
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    GROUP BY gc.empNum
+    """
+    bigquery_results = fetch_bigquery_data(bigquery_query)
+
+    for row in bigquery_results:
+        cardholder_id = row['cardholder_id']
+        if cardholder_id in cardholders:
+            cardholders[cardholder_id]['total_discount'] = row['total_discount']
+
+    employee_discounts = sorted(
+        [
+            {
+                "cardholder_name": cardholder["cardholder_name"],
+                "total_discount": cardholder["total_discount"],
+            }
+            for cardholder_id, cardholder in cardholders.items()
+        ],
+        key=lambda x: x["total_discount"],
+        reverse=False  # Sort by ascending order
+    )[:3]
+
     paginator = Paginator(new_cardholders, 7)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'admin/home.html', {'page_obj': page_obj})
+    return render(request, 'admin/home.html', {'page_obj': page_obj, 'store_discounts': store_discounts,
+        'employee_discounts': employee_discounts})
 
 # Cardholders
 def view_all_users(request):
@@ -37,8 +116,45 @@ def manage_user_details(request, cardholder_id):
     cardholder.status = "Active" if cardholder.is_active == True else "Inactive"
 
     card = Card.objects.filter(cardholder=cardholder).first()
+    if card and card.issued_date:
+        card.issued_date = card.issued_date.strftime('%Y-%m-%d')
+    else:
+        card = None 
 
-    return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder, 'card': card})
+    # Query BigQuery for transactions related to the cardholder
+    bigquery_query = f"""
+    SELECT
+        gc.clsdBusDt AS business_date,
+        sr.store_name AS store,
+        gc.chkNum AS check_number,
+        gc.dscTtl AS discount_amount
+    FROM
+        `bcit-ec.simphony_api_dataset.guest_checks` AS gc
+    JOIN
+        `bcit-ec.simphony_api_dataset.store_reference` AS sr
+    ON
+        gc.locRef = sr.store_id
+    WHERE
+        gc.empNum = {cardholder_id}
+    ORDER BY
+        gc.clsdBusDt DESC
+    """
+    transactions = fetch_bigquery_data(bigquery_query)
+
+    formatted_transactions = []
+    for transaction in transactions:
+        transaction["business_date"] = (
+            transaction["business_date"].strftime("%Y-%m-%d")
+            if not isinstance(transaction["business_date"], str)
+            else transaction["business_date"]
+        )
+        formatted_transactions.append(transaction)
+    
+    paginator = Paginator(transactions, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder, 'card': card, 'page_obj': page_obj})
 
 def manage_card_holders(request):
     cardholders = Cardholder.objects.all().order_by('-created_date')
@@ -257,6 +373,7 @@ def total_discounts_per_store(request):
     ON
         sr.store_id = gc.locRef
     GROUP BY sr.store_name
+    ORDER BY known_cardholder_discount + unknown_cardholder_discount ASC
     """
 
     stores = fetch_bigquery_data(query)
