@@ -1,75 +1,102 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <div class="admin-container">
-    <!-- header -->
-    <div class="nav-breadcrumbs">
-        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
-        <div class="breadcrumb">
-            <a href="{% url 'admin_home' %}">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="{% url 'issue_card' %}">Create Cardholder</a>
-        </div>
+  <!-- header -->
+  <div class="nav-breadcrumbs">
+    <button onclick="history.back()" class="btn-back">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </button>
+    <div class="breadcrumb">
+      <a href="{% url 'admin_home' %}">Home</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="{% url 'issue_card' %}">Create Cardholder</a>
     </div>
-    <div class="section-info">
-        <h1 class="headline">Create Cardholder</h1>
-        <ul>
-            <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
-            <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
-            <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
-        </ul>
-    </div>
-    <form class="eccard-form flex-column" method="POST" action="{% url 'issue_card' %}">
-        {% csrf_token %}
-        <div class="flex-column input-group">
-            <div class="flex-row">
-                <div class="form-group">
-                    <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" name="first_name" placeholder="First Name"
-                        class="eccard-form-text" required>
-                </div>
-                <div class="form-group">
-                    <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" name="last_name" placeholder="Last Name" class="eccard-form-text"
-                        required>
-                </div>
-            </div>
-            <div class="flex-row">
-                <div class="form-group">
-                    <label for="email-address">Email Address</label>
-                    <input type="email" id="email-address" name="email" placeholder="Email Address"
-                        class="eccard-form-text" required>
-                </div>
-                <div class="form-group">
-                    <label for="company">Company</label>
-                    <select id="company" name="company" class="eccard-dropdown">
-                        {% for company in companies %}
-                        <option value="{{  company.id }}">{{ company.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="flex-row">
-                <div class="form-group">
-                    <label for="card-type">Card Type</label>
-                    <select id="card-type" name="card_type" class="eccard-dropdown">
-                        {% for cardtype in cardtypes %}
-                        <option value="{{ cardtype.id }}">{{ cardtype.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="flex-row">
-                <div class="form-group full-width">
-                    <label for="note">Note</label>
-                    <textarea id="note" name="note" placeholder="Cardholder Information"
-                        class="eccard-form-text full-width"></textarea>
-                </div>
-            </div>
-            <div class="flex-row justify-end">
-                <button type="submit" class="form-button">Create</button>
-            </div>
+  </div>
+  <div class="section-info">
+    <h1 class="headline">Create Cardholder</h1>
+    <ul>
+      <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
+      <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
+      <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
+    </ul>
+  </div>
+  <form
+    class="eccard-form flex-column"
+    method="POST"
+    action="{% url 'issue_card' %}"
+  >
+    {% csrf_token %}
+    <div class="flex-column input-group">
+      <div class="flex-row">
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input
+            type="text"
+            id="first-name"
+            name="first_name"
+            placeholder="First Name"
+            class="eccard-form-text"
+            required
+          />
         </div>
-    </form>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            id="last-name"
+            name="last_name"
+            placeholder="Last Name"
+            class="eccard-form-text"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="form-group">
+          <label for="email-address">Email Address</label>
+          <input
+            type="email"
+            id="email-address"
+            name="email"
+            placeholder="Email Address"
+            class="eccard-form-text"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="company">Company</label>
+          <select id="company" name="company" class="eccard-dropdown">
+            {% for company in companies %}
+            <option value="{{  company.id }}">{{ company.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="form-group">
+          <label for="card-type">Card Type</label>
+          <select id="card-type" name="card_type" class="eccard-dropdown">
+            {% for cardtype in cardtypes %}
+            <option value="{{ cardtype.id }}">{{ cardtype.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="form-group full-width">
+          <label for="note">Note</label>
+          <textarea
+            id="note"
+            name="note"
+            placeholder="Cardholder Information"
+            class="eccard-form-text full-width"
+          ></textarea>
+        </div>
+      </div>
+      <div class="flex-row justify-between">
+        <p class="error-message">{{ error_message }}</p>
+        <button type="submit" class="form-button">Create</button>
+      </div>
+    </div>
+  </form>
 </div>
 {% endblock %}

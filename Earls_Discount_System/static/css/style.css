@@ -271,6 +271,21 @@ html {
   transition: all 0.1s ease-out;
 }
 
+.text-link {
+  margin-left: 1rem;
+  color: var(--primary-color);
+  transition: all 0.1s ease-out;
+}
+
+.text-link:hover {
+  color: var(--font-color);
+}
+
+
+.error-message {
+  color: var(--accent-color);
+}
+
 /* responsive design */
 
 @media only screen and (max-width: 768px) {
@@ -327,6 +342,7 @@ html {
     padding-left: 1.5rem;
     color: var(--primary-color);
   }
+
   #dropdown-content2.active {
     padding-left: 1.5rem;
     color: var(--primary-color);

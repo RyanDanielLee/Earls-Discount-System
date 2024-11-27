@@ -98,25 +98,23 @@
       <tbody>
         {% for cardholder in page_obj %}
         <tr>
-          <td data-title="Card No">{{ cardholder.id }}</td>
-          <td data-title="Name">{{ cardholder.name }}</td>
+          <td data-title="Card No"><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.id }}</a></td>
+          <td data-title="Name"><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.name }}</a></td>
           <td data-title="Email">
-            <a href="{% url 'manage_user_details' cardholder.id %}"
-              >{{ cardholder.email }}</a
-            >
+            <a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a>
           </td>
-          <td data-title="Status">
+          <td data-title="Status"><a href="{% url 'manage_user_details' cardholder.id %}">
             {% if cardholder.is_active == 1 %}
                 Active
             {% else %}
                 Inactive
             {% endif %}
+          </a></td>
+          <td data-title="CardType"><a href="{% url 'manage_user_details' cardholder.id %}">
+            {{ cardholder.card_type.name|default:"N/A" }}</a>
           </td>
-          <td data-title="CardType">
-            {{ cardholder.card_type.name|default:"N/A" }}
-          </td>
-          <td data-title="Issue Date">
-            {{ cardholder.card.issued_date|default:"N/A" }}
+          <td data-title="Issue Date"><a href="{% url 'manage_user_details' cardholder.id %}">
+            {{ cardholder.card.issued_date|default:"N/A" }}</a>
           </td>
         </tr>
         {% endfor %}

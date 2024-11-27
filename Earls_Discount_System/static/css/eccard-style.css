@@ -76,6 +76,10 @@
   justify-content: flex-end;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
 textarea.eccard-form-text {
   height: 9rem;
 }
@@ -121,16 +125,19 @@ textarea.eccard-form-text {
   background-color: var(--bg-color);
   border: 2px solid var(--bg-variant);
 }
+
 .tab.active {
   color: var(--font-color);
   border-top: 2px solid var(--primary-color);
   background-color: var(--bg-variant);
 }
+
 .form-section {
   background-color: var(--bg-variant);
   padding: 3rem;
   display: none;
 }
+
 .form-section.active {
   display: block;
 }
@@ -165,6 +172,7 @@ textarea.eccard-form-text {
   font-size: 16px;
   background-color: var(--bg-color);
 }
+
 .preview-box {
   width: 100%;
   background-color: var(--bg-color);
@@ -231,7 +239,7 @@ textarea.eccard-form-text {
   margin-top: 0.4rem;
 }
 
-.layout-info .item p > span {
+.layout-info .item p>span {
   padding-right: 1rem;
   font-weight: 500;
 }
@@ -260,6 +268,7 @@ textarea.eccard-form-text {
 .documentation a:hover {
   color: var(--font-color);
 }
+
 /* end of upload faceplate */
 
 /* start of view faceplate */
@@ -309,7 +318,7 @@ textarea.eccard-form-text {
   width: 90%;
 }
 
-.info-revoke > p > span {
+.info-revoke>p>span {
   color: var(--primary-color);
 }
 

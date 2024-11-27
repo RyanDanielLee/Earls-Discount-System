@@ -8,6 +8,8 @@
             <a href="{% url 'admin_home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
             <a href="{% url 'manage_card_holders' %}">Cardholders</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'search_cardholders' %}">Search</a>
         </div>
     </div>
     <div class="cardholder-title-container">
@@ -17,14 +19,17 @@
 
     <form class="form" method="get" action="{% url 'search_cardholders' %}">
         <select id="category" name="filter_by" class="search-filter form-dropdown">
-            <option value="name">name</option>
-            <option value="email">email</option>
-            <option value="id">ID</option>
+            <option value="name" {% if filter_by == 'name' %}selected{% endif %}>Name</option>
+            <option value="email" {% if filter_by == 'email' %}selected{% endif %}>Email</option>
+            <option value="id" {% if filter_by == 'id' %}selected{% endif %}>ID</option>
         </select>
-        <input id="cardholders" type="text" name="q" placeholder="Search cardholder" class="form-text">
+        <input id="cardholders" type="text" name="q" placeholder="Search cardholder" class="form-text" required>
         <button type="submit" class="form-button">Search</button>
     </form>
     <div class="search-container">
+        {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+        {% endif %}
         <h1 class="headline-search">Search Results</h1>
         <table class="cardholder-table">
             <thead>
@@ -37,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for cardholder in cardholders %}
+                {% for cardholder in page_obj %}
                 <tr>
                     <td>{{ cardholder.id }}</td>
                     <td>{{ cardholder.first_name }} {{ cardholder.last_name }}</td>
@@ -54,6 +59,26 @@
                 {% endfor %}
             </tbody>
         </table>
+        <br>
+        {% if page_obj %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <a href="?page={{ num }}" class="active">{{ num|add:"0"|slice:"-2" }}</a>
+            {% else %}
+            <a href="?page={{ num }}">{{ num|add:"0"|slice:"-2" }}</a>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

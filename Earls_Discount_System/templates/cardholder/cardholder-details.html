@@ -17,13 +17,24 @@
         <div class="flex-row">
             <h2 class="cardholder-header-title">{{ cardholder.name }}</h2>
             <a class="cardholder-header-link" href="{% url 'edit_card' cardholder.id %}">Edit</a>
-            <a class="cardholder-header-link" href="{% url 'revoke_card' cardholder.id %}">Revoke</a>
+            {% if cardholder.is_active %}
+            <a href="{% url 'revoke_card' cardholder_id=cardholder.id %}" class="button revoke-button">Revoke</a>
+            {% else %}
+            <a class="button revoke-button disabled">Revoke</a>
+            {% endif %}
             <a class="cardholder-header-link" href="{% url 'delete_cardholder' cardholder.id %}">Delete Cardholder</a>
         </div>
-        <button class="cardholder-header-button btn-reissue" onclick="openReissueConfirmModal(event)"><i
-                class="fa-regular fa-envelope cardholder-header-icon"></i>
-            Re-Issue
-            Card</button>
+            {% if card.card_number and cardholder.is_active %}
+            <a class="cardholder-header-button btn-reissue disabled" >
+            <i class="fa-regular fa-envelope cardholder-header-icon"></i>
+            Re-Issue Card
+            </a>
+            {% else %}
+            <a class="cardholder-header-button btn-reissue" onclick="openReissueConfirmModal(event)">
+                <i class="fa-regular fa-envelope cardholder-header-icon"></i>
+                Re-Issue Card
+            </a>
+            {% endif %}
     </div>
     <div class="cardholder-details">
         <div class="detail-item">
@@ -39,7 +50,7 @@
         <div class="detail-item">
             <span>Card Type</span>
             <span>Card Number</span>
-            <span>Issue Date</span>
+            <span>Issued Date</span>
         </div>
         <div class="detail-item">
             <span>{{ cardholder.card_type.name|default:"N/A" }}</span>

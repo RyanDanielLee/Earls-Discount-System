@@ -26,8 +26,9 @@ from django.db import connection
 from django.db.models import Q
 # pagination
 from django.core.paginator import Paginator
-
-
+# error handling
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 def is_admin(user):
     return user.groups.filter(name='admin').exists()
@@ -201,42 +202,64 @@ def manage_card_holders(request):
     return render(request, 'cardholder/cardholder.html', {'page_obj': page_obj, 'is_superadmin': is_superadmin, 'is_admin': is_admin})
 
 def search_cardholders(request):
-    query = request.GET.get('q', '')
+    query = request.GET.get('q', '').strip() 
     filter_by = request.GET.get('filter_by', 'name')  # Default to search by name
+    error_message = None
+    cardholders = Cardholder.objects.none() 
 
-    if filter_by == 'name':
-        cardholders = Cardholder.objects.filter(
-            Q(first_name__icontains=query) | Q(last_name__icontains=query)
-        )
-    elif filter_by == 'email':
-        cardholders = Cardholder.objects.filter(email__icontains=query)
-    elif filter_by == 'id':
-        cardholders = Cardholder.objects.filter(id=query)
-    else:
-        cardholders = Cardholder.objects.none()
+    try:
+        if filter_by == 'name':
+            cardholders = Cardholder.objects.filter(
+                Q(first_name__icontains=query) | Q(last_name__icontains=query)
+            )
 
-    return render(request, 'cardholder/search_results.html', {'cardholders': cardholders, 'query': query, 'filter_by': filter_by})
+        elif filter_by == 'email':
+            cardholders = Cardholder.objects.filter(email__icontains=query)
 
+        elif filter_by == 'id':
+            if query.isdigit():
+                cardholders = Cardholder.objects.filter(id=int(query))
+            else:
+                raise ValidationError('ID must be a number.')
+        else:
+            error_message = "Invalid filter option." 
+
+    except ValidationError as e:
+        error_message = e.message
+
+    page_obj = None
+    if cardholders.exists():
+        paginator = Paginator(cardholders, 10)  # 10 results per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+    
+    return render(
+        request,
+        'cardholder/search_results.html', {
+            'page_obj': page_obj,
+            'cardholders': cardholders,
+            'query': query,
+            'filter_by': filter_by,
+            'error_message': error_message,
+        }
+    )
 
 @user_passes_test(is_superadmin, login_url='/unauthorized')
 def issue_card(request):
     is_superadmin = request.user.groups.filter(name='superadmin').exists()
     
-    if request.method == 'POST':
-        try:
-            # Capture the POST data
-            first_name = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
-            email = request.POST.get('email')
-            company_id = request.POST.get('company')
-            card_type_id = request.POST.get('card_type')
-            note = request.POST.get('note')
+    if request.method == 'POST':         
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        company_id = request.POST.get('company')
+        card_type_id = request.POST.get('card_type')
+        note = request.POST.get('note')
 
-            # Fetch related objects from the database
+        try:
             company = Company.objects.get(id=company_id)
             cardtype = CardType.objects.get(id=card_type_id)
 
-            # Create a new Cardholder
             cardholder = Cardholder.objects.create(
                 first_name=first_name,
                 last_name=last_name,
@@ -292,13 +315,45 @@ def issue_card(request):
                     expires_at=google_wallet_token.expires_at
                 )
 
+                # send_wallet_selection_email(
+                #     cardholder=cardholder,
+                #     google_wallet_token=google_wallet_token.token,
+                #     apple_wallet_token=apple_wallet_token.token, 
+                #     expires_at=google_wallet_token.expires_at
+                # )
+        
                 return redirect('manage_card_holders')
-
             else:
                 # Handle error response
                 error_message = wallet_response.get('message', 'Unknown error occurred.')
                 print(f"Failed to issue Google Wallet card: {error_message}")
                 messages.error(request, f"Failed to issue Google Wallet card: {error_message}")
+    
+        except IntegrityError as e:
+            if 'Duplicate entry' in str(e):
+                error_message = 'This email already exists. Please use a different email.'
+            else:
+                error_message = 'An unexpected error occurred. Please try again.'
+         
+         # Preserve form data and company/cardtype data
+            company = Company.objects.all()
+            cardtype = CardType.objects.all()
+        
+            return render(request, 'eccard/issue-card.html', {
+                'error_message': error_message,
+                'companies': company,
+                'cardtypes': cardtype,
+                'form_data': {
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'email': email,
+                    'company_id': company_id,
+                    'card_type_id': card_type_id,
+                    'note': note,
+                },
+                'is_superadmin': is_superadmin, 
+                'is_admin': is_admin
+            })
 
         except Exception as e:
             print(f"Error issuing card: {str(e)}")
@@ -307,21 +362,15 @@ def issue_card(request):
         # Redirect back to the form in case of any error
         return redirect('issue_card')
 
-    # Get data for rendering the form
     companies = Company.objects.all()
-    cardtypes = CardType.objects.all()
+    card_types = CardType.objects.all()
 
-    return render(
-        request,
-        'eccard/issue-card.html',
-        {
-            'companies': companies,
-            'cardtypes': cardtypes,
-            'is_superadmin': is_superadmin
-        }
-    )
-
-
+    return render(request, 'eccard/issue-card.html', {
+        'companies': companies,
+        'cardtypes': card_types
+    })
+    
+    
 @user_passes_test(is_superadmin, login_url='/unauthorized')
 def revoke_card(request, cardholder_id):
 
@@ -333,7 +382,7 @@ def revoke_card(request, cardholder_id):
     if request.method == 'POST':
         if card:
             card.card_number = None
-            card.issued_date = None
+            card.issued_date = card.issued_date
             card.revoked_date = timezone.now()
             card.save()
 
