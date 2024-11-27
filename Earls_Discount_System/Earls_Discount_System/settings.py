@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://eccard-234204981539.us-west1.run.app']
+CSRF_TRUSTED_ORIGINS = ['https://eccard-234204981539.us-west1.run.app', 'https://earls-eccard-app-234204981539.us-west1.run.app']
 
 # Application definition
 
@@ -149,8 +149,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-print(os.getenv('CLIENT_ID'))
-print(os.getenv('CLIENT_SECRET'))
+# print(os.getenv('CLIENT_ID'))
+# print(os.getenv('CLIENT_SECRET'))
 
 LOGIN_REDIRECT_URL = '/site_admin/'
 SOCIALACCOUNT_LOGIN_ON_GET = True

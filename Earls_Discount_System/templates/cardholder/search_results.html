@@ -3,11 +3,11 @@
 {% block content %}
 <div class="flex-container">
     <div class="breadcrumb-bar">
-        <a href="#" class="back-button"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
+        <a href="{% url 'admin_home' %}" class="back-button"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
         <div class="breadcrumb-links">
-            <a href="#">Home</a>
+            <a href="{% url 'admin_home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <a href="#">Cardholders</a>
+            <a href="{% url 'manage_card_holders' %}">Cardholders</a>
         </div>
     </div>
     <div class="cardholder-title-container">
