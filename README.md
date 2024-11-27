@@ -79,3 +79,18 @@ https://www.figma.com/design/D7cFY2SOTXWoHZXWAz21jB/EarlsIT---UI%2FUX-Design?nod
 1. Whitelist IP on CloudSQL under the **card-issuer** interface in the **card-issue** database
 2. Change directory to "Earls_Discount_System\Earls_Discount_System\
 3. Start the database connection using `python manage.py migrate`
+
+## Creating Superuser Account
+
+1. Run ``python manage.py createsuperuser`` to create a locally-authenticated superuser
+2. Navigate to http://127.0.0.1:8000/admin to log in to the admin panel with this local superuser
+
+## Authorizing SSO Users
+This is the process to grant access to the webapp for a user created through Google SSO. You require a local superadmin account,
+or an SSO account that has been granted the superadmin role.
+
+1. Log in to the admin panel (/admin) with a local superuser
+2. Navigate to the user panel on the left
+3. Click on the newly created SSO user account
+4. Under Groups, click "admin" and the right-sided arrow to assign the administrator group to the user - the same applies to the superadmin group.
+5. Click Save to apply changes
