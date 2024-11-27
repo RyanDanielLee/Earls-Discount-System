@@ -31,6 +31,16 @@
 3. Add this JSON file to your directory in Earls_Discount_System/site_admin/utils.py
 4. Change the service account to match the directory of the JSON
 
+## Required .env parameters
+
+```
+CLIENT_ID= # From Google Cloud Console - APIs > Secrets
+CLIENT_SECRET= # From Google Cloud Console - APIs > Secrets
+EMAIL_HOST_PASSWORD=
+CERT_PASSWORD= # Certificate encryption passphrase
+TEAM_ID= # From Apple Developer account
+BUNDLE_ID= # Apple Certificate Identifier (reverse domain pattern)
+```
 
 ## Styling Guide
 
