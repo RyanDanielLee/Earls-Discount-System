@@ -10,8 +10,9 @@ from django.db import connection
 from django.db.models import Q
 # pagination
 from django.core.paginator import Paginator
-
-
+# error handling
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 def admin_home(request):
     one_month_ago = timezone.now() - timedelta(days=30)
@@ -168,76 +169,131 @@ def manage_card_holders(request):
     return render(request, 'cardholder/cardholder.html', {'page_obj': page_obj})
 
 def search_cardholders(request):
-    query = request.GET.get('q', '')
+    query = request.GET.get('q', '').strip() 
     filter_by = request.GET.get('filter_by', 'name')  # Default to search by name
+    error_message = None
+    cardholders = Cardholder.objects.none() 
 
-    if filter_by == 'name':
-        cardholders = Cardholder.objects.filter(
-            Q(first_name__icontains=query) | Q(last_name__icontains=query)
-        )
-    elif filter_by == 'email':
-        cardholders = Cardholder.objects.filter(email__icontains=query)
-    elif filter_by == 'id':
-        cardholders = Cardholder.objects.filter(id=query)
-    else:
-        cardholders = Cardholder.objects.none()
+    try:
+        if filter_by == 'name':
+            cardholders = Cardholder.objects.filter(
+                Q(first_name__icontains=query) | Q(last_name__icontains=query)
+            )
 
-    return render(request, 'cardholder/search_results.html', {'cardholders': cardholders, 'query': query, 'filter_by': filter_by})
+        elif filter_by == 'email':
+            cardholders = Cardholder.objects.filter(email__icontains=query)
+
+        elif filter_by == 'id':
+            if query.isdigit():
+                cardholders = Cardholder.objects.filter(id=int(query))
+            else:
+                raise ValidationError('ID must be a number.')
+        else:
+            error_message = "Invalid filter option." 
+
+    except ValidationError as e:
+        error_message = e.message
+
+    page_obj = None
+    if cardholders.exists():
+        paginator = Paginator(cardholders, 10)  # 10 results per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+    
+    return render(
+        request,
+        'cardholder/search_results.html', {
+            'page_obj': page_obj,
+            'cardholders': cardholders,
+            'query': query,
+            'filter_by': filter_by,
+            'error_message': error_message,
+        }
+    )
+
 
 # EC Card
 def issue_card(request):
 
     if request.method == 'POST':
-        # Capture the POST data
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        company_id = request.POST.get('company')
-        card_type_id = request.POST.get('card_type')
-        note = request.POST.get('note')
+        try:
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            email = request.POST.get('email')
+            company_id = request.POST.get('company')
+            card_type_id = request.POST.get('card_type')
+            note = request.POST.get('note')
 
-        company = Company.objects.get(id=company_id)
-        cardtype = CardType.objects.get(id=card_type_id)
-        
-        cardholder = Cardholder.objects.create(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                company=company,
-                card_type=cardtype,
-                note=note,
-                created_date=timezone.now(),
-                is_active=True
+            company = Company.objects.get(id=company_id)
+            cardtype = CardType.objects.get(id=card_type_id)
+            
+            cardholder = Cardholder.objects.create(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    company=company,
+                    card_type=cardtype,
+                    note=note,
+                    created_date=timezone.now(),
+                    is_active=True
+                )
+            
+            # Generate and assign card
+            card_number = generate_card_number(company.name)
+            
+            card = Card.objects.create(
+                cardholder=cardholder,
+                card_number=card_number,
+                issued_date=timezone.now(),
             )
+
+            cardholder.card = card
+            cardholder.save()
+
+            # Generate wallet selection tokens
+            google_wallet_token = WalletSelectionToken.objects.create(
+                cardholder=cardholder,
+                expires_at=timezone.now() + timezone.timedelta(hours=1)
+            )
+            apple_wallet_token = WalletSelectionToken.objects.create(
+                cardholder=cardholder,
+                expires_at=timezone.now() + timezone.timedelta(hours=1)
+            )
+            
+            # Send email with wallet selection links
+            send_wallet_selection_email(
+                cardholder=cardholder,
+                google_wallet_token=google_wallet_token.token,
+                apple_wallet_token=apple_wallet_token.token, expires_at=google_wallet_token.expires_at)
+
+            return redirect('manage_card_holders') 
         
-        card_number = generate_card_number(company.name)
+        except IntegrityError as e:
+                # Check if it's a duplicate entry error
+                if 'Duplicate entry' in str(e):
+                    error_message = 'This email already exists. Please use a different email.'
+
+                else:
+                    error_message = 'An unexpected error occurred. Please try again.'
+
+                # Preserve form data and company/cardtype data
+                company = Company.objects.all()
+                cardtype = CardType.objects.all()
+            
+                return render(request, 'eccard/issue-card.html', {
+                    'error_message': error_message,
+                    'companies': company,
+                    'cardtypes': cardtype,
+                    'form_data': {
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'company_id': company_id,
+                        'card_type_id': card_type_id,
+                        'note': note,
+                    }
+                })
         
-        card = Card.objects.create(
-            cardholder=cardholder,
-            card_number=card_number,
-            issued_date=timezone.now(),
-        )
-
-        cardholder.card = card
-        cardholder.save()
-
-        # Generate wallet selection tokens
-        google_wallet_token = WalletSelectionToken.objects.create(
-            cardholder=cardholder,
-            expires_at=timezone.now() + timezone.timedelta(hours=1)
-        )
-        apple_wallet_token = WalletSelectionToken.objects.create(
-            cardholder=cardholder,
-            expires_at=timezone.now() + timezone.timedelta(hours=1)
-        )
-        
-        # Send email with wallet selection links
-        send_wallet_selection_email(cardholder=cardholder,
-            google_wallet_token=google_wallet_token.token,
-            apple_wallet_token=apple_wallet_token.token, expires_at=google_wallet_token.expires_at)
-
-        return redirect('manage_card_holders') 
-
     company = Company.objects.all()
     cardtype = CardType.objects.all()
     
@@ -252,7 +308,7 @@ def revoke_card(request, cardholder_id):
  
         if card:
             card.card_number = None
-            card.issued_date = None
+            card.issued_date = card.issued_date
             card.revoked_date = timezone.now()
             card.save()
 

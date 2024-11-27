@@ -216,9 +216,12 @@ input:focus {
   left: 0;
   bottom: 0;
   width: 0;
-  height: 1px; /* Adjust line thickness */
-  background: var(--font-color); /* Adjust line color */
-  transition: width 0.3s ease; /* Adjust animation speed */
+  height: 1px;
+  /* Adjust line thickness */
+  background: var(--font-color);
+  /* Adjust line color */
+  transition: width 0.3s ease;
+  /* Adjust animation speed */
 }
 
 .btn-add-new:hover::after {
@@ -243,6 +246,42 @@ input:focus {
   font-size: 2rem;
   font-weight: 400;
   color: var(--font-color);
+}
+
+.revoke-button {
+  color: var(--primary-color);
+}
+
+.revoke-button.disabled {
+  pointer-events: none;
+  color: var(--light-color);
+  cursor: not-allowed;
+}
+
+.cardholder-header-button.btn-reissue.disabled {
+  position: relative;
+  pointer-events: auto;
+  color: #b3b3b3ac;
+  cursor: default;
+
+}
+
+.cardholder-header-button.btn-reissue.disabled i {
+  color: #b3b3b3ac;
+}
+
+.cardholder-header-button.btn-reissue.disabled:hover::after {
+  transition: all 0.1s ease-out;
+  content: "Revoke the card to re-issue.";
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background-color: var(--bg-variant);
+  color: var(--primary-color);
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  z-index: 100;
 }
 
 /* pagination */
