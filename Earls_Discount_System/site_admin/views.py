@@ -142,6 +142,8 @@ def view_all_users(request):
 
 @user_passes_test(is_admin, login_url='/unauthorized')
 def manage_user_details(request, cardholder_id):
+    is_superadmin = request.user.groups.filter(name='superadmin').exists()
+    
     cardholder = Cardholder.objects.get(id=cardholder_id)
     cardholder.name = f"{cardholder.first_name} {cardholder.last_name}"
     cardholder.status = "Active" if cardholder.is_active == True else "Inactive"
@@ -185,7 +187,7 @@ def manage_user_details(request, cardholder_id):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder, 'card': card, 'page_obj': page_obj})
+    return render(request, 'cardholder/cardholder-details.html',{'cardholder': cardholder, 'card': card, 'page_obj': page_obj, 'is_superadmin': is_superadmin, 'is_admin': is_admin})
 
 @user_passes_test(is_admin, login_url='/unauthorized')
 def manage_card_holders(request):
@@ -360,14 +362,17 @@ def issue_card(request):
             messages.error(request, f"An error occurred: {str(e)}")
 
         # Redirect back to the form in case of any error
-        return redirect('issue_card')
+        # return redirect('issue_card')
+        return redirect('manage_user_details', cardholder_id=cardholder.id) #temporary
 
     companies = Company.objects.all()
     card_types = CardType.objects.all()
 
     return render(request, 'eccard/issue-card.html', {
         'companies': companies,
-        'cardtypes': card_types
+        'cardtypes': card_types,
+        'is_superadmin': is_superadmin, 
+        'is_admin': is_admin
     })
     
     
