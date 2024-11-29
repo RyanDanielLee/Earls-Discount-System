@@ -104,3 +104,6 @@ or an SSO account that has been granted the superadmin role.
 3. Click on the newly created SSO user account
 4. Under Groups, click "admin" and the right-sided arrow to assign the administrator group to the user - the same applies to the superadmin group.
 5. Click Save to apply changes
+
+## You may view a live deployment of this website
+https://earls-eccard-app-234204981539.us-west1.run.app/
