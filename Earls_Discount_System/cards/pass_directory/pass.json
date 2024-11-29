@@ -1,0 +1,22 @@
+{
+ 	 "formatVersion": 1,
+  	"passTypeIdentifier": "pass.ca.ec.earls.ca",
+  	"serialNumber": "1234567890",
+  	"teamIdentifier": "5BBVCPL7BM",
+ "barcode": { "message": ";123456", "format": "PKBarcodeFormatQR",  "messageEncoding": "iso-8859-1" },
+  	"organizationName": "Earls",
+  	"description": "10% Discount Card",
+  	"logoText": "Earls Discount Card",
+  	"foregroundColor": "#FFFFFF",
+  	"backgroundColor": "#183139",
+  	"labelColor": "#FFFFFF",
+  	"storeCard": {
+    	   "primaryFields": [
+      	         	{ "key": "name", "label": "NAME", "value": "Liam Jackson" }
+    	    ],
+    	   "auxiliaryFields": [
+      	         	{ "key": "member_no", "label": "Member no.", "value": "1234" },
+      	         	{ "key": "discount", "label": "Discount Value", "value": "10%" }
+    	   ]
+   	}
+	}

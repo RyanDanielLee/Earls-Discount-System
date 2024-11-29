@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-container">
+    <div class="breadcrumb-bar">
+        <a href="{% url 'admin_home' %}" onclick="history.back()" class="back-button"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
+        <div class="breadcrumb-links">
+            <a href="{% url 'admin_home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'manage_card_holders' %}">Cardholders</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'manage_user_details' cardholder.id %}">Detail</a>
+        </div>
+    </div>
+    <h1 class="headline">Cardholder Detail</h1>
+    <div class="cardholder-header">
+        <div class="flex-row">
+            <h2 class="cardholder-header-title">{{ cardholder.name }}</h2>
+            <a class="cardholder-header-link" href="{% url 'edit_card' cardholder.id %}">Edit</a>
+            {% if cardholder.is_active %}
+            <a href="{% url 'revoke_card' cardholder_id=cardholder.id %}" class="button revoke-button">Revoke</a>
+            {% else %}
+            <a class="button revoke-button disabled">Revoke</a>
+            {% endif %}
+            <a class="cardholder-header-link" href="{% url 'delete_cardholder' cardholder.id %}">Delete Cardholder</a>
+        </div>
+            {% if card.card_number and cardholder.is_active %}
+            <a class="cardholder-header-button btn-reissue disabled" >
+            <i class="fa-regular fa-envelope cardholder-header-icon"></i>
+            Re-Issue Card
+            </a>
+            {% else %}
+            <a class="cardholder-header-button btn-reissue" onclick="openReissueConfirmModal(event)">
+                <i class="fa-regular fa-envelope cardholder-header-icon"></i>
+                Re-Issue Card
+            </a>
+            {% endif %}
+    </div>
+    <div class="cardholder-details">
+        <div class="detail-item">
+            <span>Email</span>
+            <span>Company</span>
+            <span>Status</span>
+        </div>
+        <div class="detail-item">
+            <span>{{ cardholder.email }}</span>
+            <span>{{ cardholder.company.name }}</span>
+            <span>{% if cardholder.is_active == 1 %}Active{% else %}Inactive{% endif %}</span>
+        </div>
+        <div class="detail-item">
+            <span>Card Type</span>
+            <span>Card Number</span>
+            <span>Issued Date</span>
+        </div>
+        <div class="detail-item">
+            <span>{{ cardholder.card_type.name|default:"N/A" }}</span>
+            <span>{{ card.card_number|default:"N/A" }}</span>
+            <span>{{ card.issued_date|default:"N/A" }}</span>
+        </div>
+    </div>
+    <div class="Note">
+        <span>Note</span>
+        <span>{{ cardholder.note }}</span>
+    </div>
+    <div>
+        <i class="fa fa-bars"></i>
+        <span>Transaction History</span>
+    </div>
+    <table class="cardholder-table">
+        <thead>
+          <tr class="thead">
+            <th>Date</th>
+            <th>Store</th>
+            <th>Check No</th>
+            <th>Discount Amount($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in page_obj %}
+          <tr>
+            <td data-title="Date">{{ transaction.business_date }}</td>
+            <td data-title="Store">{{ transaction.store }}</td>
+            <td data-title="Check No">{{ transaction.check_number }}</td>
+            <td data-title="Discount Amount">
+              {{ transaction.discount_amount|floatformat:2 }}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">No transactions available</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+    {% if page_obj.has_previous %}
+    <a
+      href="?page={{ page_obj.previous_page_number }}&year={{ selected_year }}&period={{ selected_period }}&week={{ selected_week }}"
+    >
+      <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    {% endif %} {% for num in page_obj.paginator.page_range %}
+    <a
+      href="?page={{ num }}&year={{ selected_year }}&period={{ selected_period }}&week={{ selected_week }}"
+      class="{% if page_obj.number == num %}active{% endif %}"
+    >
+      {{ num }}
+    </a>
+    {% endfor %} {% if page_obj.has_next %}
+    <a
+      href="?page={{ page_obj.next_page_number }}&year={{ selected_year }}&period={{ selected_period }}&week={{ selected_week }}"
+    >
+      <i class="fa-solid fa-chevron-right"></i>
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+
+
+<!-- Confirmation Pop-Up -->
+<div id="reissue-confirmation-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-texts">
+            <small>Re-issue Card</small>
+            <p>Your card is succesfully re-issued.</p>
+        </div>
+
+        <div class="modal-buttons-container">
+            <a href="{% url 'reissue_card' cardholder.id %}"><button type="submit" onclick="closeReissueConfirmModal()"
+                    class="modal-form-button">Close</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

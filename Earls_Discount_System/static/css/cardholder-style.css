@@ -1,0 +1,303 @@
+/* reset */
+
+form,
+input,
+label,
+select,
+button,
+textarea {
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: flex;
+  vertical-align: middle;
+  white-space: normal;
+  background: none;
+  line-height: 1;
+  font: inherit;
+}
+
+input:focus {
+  outline: 0;
+}
+
+/* end: reset */
+
+.breadcrumb-bar {
+  display: flex;
+  font-size: 0.875rem;
+  gap: 1rem;
+}
+
+.breadcrumb-links {
+  color: rgba(0, 0, 0, 0.38);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.breadcrumb-links a {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.back-button {
+  color: var(--font-color);
+}
+
+.headline {
+  color: var(--primary-color);
+  font-size: 3.6rem;
+  font-family: 'Abhaya Libre', serif;
+  line-height: 2.8rem;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.flex-row {
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+  gap: 1.6rem;
+}
+
+/* search bar */
+
+.form {
+  border: 1px solid var(--font-color);
+  height: 3rem;
+}
+
+.form-dropdown {
+  color: var(--font-color);
+  border-right: 1px solid var(--font-color);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.form-text {
+  color: var(--font-color);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 100%;
+}
+
+.form-text::placeholder {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.form-button {
+  align-items: center;
+  background: var(--font-color);
+  color: #fff;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* cardholder */
+
+.cardholder-table {
+  color: var(--font-color);
+  width: 100%;
+  border-collapse: collapse;
+  font: inherit;
+}
+
+.cardholder-table th,
+.cardholder-table td {
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.cardholder-table th {
+  border-bottom: 1px solid var(--font-color);
+  font-weight: 500;
+}
+
+.cardholder-table tbody tr:nth-child(even) {
+  background-color: var(--bg-variant);
+}
+
+.cardholder-table tbody tr:hover {
+  background-color: var(--grey-color);
+}
+
+.view-button {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.cardholder-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardholder-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--bg-variant);
+  padding: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.Note {
+  border: 1px solid var(--primary-color);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.Note span {
+  margin-right: 0.5rem;
+  /* Space between "Note" and the text */
+}
+
+.cardholder-header-title {
+  font-weight: 400;
+}
+
+.cardholder-header-link {
+  color: var(--primary-color);
+}
+
+.cardholder-header-button {
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: var(--font-color);
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  padding-left: 0.75rem;
+  padding-right: 1.25rem;
+}
+
+.cardholder-header-icon {
+  color: var(--primary-color);
+}
+
+.cardholder-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-add-new {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  justify-content: center;
+  color: var(--font-color);
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0.2rem 0.1rem;
+  transition: all 0.1s ease-out;
+  border: none;
+  outline: none;
+  margin-right: 1rem;
+}
+
+.btn-add-new::after {
+  /* Fixed class name here */
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  /* Adjust line thickness */
+  background: var(--font-color);
+  /* Adjust line color */
+  transition: width 0.3s ease;
+  /* Adjust animation speed */
+}
+
+.btn-add-new:hover::after {
+  width: 100%;
+}
+
+.cardholder-table a,
+.table-total-cardholders tbody a {
+  color: var(--font-color);
+}
+
+.cardholder-header-button.btn-reissue {
+  cursor: pointer;
+  transition: all 0.1s ease-out;
+}
+
+.cardholder-header-button.btn-reissue:hover {
+  background-color: var(--bg-variant);
+}
+
+.headline-search {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--font-color);
+}
+
+.revoke-button {
+  color: var(--primary-color);
+}
+
+.revoke-button.disabled {
+  pointer-events: none;
+  color: var(--light-color);
+  cursor: not-allowed;
+}
+
+.cardholder-header-button.btn-reissue.disabled {
+  position: relative;
+  pointer-events: auto;
+  color: #b3b3b3ac;
+  cursor: default;
+
+}
+
+.cardholder-header-button.btn-reissue.disabled i {
+  color: #b3b3b3ac;
+}
+
+.cardholder-header-button.btn-reissue.disabled:hover::after {
+  transition: all 0.1s ease-out;
+  content: "Revoke the card to re-issue.";
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background-color: var(--bg-variant);
+  color: var(--primary-color);
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+/* pagination */
+
+.pagination {
+  color: var(--font-color);
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination a {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.pagination a.active {
+  color: var(--font-color);
+}

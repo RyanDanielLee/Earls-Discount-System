@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-container">
+    <div class="breadcrumb-bar">
+        <a href="{% url 'admin_home' %}" class="back-button"><i class="fa-solid fa-arrow-left"></i> Go Back</a>
+        <div class="breadcrumb-links">
+            <a href="{% url 'admin_home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'manage_card_holders' %}">Cardholders</a>
+        </div>
+    </div>
+    <div class="cardholder-title-container">
+        <h1 class="headline">Cardholders</h1><a href="{% url 'issue_card' %}"><button class="btn-add-new">Add
+                new</button></a>
+    </div>
+
+    <form class="form" method="get" action="{% url 'search_cardholders' %}">
+        <select id="category" name="filter_by" class="search-filter form-dropdown">
+            <option value="name">name</option>
+            <option value="email">email</option>
+            <option value="id">ID</option>
+        </select>
+        <input id="cardholders" type="text" name="q" placeholder="Search cardholder" class="form-text">
+        <button type="submit" class="form-button">Search</button>
+    </form>
+    <table class="cardholder-table">
+        <thead>
+            <tr>
+                <th>Card No</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Card Type</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cardholder in page_obj %}
+            <tr>
+                <td>{{ cardholder.id }}</td>
+                <td>{{ cardholder.name }}</td>
+                <td><a href="{% url 'manage_user_details' cardholder.id %}">{{ cardholder.email }}</a></td>
+                <td>{{ cardholder.card_type.name }}</td>
+                <td><a href="{% url 'manage_user_details' cardholder.id %}"><button
+                            class="view-button">View</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- <div class="pagination">
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href="#" class="active">01</a>
+        <a href="#">02</a>
+        <a href="#">03</a>
+        <i class="fa-solid fa-chevron-right"></i>
+    </div> -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a href="?page={{ num }}" class="active">{{ num|add:"0"|slice:"-2" }}</a>
+        {% else %}
+        <a href="?page={{ num }}">{{ num|add:"0"|slice:"-2" }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

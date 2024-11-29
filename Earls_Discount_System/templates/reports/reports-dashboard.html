@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="{% url 'admin_home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'reports_dashboard' %}">Reports</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">Reports Management</h1>
+        <ul>
+            <li><a href="{% url 'total_discounts_per_store' %}">Discounts per Store</a></li>
+            <li><a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a></li>
+        </ul>
+    </div>
+    <div class="reports-summary">
+        <div class="box total-amount">
+            <p>{{ total_this_month|floatformat:2 }}</p>
+            <span>Total Amount($) This Month</span>
+        </div>
+        <div class="summary-double">
+            <div class="box last-month">
+                <p>{{ total_last_month|floatformat:2 }}</p>
+                <span>Last Month($)</span>
+            </div>
+            <div class="box this-year">
+                <p>{{ total_this_year|floatformat:2 }}</p>
+                <span>This Year($)</span>
+            </div>
+        </div>
+        <div class="box sum-cardholders">
+            <p>{{ total_cardholders }}</p>
+            <span>Cardholders</span>
+        </div>
+        <div class="box issued-ec-card">
+            <div class="issued-card-list">
+                <div class="card-item">
+                    <span>EC 10</span>
+                    <span>{{ ec10_count }}</span>
+                </div>
+                <div class="card-item">
+                    <span>EC 50</span>
+                    <span>{{ ec50_count }}</span>
+                </div>
+                <div class="card-item">
+                    <span>EC 100</span>
+                    <span>{{ ec100_count }}</span>
+                </div>
+            </div>
+            <span>Issued EC Card</span>
+        </div>
+    </div>
+    <section class="reports-dashbd-tb">
+        <div class="section-title-cardholders">
+            <div class="title-total-cardholders"><i class="fa-solid fa-shop font-awesome-icons"></i>
+                <p>Total Discounts by Store</p><small>Period 9 as of Oct 27</small>
+            </div>
+            <a href="{% url 'total_discounts_per_store' %}" class="icon-link">
+                    <p class="view-all-text">View All</p>
+            </a>
+        </div>
+        <div class="new-cardholders">
+            <table class="table-total-cardholders" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Store</th>
+                        <th>by Known Cardholder($)</th>
+                        <th>by UnKnown Cardholder($)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for store in store_discounts %}
+                    <tr>
+                        <td data-title="Store">{{ store.store_name }}</td>
+                        <td data-title="by Known Cardholder">{{ store.known_cardholder_discount }}</td>
+                        <td data-title="by Unknown Cardholder">{{ store.unknown_cardholder_discount }}</td>
+                        <td><a href="{% url 'drilldown_store' store.store_name %}"><button class="view-button">View</button></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="reports-dashbd-tb">
+        <div class="section-title-cardholders">
+            <div class="title-total-cardholders"><i class="fa-solid fa-id-card-clip font-awesome-icons"></i>
+                <p>Total Discounts by Employee</p><small>Period 9 as of Oct 27</small>
+            </div>
+            <a href="{% url 'total_discounts_per_employee' %}" class="icon-link">
+                <p class="view-all-text">View All</p>
+            </a>
+        </div>
+        <div class="new-cardholders">
+            <table class="table-total-cardholders" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Name</th>
+                        <th>Total Discount($)</th>
+                        <th>Number of Visits</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employee_discounts %}
+                    <tr>
+                        <td data-title="Employee Name">{{ employee.cardholder_name }}</td>
+                        <td data-title="Total Discount">{{ employee.total_discount|floatformat:2 }}</td>
+                        <td data-title="Number of Visits">{{ employee.visit_count }}</td>
+                        <td><a href="{% url 'drilldown_employee' employee.cardholder_id %}"><button class="view-button">View</button></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

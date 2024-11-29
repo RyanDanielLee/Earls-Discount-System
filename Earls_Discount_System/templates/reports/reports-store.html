@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="{% url 'admin_home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'reports_dashboard' %}">Reports</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'total_discounts_per_store' %}">Discounts per Store</a>
+        </div>
+    </div>
+    <div class="section-info add-date-option">
+        <div>
+            <h1 class="headline">Discounts per Store</h1>
+            <ul>
+                <li><a href="{% url 'total_discounts_per_store' %}">Discounts per Store</a></li>
+                <li><a href="{% url 'total_discounts_per_employee' %}">Discounts per Employee</a></li>
+            </ul>
+        </div>
+        <form class="date-form">
+            <div class="date-form-item">
+                <label for="year">Year</label>
+                <div class="date-form-dropdown">
+                    <span id="year-selected">2024</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="year" name="year" style="display: none;">
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="period">Period</label>
+                <div class="date-form-dropdown">
+                    <span id="period-selected">9</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="period" name="period" style="display: none;">
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="week">Week</label>
+                <div class="date-form-dropdown">
+                    <span id="week-selected">3</span>
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                    <select id="week" name="week" style="display: none;">
+                        <option value="all">All</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <section class="reports-dashbd-tb">
+        <div class="new-cardholders">
+            <table class="table-total-cardholders" id="no-more-tables">
+                <thead>
+                    <tr class="thead">
+                        <th>Store</th>
+                        <th>by Known Cardholder($)</th>
+                        <th>by Unknown Cardholder($)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for store in page_obj %}
+                    <tr>
+                        <td data-title="Store">{{ store.store_name }}</td>
+                        <td data-title="by Known Cardholder">{{ store.known_cardholder_discount|floatformat:2 }}</td>
+                        <td data-title="by Unknown Cardholder">{{ store.unknown_cardholder_discount|floatformat:2 }}
+                        </td>
+                        <td><a href="{% url 'drilldown_store' store.store_name %}"><button
+                                    class="view-button">View</button></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <a href="?page={{ num }}" class="active">{{ num|add:"0"|slice:"-2" }}</a>
+                {% else %}
+                <a href="?page={{ num }}">{{ num|add:"0"|slice:"-2" }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

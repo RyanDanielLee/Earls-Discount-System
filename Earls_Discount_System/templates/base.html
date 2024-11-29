@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/login-style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/admin-style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/cardholder-style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/eccard-style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/reports-style.css' %}?v={{ timestamp }}">
+    <!-- font-awesome icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- JS -->
+    <script src="{% static 'js/script.js' %}?v={{ timestamp }}"></script>
+    <title>Earls Discount System</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <main>
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="{% url 'admin_home' %}"><img src="{% static 'images/earls-logo-headonly.png' %}"
+                            alt="Earls Logo" class="nav-earls-logo"></a>
+                </div>
+                <ul class="nav-items" id="nav-items">
+                    <li><a href="{% url 'manage_card_holders' %}">
+                            <p>Cardholders</p>
+                        </a></li>
+
+                    {% if is_superadmin %}
+                    <li class="dropdown">
+                        <a href="#">
+                            <p>EC Card</p>
+                        </a>
+                        <ul class="dropdown-content" id="dropdown-content1">
+                            <li><a href="{% url 'issue_card' %}">Create Cardholder</a></li>
+                            <li><a href="{% url 'upload_card_faceplate' %}">Upload Faceplate</a></li>
+                            <li><a href="{% url 'view_card_faceplate' %}">View Faceplate</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    <li class="dropdown">
+                        <a href="#">
+                            <p>Reports</p>
+                        </a>
+                        <ul class="dropdown-content" id="dropdown-content2">
+                            <li><a href="{% url 'reports_dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'total_discounts_per_store' %}">Discount per Store</a></li>
+                            <li><a href="{% url 'total_discounts_per_employee' %}">Discount per Employee</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/logout">
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+                <div class="hamburger" id="hamburger" onclick="myMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</body>
+
+</html>

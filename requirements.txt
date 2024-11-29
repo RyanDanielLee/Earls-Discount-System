@@ -1,1 +1,13 @@
 Django>=5.1
+mysqlclient==2.2.4
+gunicorn
+whitenoise
+pymysql
+python-dotenv
+django-allauth
+django-extensions
+PyJWT
+pytest-django
+sendgrid
+google-cloud-bigquery
+cryptography

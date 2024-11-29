@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-container">
+    <!-- header -->
+    <div class="nav-breadcrumbs">
+        <button onclick="history.back()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+        <div class="breadcrumb">
+            <a href="{% url 'admin_home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'manage_card_holders' %}">Cardholder</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'manage_card_holders' %}">Detail</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'revoke_card' cardholder_id=cardholder.id %}">Revoke</a>
+        </div>
+    </div>
+    <div class="section-info">
+        <h1 class="headline">Revoke Card</h1>
+    </div>
+    <form class="eccard-form flex-column" id="revoke-form" method="POST" action="{% url 'revoke_card' cardholder.id %}">
+        {% csrf_token %}
+        <div class="flex-column input-group">
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <p>{{ cardholder.first_name }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <p>{{ cardholder.last_name }}</p>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="email-address">Email Address</label>
+                    <p>{{ cardholder.email }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <p>{{ cardholder.company.name }}</p>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="form-group">
+                    <label for="card-type">Card Type</label>
+                    <p>{{ cardholder.card_type.name }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="card-type">Card Number</label>
+                    <p>{{ card.card_number }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex-row justify-end revoke">
+            <div class="info-revoke"><i class="fa-solid fa-check"></i>
+                <p><span>Revoking a card will</span> deactivate the cardholder <span>and</span><br>
+                    remove the card <span>from their wallet</span></p>
+            </div>
+            <button type="button" onclick="openConfirmationModal()" class="form-button">Revoke Card</button>
+        </div>
+</div>
+</form>
+</div>
+
+<!-- Confirmation Pop-Up -->
+<div id="confirmation-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-texts">
+            <small>Revoke Card</small>
+            <p>Are you sure<br> you want to revoke this card?</p>
+        </div>
+
+        <div class="modal-buttons-container">
+            <button type="button" onclick="submitRevokeForm()" class="modal-form-button">Revoke Card</button>
+            <button type="button" onclick="closeConfirmationModal()" class="modal-form-button-white ">Cancel</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
