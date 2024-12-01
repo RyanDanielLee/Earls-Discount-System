@@ -97,7 +97,9 @@
         </div>
       </div>
       <div class="flex-row justify-end">
+        {% if error_message %}
         <p class="error-message">{{ error_message }}</p>
+        {% endif %}
         <button type="submit" class="form-button">Save</button>
         <a href="{% url 'manage_card_holders' %}" class="form-button-white"
           >Cancel</a
