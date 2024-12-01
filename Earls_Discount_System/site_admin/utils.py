@@ -18,7 +18,18 @@ from dotenv import load_dotenv
 from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 
 # Path to your service account key file
-SERVICE_ACCOUNT_FILE = "../bcit-ec-f0c649ac214f.json"
+from google.cloud import secretmanager
+# SERVICE_ACCOUNT_FILE = "../bcit-ec-086028d2299d.json"
+
+def get_service_account_key():
+    try:
+        client = secretmanager.SecretManagerServiceClient()
+        name = f"projects/bcit-ec/secrets/SERVICE_ACCOUNT_KEY/versions/latest"
+        response = client.access_secret_version(request={"name": name})
+        return response.payload.data.decode("UTF-8")
+    except Exception as e:
+        print(f"Error fetching service account key: {str(e)}")
+        return None 
 
 def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_token, expires_at):
 
@@ -26,7 +37,7 @@ def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_to
     context = {
         'first_name': cardholder.first_name,
          'google_wallet_link': google_wallet_token,
-        'apple_wallet_link': f"https://your-domain.com/wallet/apple?token={apple_wallet_token}",
+        'apple_wallet_link': f"https://earls-eccard-app-234204981539.us-west1.run.app/wallet/apple?token={apple_wallet_token}",
         'expiration': expires_at, 
     }
 
@@ -91,8 +102,17 @@ def get_google_wallet_token():
     # Define the required scopes
     SCOPES = ['https://www.googleapis.com/auth/wallet_object.issuer']
     
+    service_account_key = json.loads(get_service_account_key())
+
+    if not service_account_key:
+        raise Exception("Failed to fetch service account key")
+
     # Load the credentials and create a request
-    credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    # credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    credentials = service_account.Credentials.from_service_account_info(
+        service_account_key,  # Pass the dictionary
+        scopes=SCOPES
+    )
     
     # Refresh the credentials to get the access token
     auth_request = Request()
@@ -100,7 +120,7 @@ def get_google_wallet_token():
     
     return credentials.token  # Return only the access token
 
-def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audience="google"):
+def create_google_wallet_jwt(issuer_id, service_account_key, card_data, audience="google"):
     """
     Generate a signed JWT containing card details for Google Wallet.
 
@@ -114,17 +134,18 @@ def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audienc
         str: A signed JWT ready to be sent to Google Wallet.
     """
     try:
+
         # Load the service account key JSON
-        with open(service_account_file, "r") as file:
-            service_account_info = json.load(file)
+        # with open(service_account_file, "r") as file:
+        #     service_account_info = json.load(file)
         
         # Extract the private key
-        private_key = service_account_info["private_key"]
+        private_key = service_account_key["private_key"]
 
         # Define the JWT payload
         now = datetime.now(timezone.utc)
         payload = {
-            "iss": service_account_info["client_email"],  # Issuer ID
+            "iss": service_account_key["client_email"],  # Issuer ID
             "aud": audience,   # Audience (usually "google")
             "iat": int(now.timestamp()),
             "exp": int((now + timedelta(hours=1)).timestamp()),
@@ -145,6 +166,11 @@ def create_google_wallet_jwt(issuer_id, service_account_file, card_data, audienc
 def issue_card_to_google_wallet(company_name, first_name, last_name, email, card_type_name, note):
     try:
         issuer_id = "3388000000022791702"  # Your actual issuer ID
+
+        service_account_key = json.loads(get_service_account_key())
+
+        if not service_account_key:
+            raise Exception("Failed to fetch service account key")
 
         # Define the card details for the Generic Object
         card_data = {
@@ -199,7 +225,7 @@ def issue_card_to_google_wallet(company_name, first_name, last_name, email, card
         }
 
         # Generate a signed JWT containing the card details
-        signed_jwt = create_google_wallet_jwt(issuer_id, SERVICE_ACCOUNT_FILE, card_data)
+        signed_jwt = create_google_wallet_jwt(issuer_id, service_account_key, card_data)
 
         if not signed_jwt:
             print("Failed to generate signed JWT.")
@@ -228,9 +254,16 @@ def revoke_google_wallet_card(object_id):
         dict: The API response indicating success or failure.
     """
     try:
+
+        service_account_key = json.loads(get_service_account_key())
+        
+        if not service_account_key:
+            raise Exception("Failed to fetch service account key")
+
+
         # Authenticate using the service account file
         credentials = service_account.Credentials.from_service_account_file(
-            SERVICE_ACCOUNT_FILE, scopes=["https://www.googleapis.com/auth/wallet_object.issuer"]
+            service_account_key, scopes=["https://www.googleapis.com/auth/wallet_object.issuer"]
         )
         authed_session = Request()
         credentials.refresh(authed_session)

@@ -405,28 +405,39 @@ def revoke_card(request, cardholder_id):
 
 @user_passes_test(is_superadmin, login_url='/unauthorized')
 def edit_card(request, cardholder_id):
+
+    is_superadmin = request.user.groups.filter(name='superadmin').exists()
+
     cardholder = Cardholder.objects.get(id=cardholder_id)
     card = Card.objects.filter(cardholder=cardholder).first()
 
+    error_message = None
     if request.method == 'POST':
-        cardholder.first_name = request.POST.get('first_name')
-        cardholder.last_name = request.POST.get('last_name')
-        cardholder.email = request.POST.get('email')
-        cardholder.note = request.POST.get('note')
-        company_id = request.POST.get('company')
-        card_type_id = request.POST.get('card_type')
+        try:
+            cardholder.first_name = request.POST.get('first_name')
+            cardholder.last_name = request.POST.get('last_name')
+            cardholder.email = request.POST.get('email')
+            cardholder.note = request.POST.get('note')
+            company_id = request.POST.get('company')
+            card_type_id = request.POST.get('card_type')
 
 
-        if company_id:
-            cardholder.company = Company.objects.get(id=company_id)
+            if company_id:
+                cardholder.company = Company.objects.get(id=company_id)
 
 
-        if card_type_id:
-            cardholder.card_type = CardType.objects.get(id=card_type_id)
+            if card_type_id:
+                cardholder.card_type = CardType.objects.get(id=card_type_id)
 
-        cardholder.save()
-        return redirect('manage_user_details', cardholder_id=cardholder.id) 
-    
+            cardholder.save()
+            return redirect('manage_user_details', cardholder_id=cardholder.id) 
+        
+        except IntegrityError as e:
+            if 'Duplicate entry' in str(e):
+                error_message = 'This email already exists. Please use a different email.'
+            else:
+                error_message = 'An unexpected error occurred. Please try again.'
+
     company = Company.objects.all()
     cardtype = CardType.objects.all()
 
@@ -434,7 +445,10 @@ def edit_card(request, cardholder_id):
         'cardholder': cardholder,
         'card': card, 
         'companies': company,
-        'card_types': cardtype,'is_superadmin': is_superadmin, 'is_admin': is_admin
+        'card_types': cardtype,
+        'error_message':error_message, 
+        'is_superadmin': is_superadmin, 
+        'is_admin': is_admin
     })
 
 def delete_cardholder(request, cardholder_id):
@@ -452,41 +466,72 @@ def delete_cardholder(request, cardholder_id):
     return redirect('manage_card_holders')
 
 def reissue_card(request, cardholder_id):
-    cardholder = Cardholder.objects.get(id=cardholder_id)
-    card = Card.objects.filter(cardholder=cardholder).first()
+    try:
 
-    if cardholder.is_active:
-        return render(request, 'error.html', {'message': 'Cardholder already has an active card.'})
+        cardholder = Cardholder.objects.get(id=cardholder_id)
+        card = Card.objects.filter(cardholder=cardholder).first()
+        cardholder.card_type = CardType.objects.get(id=cardholder.card_type_id) 
 
-    if card:
-        card.card_number = generate_card_number(cardholder.company.name)
-        card.issued_date = timezone.now()
-        card.revoked_date = None  # Reset revoked date
-        card.save()
+        if cardholder.is_active:
+            return render(request, 'error.html', {'message': 'Cardholder already has an active card.'})
 
-    cardholder.is_active = True
-    cardholder.save()
+        if card:
+            card.card_number = generate_card_number(cardholder.company.name)
+            card.issued_date = timezone.now()
+            card.revoked_date = None  # Reset revoked date
+            card.save()
 
-    # Generate new wallet selection tokens again
-    google_wallet_token = WalletSelectionToken.objects.create(
-        cardholder=cardholder,
-        expires_at=timezone.now() + timezone.timedelta(hours=1)
-    )
-    apple_wallet_token = WalletSelectionToken.objects.create(
-        cardholder=cardholder,
-        expires_at=timezone.now() + timezone.timedelta(hours=1)
-    )
+        cardholder.is_active = True
+        cardholder.save()
 
-    # Send a new wallet selection email again
-    send_wallet_selection_email(
-        cardholder=cardholder,
-        google_wallet_token=google_wallet_token.token,
-        apple_wallet_token=apple_wallet_token.token,
-        expires_at=google_wallet_token.expires_at
-    )
+        # Call the separate function to issue the card to Google Wallet
+        wallet_response = issue_card_to_google_wallet(
+            company_name=cardholder.company.name,
+            first_name=cardholder.first_name,
+            last_name=cardholder.last_name,
+            email=cardholder.email,
+            card_type_name=cardholder.card_type.name,
+            note=cardholder.note
+        )
+        
+        if wallet_response['status'] == 'success':
+            # Store the wallet ID in the card
+            card.wallet_id = wallet_response.get('google_wallet_id', None)  # Use 'google_wallet_id' from the response
+            card.save()
 
-    # Redirect to the cardholder's detail page
-    return redirect('manage_user_details', cardholder_id=cardholder_id)
+            # Generate wallet selection tokens
+            google_wallet_token = WalletSelectionToken.objects.create(
+                cardholder=cardholder,
+                expires_at=timezone.now() + timezone.timedelta(hours=1)
+            )
+            apple_wallet_token = WalletSelectionToken.objects.create(
+                cardholder=cardholder,
+                expires_at=timezone.now() + timezone.timedelta(hours=1)
+            )
+            
+            # Send email with wallet selection links
+            send_wallet_selection_email(
+                cardholder=cardholder,
+                google_wallet_token=wallet_response['google_wallet_link'],
+                apple_wallet_token=apple_wallet_token.token,
+                expires_at=google_wallet_token.expires_at
+            )
+
+            return redirect('manage_card_holders')
+        
+        else:
+            # Handle error response
+            error_message = wallet_response.get('message', 'Unknown error occurred.')
+            print(f"Failed to issue Google Wallet card: {error_message}")
+            messages.error(request, f"Failed to issue Google Wallet card: {error_message}")
+    
+    except Exception as e:
+        print(f"Error issuing card: {str(e)}")
+        messages.error(request, f"An error occurred: {str(e)}")
+
+    # Redirect back to the form in case of any error
+    # return redirect('issue_card')
+    return redirect('manage_user_details', cardholder_id=cardholder.id) #temporary
 
 def upload_card_faceplate(request):
     is_superadmin = request.user.groups.filter(name='superadmin').exists()

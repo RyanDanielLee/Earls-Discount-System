@@ -11,3 +11,4 @@ pytest-django
 sendgrid
 google-cloud-bigquery
 cryptography
+google-cloud-secret-manager
