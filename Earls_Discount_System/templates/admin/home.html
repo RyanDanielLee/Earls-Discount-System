@@ -113,8 +113,14 @@
           <td data-title="CardType"><a href="{% url 'manage_user_details' cardholder.id %}">
             {{ cardholder.card_type.name|default:"N/A" }}</a>
           </td>
-          <td data-title="Issue Date"><a href="{% url 'manage_user_details' cardholder.id %}">
-            {{ cardholder.card.issued_date|default:"N/A" }}</a>
+          <td data-title="Issue Date">
+            <a href="{% url 'manage_user_details' cardholder.id %}">
+              {% if cardholder.card.issued_date %}
+                {{ cardholder.card.issued_date|date:"Y-m-d" }}
+              {% else %}
+                N/A
+              {% endif %}
+              </a>
           </td>
         </tr>
         {% endfor %}
