@@ -249,6 +249,10 @@ def search_cardholders(request):
 @user_passes_test(is_superadmin, login_url='/unauthorized')
 def issue_card(request):
     is_superadmin = request.user.groups.filter(name='superadmin').exists()
+    companies = Company.objects.all()
+    card_types = CardType.objects.all()
+    error_message = None
+    success_modal = False
     
     if request.method == 'POST':         
         first_name = request.POST.get('first_name')
@@ -258,31 +262,15 @@ def issue_card(request):
         card_type_id = request.POST.get('card_type')
         note = request.POST.get('note')
 
+        cardholder = None
+        card = None
+
         try:
             company = Company.objects.get(id=company_id)
             cardtype = CardType.objects.get(id=card_type_id)
 
-            cardholder = Cardholder.objects.create(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                company=company,
-                card_type=cardtype,
-                note=note,
-                created_date=timezone.now(),
-                is_active=True
-            )
-
             # Generate card number and create Card instance
-            card_number = generate_card_number(company.name)
-            card = Card.objects.create(
-                cardholder=cardholder,
-                card_number=card_number,
-                issued_date=timezone.now(),
-            )
-
-            cardholder.card = card
-            cardholder.save()
+            card_number = generate_card_number(company.name)            
 
             # Call the separate function to issue the card to Google Wallet
             wallet_response = issue_card_to_google_wallet(
@@ -295,9 +283,25 @@ def issue_card(request):
             )
 
             if wallet_response['status'] == 'success':
+
+                cardholder = Cardholder.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                company=company,
+                card_type=cardtype,
+                note=note,
+                created_date=timezone.now(),
+                is_active=True
+            )
+
+                card = Card.objects.create(
+                    cardholder=cardholder,
+                    card_number=card_number,
+                    issued_date=timezone.now(),
+            )
                 # Store the wallet ID in the card
                 card.wallet_id = wallet_response.get('google_wallet_id', None)  # Use 'google_wallet_id' from the response
-                card.save()
 
                 # Generate wallet selection tokens
                 google_wallet_token = WalletSelectionToken.objects.create(
@@ -323,11 +327,18 @@ def issue_card(request):
                 #     apple_wallet_token=apple_wallet_token.token, 
                 #     expires_at=google_wallet_token.expires_at
                 # )
+
+                cardholder.card = card
+                cardholder.save()
+                card.save()
+
+                success_modal = True
         
-                return redirect('manage_card_holders')
+                return redirect('manage_user_details', cardholder_id=cardholder.id) 
             else:
                 # Handle error response
                 error_message = wallet_response.get('message', 'Unknown error occurred.')
+            
                 print(f"Failed to issue Google Wallet card: {error_message}")
                 messages.error(request, f"Failed to issue Google Wallet card: {error_message}")
     
@@ -336,41 +347,48 @@ def issue_card(request):
                 error_message = 'This email already exists. Please use a different email.'
             else:
                 error_message = 'An unexpected error occurred. Please try again.'
-         
-         # Preserve form data and company/cardtype data
-            company = Company.objects.all()
-            cardtype = CardType.objects.all()
         
-            return render(request, 'eccard/issue-card.html', {
-                'error_message': error_message,
-                'companies': company,
-                'cardtypes': cardtype,
-                'form_data': {
-                    'first_name': first_name,
-                    'last_name': last_name,
-                    'email': email,
-                    'company_id': company_id,
-                    'card_type_id': card_type_id,
-                    'note': note,
-                },
-                'is_superadmin': is_superadmin, 
-                'is_admin': is_admin
-            })
-
         except Exception as e:
-            print(f"Error issuing card: {str(e)}")
-            messages.error(request, f"An error occurred: {str(e)}")
+            error_message = f"An error occurred: {str(e)}"
+
+            if card:
+                card.delete()
+            if cardholder:
+                cardholder.delete()
+        
+        # Preserve form data and company/cardtype data
+        company = Company.objects.all()
+        cardtype = CardType.objects.all()
+        
+        return render(request, 'eccard/issue-card.html', {
+            'error_message': error_message,
+            'companies': company,
+            'cardtypes': cardtype,
+            'form_data': {
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'company_id': company_id,
+                'card_type_id': card_type_id,
+                'note': note,
+            },
+            'success_modal': success_modal,
+            'is_superadmin': is_superadmin, 
+            'is_admin': is_admin
+        })
+
+        # except Exception as e:
+        #     print(f"Error issuing card: {str(e)}")
+        #     messages.error(request, f"An error occurred: {str(e)}")
 
         # Redirect back to the form in case of any error
         # return redirect('issue_card')
-        return redirect('manage_user_details', cardholder_id=cardholder.id) #temporary
-
-    companies = Company.objects.all()
-    card_types = CardType.objects.all()
+        # return redirect('manage_user_details', cardholder_id=cardholder.id) #temporary
 
     return render(request, 'eccard/issue-card.html', {
         'companies': companies,
         'cardtypes': card_types,
+        'success_modal': success_modal,
         'is_superadmin': is_superadmin, 
         'is_admin': is_admin
     })

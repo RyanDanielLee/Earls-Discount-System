@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %} 
+{% load static %} 
+{% block content %}
 <div class="admin-container">
   <!-- header -->
   <div class="nav-breadcrumbs">
@@ -93,7 +95,7 @@
         </div>
       </div>
       <div class="flex-row justify-between">
-        <p class="error-message">{{ error_message }}</p>
+        <p class="error-message">{{ error_message|default:"" }}</p>
         <button type="submit" class="form-button">Create</button>
       </div>
     </div>
