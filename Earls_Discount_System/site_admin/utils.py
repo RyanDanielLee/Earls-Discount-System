@@ -21,6 +21,8 @@ from .models import WalletSelectionToken, Card, DigitalWallet, Cardholder
 from google.cloud import secretmanager
 # SERVICE_ACCOUNT_FILE = "../bcit-ec-086028d2299d.json"
 
+load_dotenv()
+
 def get_service_account_key():
     try:
         client = secretmanager.SecretManagerServiceClient()
@@ -53,6 +55,8 @@ def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_to
     #     html_message=html_content,
     # )
 
+    sendgrid_api_key = os.getenv('SENDGRID_API_KEY')
+
     message = Mail(
         from_email='devteam@earls.ca',
         to_emails=cardholder.email,
@@ -60,7 +64,7 @@ def send_wallet_selection_email(cardholder, google_wallet_token, apple_wallet_to
         html_content=render_to_string('eccard/wallet_selection_email.html', context) )
     
     try:
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        sg = SendGridAPIClient(sendgrid_api_key)
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
