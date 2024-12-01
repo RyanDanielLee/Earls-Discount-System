@@ -1,51 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            color: #1d1d1d;
-        }
-
-        h2 {
-            color: #3c84ff;
-        }
-
-        .content-section {
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <title>EC Card Notification</title>
 </head>
 
-<body>
+<body
+    style="font-family: Poppins, sans-serif; color: #083044; margin: 0; padding: 20px; line-height: 1.6; background-color: #f8f9fa;">
 
-    <h2>Hello {{ first_name }},</h2>
+    <section
+        style="background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 20px; max-width: 600px; margin: 0 auto;">
+        <h2 style="font-family: Poppins, sans-serif; color: #083044; font-size: 1.5em; margin-bottom: 10px;">
+            Hello {{ first_name }},</h2>
 
-    <p>Your new EC Card is ready for digital use! You can choose to add it to your
-        preferred digital wallet below:</p>
+        <p style="color: #083044; margin: 10px 0;">Your new EC Card is ready for digital use!<br>You can choose to add
+            it to your
+            preferred digital wallet below:</p><br>
 
-    <p>
-        <a href="{{ google_wallet_link }}">Add to Google Wallet</a>
-    </p>
-    <p>
-        <a href="{{ apple_wallet_link }}">Add to Apple Wallet</a>
-    </p>
 
-    <p class="note">*Note: These links are valid for 1 hour. After that, you will need to request new links.</p>
+            <!-- Google Wallet Button -->
+            <a href="{{ google_wallet_link }}"
+                style="display: inline-block; width: 140px;  background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/bb/Add_to_Google_Wallet_badge.svg'); background-repeat: no-repeat; background-size: contain; text-indent: -9999px;">Add
+                to Google Wallet
+            </a>
 
-    <p>Feel free to reach out to <a href="mailto:support@earls.ca">support@earls.ca</a>.</p>
-    <br><br><br>
-    <p>Best regards,<br>The Earls EC Card Team</p>
+            <!-- Apple Wallet Button -->
+            <p href="{{ apple_wallet_link }}"
+                style="display: inline-block; width: 136px; height: 40px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/30/Add_to_Apple_Wallet_badge.svg'); background-repeat: no-repeat; background-size: contain; text-indent: -9999px; pointer-events: none; cursor: not-allowed;">
+                Add to Apple Wallet
+            </p>
 
-    <div class="footer">
-        <p>&copy; 2024 Earls EC Card System. All rights reserved.</p>
-    </div>
+        <p style="font-size: 0.9em; color: #6eb9b2; margin: 10px 0;">Note: These links are valid for 1 hour. After that,
+            you will need to request new links.</p>
+        <p style="color: #083044; margin: 10px 0;">Feel free to reach out to <a href="mailto:support@earls.ca"
+                style="color: #6eb9b2; text-decoration: none;">support@earls.ca</a>.</p>
+        <br>
+        <p style="color: #083044; margin: 10px 0;">Best regards,<br>The Earls EC Card Team</p>
+
+        <div style="margin-top: 20px; font-size: 0.8em; text-align: center; color: #999999;">
+            <p>&copy; 2024 Earls EC Card System. All rights reserved.</p>
+        </div>
+    </section>
+
 </body>
 
 </html>
