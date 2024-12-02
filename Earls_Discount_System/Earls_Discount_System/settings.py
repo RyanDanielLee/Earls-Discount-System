@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-jl3medy*j-w53$vewwp#%(exstbnl-iz7rre!7&rn%v$xj72cw
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+# Test
 CSRF_TRUSTED_ORIGINS = ['https://eccard-234204981539.us-west1.run.app', 'https://earls-eccard-app-234204981539.us-west1.run.app']
 
 # Application definition
